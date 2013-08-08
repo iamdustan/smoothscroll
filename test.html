@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+  <h1>Quick and dirty scrollTo(x, y, 'smooth') testing</h1>
+  <p style='height: 500px'>For real. Really quick. Really dirty.</p>
+  <h2>A second after pageload, you should be smoothly scrolled to my neighborhood</h2>
+  <p style='height: 500px'>Welcome to the neighborhood.</p>
+
+  <script src="smoothScrollTo.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function(e) {
+    setTimeout(function() {
+      window.scrollTo(0, 500, 'smooth');
+    }, 1000);
+  }, false);
+  </script>
+</body>
+</html>
+
