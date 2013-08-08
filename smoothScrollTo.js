@@ -39,7 +39,7 @@
 
       if (_x >= x) _x = x;
       if (_y >= y) _y = y;
-      window.scrollTo(_x, _y)
+      originalScrollTo(_x, _y)
 
       if (_x === x && _y === y) return;
       frame = requestAnimationFrame(step);
