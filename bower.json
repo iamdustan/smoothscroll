@@ -1,7 +1,7 @@
 {
-  "name": "smoothScrollTo",
+  "name": "smoothscroll",
   "version": "0.0.0",
-  "main": "smoothScrollTo.js",
+  "main": "smoothscroll.js",
   "ignore": [
     "**/.*",
     "node_modules",

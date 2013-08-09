@@ -7,7 +7,7 @@
   var originalScrollIntoView = Element.prototype.scrollIntoView;
 
   function now() {
-    return window.performance !== undefined && window.performance.now !== undefined ? window.performance.now() : Date.now !== undefined ? Date.now() : +new Date;
+    return window.performance !== undefined && window.performance.now !== undefined ? window.performance.now() : Date.now !== undefined ? Date.now() : new Date().getTime();
   }
 
   // ease-in-out
@@ -20,7 +20,7 @@
     if (type !== 'smooth')
       return originalScrollTo(x, y);
 
-    // TODO: make this intelligent. 300ms per scroll
+    // TODO: make this intelligent based on distance. 300ms per scro
     var SCROLL_TIME = 300;
     var frame;
     var sx = window.pageXOffset;
@@ -46,28 +46,36 @@
       var cx = sx + ( x - sx ) * value;
       var cy = sy + ( y - sy ) * value;
 
-      originalScrollTo(cx, cy)
+      originalScrollTo(cx, cy);
 
       if (cx === endX && cy === endY) {
         startX = startY = endX = endY = undefined;
         return;
       }
+
       frame = requestAnimationFrame(step);
-    }
+    };
 
     frame = requestAnimationFrame(step);
-  }
+  };
 
   Element.prototype.scrollIntoView = function(toTop, behavior) {
-    if (behavior !== 'smooth') return originalScrollIntoView(toTop, behavior);
-    if (typeof toTop === 'undefined') toTop = true;
+    if (behavior !== 'smooth')
+      return originalScrollIntoView(toTop, behavior);
+
+    if (typeof toTop === 'undefined')
+      toTop = true;
 
 
     if (toTop)
       return window.scrollTo(this.offsetLeft, this.offsetTop, behavior);
 
-    return window.scrollTo(this.offsetLeft, this.offsetTop - document.documentElement.clientHeight + this.clientHeight, behavior)
-  }
+    return window.scrollTo(
+      this.offsetLeft,
+      this.offsetTop - document.documentElement.clientHeight + this.clientHeight,
+      behavior
+    );
+  };
 
 }());
 

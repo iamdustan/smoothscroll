@@ -1,0 +1,15 @@
+{
+    "browser"       : true,
+    "node"          : false,
+
+    "predef"        : [
+      "requestAnimationFrame"
+    ],
+
+    "strict"        : true,
+    "globalstrict"  : true,
+
+    "laxbreak"      : true,
+    "white"         : false,
+    "indent"        : 2
+}
