@@ -1,8 +1,9 @@
 smoothScrollTo.js
 =================
 
-Polyfill for window.scrollTo(x, y, 'smooth');
-
+Polyfill for
+* window.scrollTo(x, y, behavior);
+* element.scrollIntoView(toTop, behavior);
 
 Browser Support
 ---------------
@@ -14,6 +15,6 @@ functionality is taken care of.
 Standards documentation
 -----------------------
 
+* http://dev.w3.org/csswg/cssom-view/#scroll-an-element-into-view
 * http://lists.w3.org/Archives/Public/www-style/2013Mar/0314.html
-* 
 

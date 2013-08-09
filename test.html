@@ -5,15 +5,26 @@
 <body>
   <h1>Quick and dirty scrollTo(x, y, 'smooth') testing</h1>
   <p style='height: 500px'>For real. Really quick. Really dirty.</p>
-  <h2>A second after pageload, you should be smoothly scrolled to my neighborhood</h2>
+  <h2 id='scrollIntoView'>A second after pageload, you should be smoothly scrolled to my neighborhood</h2>
   <p style='height: 500px'>Welcome to the neighborhood.</p>
+  <h2>Eventually this will be scrolled to</h2>
+  <p style='height: 500px'>Well, maybe I was lying.</p>
 
   <script src="smoothScrollTo.js"></script>
   <script>
   document.addEventListener('DOMContentLoaded', function(e) {
     setTimeout(function() {
-      window.scrollTo(0, 500, 'smooth');
-    }, 1000);
+      window.scrollTo(0, 300, 'smooth');
+      setTimeout(function() {
+        document.getElementById('scrollIntoView').scrollIntoView(true, 'smooth');
+        setTimeout(function() {
+          window.scrollTo(0, 0, 'smooth');
+          setTimeout(function() {
+            document.getElementById('scrollIntoView').scrollIntoView(false, 'smooth');
+          }, 2000);
+        }, 2000);
+      }, 2000);
+    }, 2000);
   }, false);
   </script>
 </body>

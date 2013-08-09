@@ -4,6 +4,7 @@
   if ('scrollBehavior' in document.documentElement.style) return;
 
   var originalScrollTo = window.scrollTo;
+  var originalScrollIntoView = Element.prototype.scrollIntoView;
 
   function now() {
     return window.performance !== undefined && window.performance.now !== undefined ? window.performance.now() : Date.now !== undefined ? Date.now() : +new Date;
@@ -14,6 +15,7 @@
     return 0.5 * (1 - Math.cos(Math.PI * k));
   }
 
+  var startY, startX, endX, endY;
   window.scrollTo = function(x, y, type) {
     if (type !== 'smooth')
       return originalScrollTo(x, y);
@@ -21,8 +23,15 @@
     // TODO: make this intelligent. 300ms per scroll
     var SCROLL_TIME = 300;
     var frame;
-    var sx = this.pageXOffset;
-    var sy = this.pageYOffset;
+    var sx = window.pageXOffset;
+    var sy = window.pageYOffset;
+
+    if (typeof startX === 'undefined') {
+      startX = sx;
+      startY = sy;
+      endX = x;
+      endY = y;
+    }
 
     var startTime = now();
 
@@ -34,18 +43,30 @@
       elapsed = elapsed > 1 ? 1 : elapsed;
 
       var value = ease(elapsed);
-      var _x = sx + ( x - sx ) * value;
-      var _y = sy + ( y - sy ) * value;
+      var cx = sx + ( x - sx ) * value;
+      var cy = sy + ( y - sy ) * value;
 
-      if (_x >= x) _x = x;
-      if (_y >= y) _y = y;
-      originalScrollTo(_x, _y)
+      originalScrollTo(cx, cy)
 
-      if (_x === x && _y === y) return;
+      if (cx === endX && cy === endY) {
+        startX = startY = endX = endY = undefined;
+        return;
+      }
       frame = requestAnimationFrame(step);
     }
 
     frame = requestAnimationFrame(step);
+  }
+
+  Element.prototype.scrollIntoView = function(toTop, behavior) {
+    if (behavior !== 'smooth') return originalScrollIntoView(toTop, behavior);
+    if (typeof toTop === 'undefined') toTop = true;
+
+
+    if (toTop)
+      return window.scrollTo(this.offsetLeft, this.offsetTop, behavior);
+
+    return window.scrollTo(this.offsetLeft, this.offsetTop - document.documentElement.clientHeight + this.clientHeight, behavior)
   }
 
 }());
