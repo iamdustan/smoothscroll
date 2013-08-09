@@ -8,9 +8,13 @@ Polyfill for
 Browser Support
 ---------------
 
-Report any issues you have with browsers and versions to flesh this out.
-I have yet to start any real browser testing until the core
-functionality is taken care of.
+This has been tested successfully in the following browsers:
+
+* Safari 6+ (desktop, haven't tested iOS)
+* FirefoxNightly
+* Chrome
+* Opera Next
+
 
 Standards documentation
 -----------------------
