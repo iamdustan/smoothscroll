@@ -12,11 +12,33 @@ module.exports = function(grunt) {
       all: [
         'smoothscroll.js'
       ]
+    },
+    uglify: {
+      core: {
+        files: {
+          'dist/smoothscroll.js': ['smoothscroll.js']
+        }
+      }
+    },
+    concat: {
+      options: {
+        separator: ';',
+      },
+      dist: {
+        src: ['bower_components/raf.js/raf.min.js', 'dist/smoothscroll.js'],
+        dest: 'dist/smoothscroll.raf.js',
+      }
     }
   });
 
   grunt.registerTask('default', [
     'jshint'
+  ]);
+
+  grunt.registerTask('build', [
+    'jshint',
+    'uglify:core',
+    'concat'
   ]);
 }
 
