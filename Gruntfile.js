@@ -18,6 +18,14 @@ module.exports = function(grunt) {
         files: {
           'dist/smoothscroll.js': ['smoothscroll.js']
         }
+      },
+      gzip: {
+        files: {
+          'dist/smoothscroll.js': ['smoothscroll.js']
+        },
+        options: {
+          report: 'gzip'
+        }
       }
     },
     concat: {
@@ -38,6 +46,12 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'jshint',
     'uglify:core',
+    'concat'
+  ]);
+
+  grunt.registerTask('build:report', [
+    'jshint',
+    'uglify:gzip',
     'concat'
   ]);
 }

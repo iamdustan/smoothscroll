@@ -1,7 +1,7 @@
 {
   "name": "smoothscroll",
   "version": "0.0.0",
-  "main": "smoothscroll.js",
+  "main": "dist/smoothscroll.js",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -10,6 +10,6 @@
     "tests"
   ],
   "dependencies": {
-    "raf.js": "~0.0.2"
+    "raf.js": "~0.0.3"
   }
 }

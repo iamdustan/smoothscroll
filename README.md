@@ -1,9 +1,22 @@
-smoothScrollTo.js
+smoothscroll.js
 =================
 
 Polyfill for
 * window.scrollTo(x, y, behavior);
 * element.scrollIntoView(toTop, behavior);
+
+Usage
+-----
+
+This depends upon requestAnimationFrame. As such you can use either
+dist/smoothscroll.js if you have a raf polyfill already included (or are
+supporting only raf-enabled browsers), or use dist/smoothscroll.raf.js
+to use a version bundled with a polyfill (batteries included version).
+
+The core size is:
+* 2070 bytes uncompressed source
+* 979 bytes minified
+* 243 bytes gzipped
 
 Browser Support
 ---------------
