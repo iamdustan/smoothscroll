@@ -83,7 +83,6 @@
     if (typeof toTop === 'undefined')
       toTop = true;
 
-
     if (toTop)
       return window.scrollTo(this.offsetLeft, this.offsetTop, behavior);
 

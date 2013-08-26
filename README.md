@@ -14,9 +14,9 @@ supporting only raf-enabled browsers), or use dist/smoothscroll.raf.js
 to use a version bundled with a polyfill (batteries included version).
 
 The core size is:
-* 2070 bytes uncompressed source
-* 979 bytes minified
-* 243 bytes gzipped
+* 2429 bytes of original hand-crafted source code.
+* 1170 bytes minified
+* 275 bytes gzipped (which is somehow only one byte larger than raf.js gzipped
 
 Browser Support
 ---------------
