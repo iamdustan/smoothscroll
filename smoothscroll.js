@@ -4,6 +4,7 @@
   if ('scrollBehavior' in document.documentElement.style) return;
 
   var originalScrollTo = window.scrollTo;
+  var originalScrollBy = window.scrollBy;
   var originalScrollIntoView = Element.prototype.scrollIntoView;
 
   function now() {

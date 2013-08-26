@@ -12,20 +12,24 @@
 
   <script src="dist/smoothscroll.raf.js"></script>
   <script>
-  document.addEventListener('DOMContentLoaded', function(e) {
-    setTimeout(function() {
-      window.scrollTo(0, 300, 'smooth');
-      setTimeout(function() {
-        document.getElementById('scrollIntoView').scrollIntoView(true, 'smooth');
-        setTimeout(function() {
-          window.scrollTo(0, 0, 'smooth');
-          setTimeout(function() {
-            document.getElementById('scrollIntoView').scrollIntoView(false, 'smooth');
-          }, 2000);
-        }, 2000);
-      }, 2000);
-    }, 2000);
-  }, false);
+  var T = 2000;
+  document.addEventListener('DOMContentLoaded', function(e) { setTimeout(function() {
+    window.scrollTo(0, 300, 'smooth');          setTimeout(function() {
+
+    document.getElementById('scrollIntoView')
+      .scrollIntoView(true, 'smooth');          setTimeout(function() {
+
+    window.scrollTo(0, 0, 'smooth');            setTimeout(function() {
+
+    document.getElementById('scrollIntoView')
+      .scrollIntoView(false, 'smooth');         setTimeout(function() {
+
+    window.scrollBy(0, 400, 'smooth');          setTimeout(function() {
+
+    window.scrollBy(0, -400, 'smooth');
+
+    }, T); }, T); }, T); }, T); }, T); }, T); }
+  , false);
   </script>
 </body>
 </html>
