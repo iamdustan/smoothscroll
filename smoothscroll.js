@@ -16,12 +16,8 @@
   }
 
   var startY, startX, endX, endY;
-  window.scrollTo = function(x, y, type) {
-    if (type !== 'smooth')
-      return originalScrollTo(x, y);
 
-    // TODO: make this intelligent based on distance. 300ms per scro
-    var SCROLL_TIME = 300;
+  function smoothScroll(x, y) {
     var frame;
     var sx = window.pageXOffset;
     var sy = window.pageYOffset;
@@ -57,7 +53,27 @@
     };
 
     frame = requestAnimationFrame(step);
+  }
+
+  // TODO: make this intelligent based on distance. 300ms per scro
+  var SCROLL_TIME = 300;
+
+  window.scroll = window.scrollTo = function(x, y, behavior) {
+    if (behavior !== 'smooth')
+      return originalScroll(x, y);
+    return smoothScroll(x, y);
   };
+
+  window.scrollBy = function(x, y, behavior) {
+    if (behavior !== 'smooth')
+      return originalScrollBy(x, y);
+
+    var sx = window.pageXOffset;
+    var sy = window.pageYOffset;
+
+    return smoothScroll(x + sx, y + sy);
+  };
+
 
   Element.prototype.scrollIntoView = function(toTop, behavior) {
     if (behavior !== 'smooth')
