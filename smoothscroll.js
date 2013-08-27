@@ -7,6 +7,10 @@
   var originalScrollBy = window.scrollBy;
   var originalScrollIntoView = Element.prototype.scrollIntoView;
 
+  // store generally accessible frame id in case a new scroll animation is triggered before the previous
+  // completes, we can cancel the previous scroll.
+  var frame;
+
   function now() {
     return window.performance !== undefined && window.performance.now !== undefined ? window.performance.now() : Date.now !== undefined ? Date.now() : new Date().getTime();
   }
@@ -19,7 +23,6 @@
   var startY, startX, endX, endY;
 
   function smoothScroll(x, y) {
-    var frame;
     var sx = window.pageXOffset;
     var sy = window.pageYOffset;
 
@@ -53,10 +56,11 @@
       frame = requestAnimationFrame(step);
     };
 
+    if (frame) cancelAnimationFrame(frame);
     frame = requestAnimationFrame(step);
   }
 
-  // TODO: make this intelligent based on distance. 300ms per scro
+  // TODO: make this intelligent based on distance. 300ms per scroll
   var SCROLL_TIME = 300;
 
   window.scroll = window.scrollTo = function(x, y, behavior) {
