@@ -10,22 +10,35 @@
   <h2>Eventually this will be scrolled to</h2>
   <p style='height: 500px'>Well, maybe I was lying.</p>
 
-  <script src="dist/smoothscroll.raf.js"></script>
+  <script src="smoothscroll.js"></script>
   <script>
   var T = 2000;
   document.addEventListener('DOMContentLoaded', function(e) { setTimeout(function() {
-    window.scrollTo(0, 300, 'smooth');          setTimeout(function() {
+    console.log('scrollTo 0, 300');
+    window.scrollTo(0, 300, 'smooth');
 
+    setTimeout(function() {
+      console.log('scrollTo 0, 600');
+      window.scrollTo(0, 1200, 'smooth');
+    }, 150);
+
+    setTimeout(function() {
+
+    console.log('#scrollIntoView toTop');
     document.getElementById('scrollIntoView')
       .scrollIntoView(true, 'smooth');          setTimeout(function() {
 
+    console.log('scrollTo 0, 0');
     window.scrollTo(0, 0, 'smooth');            setTimeout(function() {
 
+    console.log('#scrollIntoView toBottom');
     document.getElementById('scrollIntoView')
       .scrollIntoView(false, 'smooth');         setTimeout(function() {
 
+    console.log('scrollBy 0 400');
     window.scrollBy(0, 400, 'smooth');          setTimeout(function() {
 
+    console.log('scrollBy 0 -400');
     window.scrollBy(0, -400, 'smooth');
 
     }, T); }, T); }, T); }, T); }, T); }, T); }
