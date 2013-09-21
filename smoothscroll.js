@@ -3,6 +3,9 @@
 
   if ('scrollBehavior' in document.documentElement.style) return;
 
+  // TODO: make this intelligent based on distance. 300ms per scroll
+  var SCROLL_TIME = 300;
+
   var originalScrollTo = window.scrollTo;
   var originalScrollBy = window.scrollBy;
   var originalScrollIntoView = Element.prototype.scrollIntoView;
@@ -36,7 +39,6 @@
     var startTime = now();
 
     // TODO: look into polyfilling scroll-behavior: smooth css property
-    // var ey = element.offsetTop, ex = element.offsetLeft;
     var step = function() {
       var time = now();
       var elapsed = (time - startTime) / SCROLL_TIME;
@@ -59,9 +61,6 @@
     if (frame) cancelAnimationFrame(frame);
     frame = requestAnimationFrame(step);
   }
-
-  // TODO: make this intelligent based on distance. 300ms per scroll
-  var SCROLL_TIME = 300;
 
   window.scroll = window.scrollTo = function(x, y, behavior) {
     if (behavior !== 'smooth')

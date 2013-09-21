@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<style>
+body {
+  background: #efefef;
+}
+.overflow {
+  background: #fefefe;
+  box-shadow: inset 0 2px 2px #ddd;
+  margin: 1.5em auto;
+  overflow: auto;
+  padding: 1.5em;
+  height: 400px;
+  width: 70%;
+}
+
+</style>
+</head>
+<body>
+  <div class="overflow">
+    <h1>Quick and dirty scrollTo(x, y, 'smooth') testing</h1>
+    <p style='height: 500px'>For real. Really quick. Really dirty.</p>
+    <p id="scrollMeIn" style='height: 500px'>For real. Really quick. Really dirty.</p>
+  </div>
+
+  <script src="smoothscroll.js"></script>
+  <script>
+  var T = 2000;
+  document.addEventListener('DOMContentLoaded', function(e) {
+    setTimeout(function() {
+      console.log('Do the scroll');
+      document.getElementById('scrollMeIn').scrollIntoView(true, 'smooth');
+    }, 500);
+  }, false);
+  </script>
+</body>
+</html>
+
+
