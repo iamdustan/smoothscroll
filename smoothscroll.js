@@ -3,7 +3,7 @@
 
   if ('scrollBehavior' in document.documentElement.style) return;
 
-  // TODO: make this intelligent based on distance. 300ms per scroll
+  // TODO: make this intelligent according to distance.
   var SCROLL_TIME = 300;
 
   var originalScrollTo = window.scrollTo;
