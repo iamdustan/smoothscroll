@@ -14,6 +14,8 @@
   // completes, we can cancel the previous scroll.
   var frame;
 
+  var startY, startX, endX, endY;
+
   function now() {
     return window.performance !== undefined && window.performance.now !== undefined ? window.performance.now() : Date.now !== undefined ? Date.now() : new Date().getTime();
   }
@@ -22,8 +24,6 @@
   function ease(k) {
     return 0.5 * (1 - Math.cos(Math.PI * k));
   }
-
-  var startY, startX, endX, endY;
 
   function smoothScroll(x, y) {
     var sx = window.pageXOffset;
@@ -78,22 +78,72 @@
     return smoothScroll(x + sx, y + sy);
   };
 
+  var elementRects, scrollableParent;
+  function scrollElement(el, x, y) {
+    el.scrollTop = y;
+    el.scrollLeft = x;
+  }
+
+  function scroll(el, endCoords) {
+    var sx = el.scrollLeft;
+    var sy = el.scrollTop;
+
+    var x = endCoords.left;
+    var y = endCoords.top;
+
+    if (typeof startX === 'undefined') {
+      startX = sx;
+      startY = sy;
+      endX = endCoords.left;
+      endY = endCoords.top;
+    }
+
+    var startTime = now();
+
+    var step = function() {
+      var time = now();
+      var elapsed = (time - startTime) / SCROLL_TIME;
+      elapsed = elapsed > 1 ? 1 : elapsed;
+
+      var value = ease(elapsed);
+      var cx = sx + ( x - sx ) * value;
+      var cy = sy + ( y - sy ) * value;
+
+      scrollElement(el, cx, cy);
+
+      if (cx === endX && cy === endY) {
+        startX = startY = endX = endY = undefined;
+        return;
+      }
+
+      frame = requestAnimationFrame(step);
+    };
+
+    if (frame) cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(step);
+  }
+
+  function findScrollableParent(el) {
+    if (el.clientHeight < el.scrollHeight ||
+        el.clientWidth < el.scrollWidth)
+      return el;
+    return findScrollableParent(el.parentNode);
+  }
 
   Element.prototype.scrollIntoView = function(toTop, behavior) {
-    if (behavior !== 'smooth')
-      return originalScrollIntoView(toTop, behavior);
+    if (behavior !== 'smooth' || behavior.behavior !== 'smooth') return;
 
-    if (typeof toTop === 'undefined')
-      toTop = true;
+    scrollableParent = findScrollableParent(this);
+    var style = window.getComputedStyle(scrollableParent, null);
+    var paddingLeft = parseInt(style.getPropertyValue('padding-left'), 10);
+    var paddingTop = parseInt(style.getPropertyValue('padding-top'), 10);
 
-    if (toTop)
-      return window.scrollTo(this.offsetLeft, this.offsetTop, behavior);
+    elementRects = {
+      top: this.offsetTop - (paddingTop * 2),
+      left: this.offsetLeft - (paddingLeft * 2)
+    }
 
-    return window.scrollTo(
-      this.offsetLeft,
-      this.offsetTop - document.documentElement.clientHeight + this.clientHeight,
-      behavior
-    );
+    return scroll(scrollableParent, elementRects);
   };
 
 }());
