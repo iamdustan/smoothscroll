@@ -3,7 +3,7 @@
 <head>
 </head>
 <body>
-  <h1>Quick and dirty scrollTo(x, y, 'smooth') testing</h1>
+  <h1>Quick and dirty scrollTo(x, y, { behavior: 'smooth' }) testing</h1>
   <p style='height: 500px'>For real. Really quick. Really dirty.</p>
   <h2 id='scrollIntoView'>A second after pageload, you should be smoothly scrolled to my neighborhood</h2>
   <p style='height: 500px'>Welcome to the neighborhood.</p>
@@ -15,31 +15,31 @@
   var T = 2000;
   document.addEventListener('DOMContentLoaded', function(e) { setTimeout(function() {
     console.log('scrollTo 0, 300');
-    window.scrollTo(0, 300, 'smooth');
+    window.scrollTo(0, 300, { behavior: 'smooth' });
 
     setTimeout(function() {
       console.log('scrollTo 0, 600');
-      window.scrollTo(0, 1200, 'smooth');
+      window.scrollTo(0, 1200, { behavior: 'smooth' });
     }, 150);
 
     setTimeout(function() {
 
     console.log('#scrollIntoView toTop');
     document.getElementById('scrollIntoView')
-      .scrollIntoView(true, 'smooth');          setTimeout(function() {
+      .scrollIntoView(true, { behavior: 'smooth' });          setTimeout(function() {
 
     console.log('scrollTo 0, 0');
-    window.scrollTo(0, 0, 'smooth');            setTimeout(function() {
+    window.scrollTo(0, 0, { behavior: 'smooth' });            setTimeout(function() {
 
     console.log('#scrollIntoView toBottom');
     document.getElementById('scrollIntoView')
-      .scrollIntoView(false, 'smooth');         setTimeout(function() {
+      .scrollIntoView(false, { behavior: 'smooth' });         setTimeout(function() {
 
     console.log('scrollBy 0 400');
-    window.scrollBy(0, 400, 'smooth');          setTimeout(function() {
+    window.scrollBy(0, 400, { behavior: 'smooth' });          setTimeout(function() {
 
     console.log('scrollBy 0 -400');
-    window.scrollBy(0, -400, 'smooth');
+    window.scrollBy(0, -400, { behavior: 'smooth' });
 
     }, T); }, T); }, T); }, T); }, T); }, T); }
   , false);

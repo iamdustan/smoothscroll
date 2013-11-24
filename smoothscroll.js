@@ -62,14 +62,14 @@
     frame = requestAnimationFrame(step);
   }
 
-  window.scroll = window.scrollTo = function(x, y, behavior) {
-    if (behavior !== 'smooth')
+  window.scroll = window.scrollTo = function(x, y, scrollOptions) {
+    if (scrollOptions.behavior !== 'smooth')
       return originalScroll(x, y);
     return smoothScroll(x, y);
   };
 
-  window.scrollBy = function(x, y, behavior) {
-    if (behavior !== 'smooth')
+  window.scrollBy = function(x, y, scrollOptions) {
+    if (scrollOptions.behavior !== 'smooth')
       return originalScrollBy(x, y);
 
     var sx = window.pageXOffset;
@@ -130,8 +130,8 @@
     return findScrollableParent(el.parentNode);
   }
 
-  Element.prototype.scrollIntoView = function(toTop, behavior) {
-    if (behavior !== 'smooth' || behavior.behavior !== 'smooth') return;
+  Element.prototype.scrollIntoView = function(toTop, scrollOptions) {
+    if (scrollOptions.behavior !== 'smooth') return;
 
     scrollableParent = findScrollableParent(this);
     var style = window.getComputedStyle(scrollableParent, null);

@@ -30,7 +30,7 @@ body {
   document.addEventListener('DOMContentLoaded', function(e) {
     setTimeout(function() {
       console.log('Do the scroll');
-      document.getElementById('scrollMeIn').scrollIntoView(true, 'smooth');
+      document.getElementById('scrollMeIn').scrollIntoView(true, { behavior: 'smooth' });
     }, 500);
   }, false);
   </script>
