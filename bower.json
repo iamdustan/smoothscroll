@@ -2,6 +2,16 @@
   "name": "smoothscroll",
   "version": "0.0.2",
   "main": "dist/smoothscroll.js",
+  "authors": [
+    "Dustan Kasten <dustan.kasten@gmail.com>"
+  ],
+  "license": "https://github.com/iamdustan/smoothscroll/blob/master/LICENSE",
+  "keywords" [
+    "scroll",
+    "smooth",
+    "CSSOM",
+    "polyfill"
+  ],
   "ignore": [
     "**/.*",
     "node_modules",

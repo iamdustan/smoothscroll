@@ -11,6 +11,8 @@ Polyfill for
 Usage
 -----
 
+`bower install --save smoothscroll`
+
 This depends upon `requestAnimationFrame`. As such you can use either
 dist/smoothscroll.js if you have a raf polyfill already included (or are
 supporting only raf-enabled browsers), or use dist/smoothscroll.raf.js
