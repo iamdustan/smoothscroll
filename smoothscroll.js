@@ -64,7 +64,7 @@
 
   window.scroll = window.scrollTo = function(x, y, scrollOptions) {
     if (scrollOptions.behavior !== 'smooth')
-      return originalScroll(x, y);
+      return originalScrollTo(x, y);
     return smoothScroll(x, y);
   };
 
