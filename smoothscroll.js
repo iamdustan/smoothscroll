@@ -63,13 +63,13 @@
   }
 
   window.scroll = window.scrollTo = function(x, y, scrollOptions) {
-    if (scrollOptions.behavior !== 'smooth')
-      return originalScroll(x, y);
+    if (typeof(scrollOptions) === 'undefined' || scrollOptions.behavior !== 'smooth')
+      return originalScrollTo(x, y);
     return smoothScroll(x, y);
   };
 
   window.scrollBy = function(x, y, scrollOptions) {
-    if (scrollOptions.behavior !== 'smooth')
+    if (typeof(scrollOptions) === 'undefined' || scrollOptions.behavior !== 'smooth')
       return originalScrollBy(x, y);
 
     var sx = window.pageXOffset;
@@ -131,7 +131,7 @@
   }
 
   Element.prototype.scrollIntoView = function(toTop, scrollOptions) {
-    if (scrollOptions.behavior !== 'smooth') return;
+    if (typeof(scrollOptions) === 'undefined' || scrollOptions.behavior !== 'smooth') return;
 
     scrollableParent = findScrollableParent(this);
     var style = window.getComputedStyle(scrollableParent, null);
