@@ -8,7 +8,7 @@
 
   var originalScrollTo = window.scrollTo;
   var originalScrollBy = window.scrollBy;
-  var originalScroll = window.scroll;
+
   var originalScrollIntoView = Element.prototype.scrollIntoView;
 
   // store generally accessible frame id in case a new scroll animation is triggered before the previous
@@ -65,7 +65,7 @@
 
   window.scroll = window.scrollTo = function(x, y, scrollOptions) {
     if (typeof(scrollOptions) === 'undefined' || scrollOptions.behavior !== 'smooth')
-      return originalScroll(x, y);
+      return originalScrollTo(x, y);
     return smoothScroll(x, y);
   };
 
