@@ -8,7 +8,6 @@
 
   var originalScrollTo = window.scrollTo;
   var originalScrollBy = window.scrollBy;
-
   var originalScrollIntoView = Element.prototype.scrollIntoView;
 
   // store generally accessible frame id in case a new scroll animation is triggered before the previous
