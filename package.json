@@ -1,6 +1,6 @@
 {
   "name": "smoothscroll",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "author": "Dustan Kasten <dustan.kasten@gmail.com>",
   "devDependencies": {
     "matchdep": "~0.1.2",
