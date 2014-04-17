@@ -25,6 +25,10 @@
     return 0.5 * (1 - Math.cos(Math.PI * k));
   }
 
+  function shouldBailOut(x) {
+    return typeof x === 'undefined' || x.behavior !== 'smooth';
+  }
+
   function smoothScroll(x, y) {
     var sx = window.pageXOffset;
     var sy = window.pageYOffset;
@@ -63,13 +67,13 @@
   }
 
   window.scroll = window.scrollTo = function(x, y, scrollOptions) {
-    if (scrollOptions.behavior !== 'smooth')
-      return originalScroll(x, y);
+    if (shouldBailOut(scrollOptions))
+      return originalScrollTo(x, y);
     return smoothScroll(x, y);
   };
 
   window.scrollBy = function(x, y, scrollOptions) {
-    if (scrollOptions.behavior !== 'smooth')
+    if (shouldBailOut(scrollOptions))
       return originalScrollBy(x, y);
 
     var sx = window.pageXOffset;
@@ -130,8 +134,10 @@
     return findScrollableParent(el.parentNode);
   }
 
+  var origElementScrollIntoView = Element.prototype.scrollIntoView;
+
   Element.prototype.scrollIntoView = function(toTop, scrollOptions) {
-    if (scrollOptions.behavior !== 'smooth') return;
+    if (shouldBailOut(scrollOptions)) return origElementScrollIntoView.call(this, toTop);;
 
     scrollableParent = findScrollableParent(this);
     var style = window.getComputedStyle(scrollableParent, null);
