@@ -137,7 +137,7 @@
   var origElementScrollIntoView = Element.prototype.scrollIntoView;
 
   Element.prototype.scrollIntoView = function(toTop, scrollOptions) {
-    if (shouldBailOut(scrollOptions)) return origElementScrollIntoView.call(this, toTop);;
+    if (shouldBailOut(scrollOptions)) return origElementScrollIntoView.call(this, toTop);
 
     scrollableParent = findScrollableParent(this);
     var style = window.getComputedStyle(scrollableParent, null);
@@ -147,7 +147,7 @@
     elementRects = {
       top: this.offsetTop - (paddingTop * 2),
       left: this.offsetLeft - (paddingLeft * 2)
-    }
+    };
 
     return scroll(scrollableParent, elementRects);
   };
