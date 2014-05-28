@@ -1,6 +1,6 @@
 {
   "name": "smoothscroll",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "dist/smoothscroll.js",
   "authors": [
     "Dustan Kasten <dustan.kasten@gmail.com>"
