@@ -35,7 +35,3 @@ Standards documentation
 * http://dev.w3.org/csswg/cssom-view/#scroll-an-element-into-view
 * http://lists.w3.org/Archives/Public/www-style/2013Mar/0314.html
 
-In The Wild
------------
-
-* http://jeremenichelli.github.io/site/
