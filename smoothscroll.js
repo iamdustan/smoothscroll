@@ -11,7 +11,7 @@
   // return if scrollBehavior is supported
   if ('scrollBehavior' in doc.documentElement.style) return;
 
-  var SCROLL_TIME = 400,
+  var SCROLL_TIME = 768,
       // legacy scrolling methods
       originalScrollTo = w.scrollTo,
       originalScrollBy = w.scrollBy,
@@ -44,11 +44,11 @@
 
   /*
    * returns true if first argument is an options object and contains a smooth behavior
-   * @method bailOut
+   * @method shouldBailOut
    * @param {Number|Object} x
    * @returns {Boolean}
    */
-  function bailOut(x) {
+  function shouldBailOut(x) {
     if (typeof x !== 'object' || x.behavior === undefined || x.behavior === 'auto' ) {
       // first arg not an object, or behavior is auto or undefined
       return true;
@@ -56,7 +56,7 @@
       // first argument is an object and behavior is smooth
       return false;
     } else {
-      // behavior not supported
+      // behavior not supported, throw error as Firefox implementation 37.0.2
       throw new TypeError(x.behavior + ' is not a valid value for enumeration ScrollBehavior');
     }
   }
@@ -74,7 +74,7 @@
   }
 
   /*
-   * finds scrolalble parent of an element
+   * finds scrollable parent of an element
    * @method findScrollableParent
    * @params {Node} el
    */
@@ -145,7 +145,7 @@
    * @params {Node} el
    * @params {Object} endCoords
    */
-  function smoothScrollElement(el, endCoords) {
+  function scrollSmoothElement(el, endCoords) {
     var sx = el.scrollLeft,
         sy = el.scrollTop,
         x = endCoords.left,
@@ -193,7 +193,7 @@
   // ORIGINAL METHODS OVERRIDES
   // window.scroll and window.scrollTo
   w.scroll = w.scrollTo = function() {
-    if (bailOut(arguments[0])) {
+    if (shouldBailOut(arguments[0])) {
       // if first argument is an object with auto behavior send left and top coordenates
       return originalScrollTo.call(w, arguments[0].left || arguments[0], arguments[0].top || arguments[1]);
     } else {
@@ -203,7 +203,7 @@
 
   // window.scrollBy
   w.scrollBy = function() {
-    if (bailOut(arguments[0])) {
+    if (shouldBailOut(arguments[0])) {
       // if first argument is an object with auto behavior send left and top coordenates
       return originalScrollBy.call(w, arguments[0].left || arguments[0], arguments[0].top || arguments[1]);
     } else {
@@ -216,8 +216,8 @@
 
   // Element.scrollIntoView
   Element.prototype.scrollIntoView = function() {
-    if (bailOut(arguments[0])) {
-      return originalScrollIntoView.call(this, toTop);
+    if (shouldBailOut(arguments[0])) {
+      return originalScrollIntoView.call(this, arguments[0] || true);
     }
 
     var elementRects,
