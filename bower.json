@@ -1,6 +1,6 @@
 {
   "name": "smoothscroll",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "main": "dist/smoothscroll.js",
   "authors": [
     "Dustan Kasten <dustan.kasten@gmail.com>"
@@ -20,6 +20,6 @@
     "tests"
   ],
   "dependencies": {
-    "raf.js": "~0.0.3"
+    "raf.js": "~0.0.4"
   }
 }

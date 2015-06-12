@@ -2,11 +2,11 @@ smoothscroll.js
 =================
 
 Polyfill for
-* window.scroll(x, y, ScrollOptions);
-* window.scrollTo(x, y, ScrollOptions);
-* window.scrollBy(x, y, ScrollOptions);
+* window.scroll({left, top, behavior});
+* window.scrollTo({left, top, behavior});
+* window.scrollBy({left, top, behavior});
 
-* element.scrollIntoView(toTop, ScrollOptions); (incomplete)
+* element.scrollIntoView(ScrollOptions); (incomplete)
 
 Usage
 -----
@@ -32,6 +32,6 @@ This has been tested successfully in the following browsers:
 Standards documentation
 -----------------------
 
-* http://dev.w3.org/csswg/cssom-view/#scroll-an-element-into-view
+* http://dev.w3.org/csswg/cssom-view
 * http://lists.w3.org/Archives/Public/www-style/2013Mar/0314.html
 

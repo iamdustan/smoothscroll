@@ -15,31 +15,31 @@
   var T = 2000;
   document.addEventListener('DOMContentLoaded', function(e) { setTimeout(function() {
     console.log('scrollTo 0, 300');
-    window.scrollTo(0, 300, { behavior: 'smooth' });
+    window.scrollTo({left: 0, top: 300, behavior: 'smooth'});
 
     setTimeout(function() {
       console.log('scrollTo 0, 600');
-      window.scrollTo(0, 1200, { behavior: 'smooth' });
+      window.scrollTo({left: 0, top: 1200, behavior: 'smooth'});
     }, 150);
 
     setTimeout(function() {
 
     console.log('#scrollIntoView toTop');
     document.getElementById('scrollIntoView')
-      .scrollIntoView(true, { behavior: 'smooth' });          setTimeout(function() {
+      .scrollIntoView({top: true, behavior: 'smooth'});          setTimeout(function() {
 
     console.log('scrollTo 0, 0');
-    window.scrollTo(0, 0, { behavior: 'smooth' });            setTimeout(function() {
+    window.scrollTo({left: 0, top: 0, behavior: 'smooth'});            setTimeout(function() {
 
     console.log('#scrollIntoView toBottom');
     document.getElementById('scrollIntoView')
-      .scrollIntoView(false, { behavior: 'smooth' });         setTimeout(function() {
+      .scrollIntoView({top: false, behavior: 'smooth'});         setTimeout(function() {
 
     console.log('scrollBy 0 400');
-    window.scrollBy(0, 400, { behavior: 'smooth' });          setTimeout(function() {
+    window.scrollBy({left: 0, top: 400, behavior: 'smooth'});          setTimeout(function() {
 
     console.log('scrollBy 0 -400');
-    window.scrollBy(0, -400, { behavior: 'smooth' });
+    window.scrollBy({left: 0, top: -400, behavior: 'smooth'});
 
     }, T); }, T); }, T); }, T); }, T); }, T); }
   , false);
