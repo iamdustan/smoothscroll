@@ -1,12 +1,7 @@
 {
   "name": "smoothscroll",
   "version": "0.1.0",
-  "author": [
-    {
-      "name": "Dustan Kasten",
-      "email": "dustan.kasten@gmail.com"
-    }
-  ],
+  "author": "Dustan Kasten <dustan.kasten@gmail.com>",
   "contributors": [
     { "name" : "Jeremias Menichelli",
       "email" : "jmenichelli@gmail.com",
