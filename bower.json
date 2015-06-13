@@ -1,9 +1,19 @@
 {
   "name": "smoothscroll",
+  "description": "Polyfill for smooth scroll behavior",
   "version": "0.1.0",
   "main": "dist/smoothscroll.js",
-  "authors": [
-    "Dustan Kasten <dustan.kasten@gmail.com>"
+  "author": [
+    {
+      "name": "Dustan Kasten",
+      "email": "dustan.kasten@gmail.com"
+    }
+  ],
+  "contributors": [
+    { "name" : "Jeremias Menichelli",
+      "email" : "jmenichelli@gmail.com",
+      "url" : "http://jeremenichelli.github.com"
+    }
   ],
   "license": "https://github.com/iamdustan/smoothscroll/blob/master/LICENSE",
   "keywords": [

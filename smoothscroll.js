@@ -1,4 +1,4 @@
-(function (w, doc, undefined) {
+(function(w, doc, undefined) {
   'use strict';
 
   /*
@@ -9,7 +9,9 @@
    */
 
   // return if scrollBehavior is supported
-  if ('scrollBehavior' in doc.documentElement.style) return;
+  if ('scrollBehavior' in doc.documentElement.style) {
+    return;
+  }
 
   var SCROLL_TIME = 768,
       // legacy scrolling methods
@@ -49,7 +51,7 @@
    * @returns {Boolean}
    */
   function shouldBailOut(x) {
-    if (typeof x !== 'object' || x.behavior === undefined || x.behavior === 'auto' ) {
+    if (typeof x !== 'object' || x.behavior === undefined || x.behavior === 'auto') {
       // first arg not an object, or behavior is auto or undefined
       return true;
     } else if (x.behavior === 'smooth') {
@@ -124,8 +126,8 @@
       elapsed = elapsed > 1 ? 1 : elapsed;
 
       value = ease(elapsed);
-      cx = sx + ( x - sx ) * value;
-      cy = sy + ( y - sy ) * value;
+      cx = sx + (x - sx) * value;
+      cy = sy + (y - sy) * value;
 
       originalScrollTo(cx, cy);
 
@@ -175,8 +177,8 @@
       elapsed = elapsed > 1 ? 1 : elapsed;
 
       value = ease(elapsed);
-      cx = sx + ( x - sx ) * value;
-      cy = sy + ( y - sy ) * value;
+      cx = sx + (x - sx) * value;
+      cy = sy + (y - sy) * value;
 
       scrollElement(el, cx, cy);
 
@@ -220,16 +222,14 @@
       return originalScrollIntoView.call(this, arguments[0] || true);
     }
 
-    var elementRects,
-        scrollableParent = findScrollableParent(this),
+    var scrollableParent = findScrollableParent(this),
         style = w.getComputedStyle(scrollableParent, null),
         paddingLeft = parseInt(style.getPropertyValue('padding-left'), 10),
-        paddingTop = parseInt(style.getPropertyValue('padding-top'), 10);
-
-    elementRects = {
-      top: this.offsetTop - (paddingTop * 2),
-      left: this.offsetLeft - (paddingLeft * 2)
-    };
+        paddingTop = parseInt(style.getPropertyValue('padding-top'), 10),
+        elementRects = {
+          top: this.offsetTop - (paddingTop * 2),
+          left: this.offsetLeft - (paddingLeft * 2)
+        };
 
     return scrollSmoothElement(scrollableParent, elementRects);
   };
