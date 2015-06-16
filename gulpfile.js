@@ -2,10 +2,9 @@
   'use strict';
 
   var gulp = require('gulp'),
-      jscs = require('gulp-jscs'),
-      jshint = require('gulp-jshint'),
       uglify = require('gulp-uglify'),
       concat = require('gulp-concat'),
+      eslint = require('gulp-eslint'),
       project = require('./package.json');
 
   var paths = {
@@ -17,10 +16,15 @@
 
   gulp.task('lint', function() {
     return gulp.src(paths.src)
-      .pipe(jscs())
-      .pipe(jshint())
-      .pipe(jshint.reporter('jshint-stylish'))
-      .pipe(jshint.reporter('fail'));
+      // eslint() attaches the lint output to the eslint property 
+      // of the file object so it can be used by other modules. 
+      .pipe(eslint())
+      // eslint.format() outputs the lint results to the console. 
+      // Alternatively use eslint.formatEach() (see Docs). 
+      .pipe(eslint.format())
+      // To have the process exit with an error code (1) on 
+      // lint error, return the stream and pipe to failOnError last. 
+      .pipe(eslint.failOnError());
   });
 
   gulp.task('uglify', [ 'lint' ], function() {

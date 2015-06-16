@@ -5,7 +5,7 @@ Polyfill for
 * window.scrollTo({ left, top, behavior });
 * window.scrollBy({ left, top, behavior });
 
-* element.scrollIntoView(scrollOptions); (incomplete)
+* element.scrollIntoView(ScrollOptions); (incomplete)
 
 ## Use
 

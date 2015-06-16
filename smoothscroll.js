@@ -19,9 +19,7 @@
       originalScrollBy = w.scrollBy,
       originalScrollIntoView = w.Element.prototype.scrollIntoView,
       // global frame variable to avoid collision
-      frame,
-      // global metric variables
-      startY, startX, endX, endY;
+      frame;
 
   /*
    * returns actual time
@@ -29,9 +27,12 @@
    * @returns {Date}
    */
   function now() {
-    return w.performance !== undefined && w.performance.now !== undefined ?
-      // if performance object supported return now, if not fallback to date object
-      w.performance.now() : Date.now !== undefined ? Date.now() : new Date().getTime();
+    // if performance object supported return now, if not fallback to date object
+    if (w.performance !== undefined && w.performance.now !== undefined) {
+      return w.performance.now();
+    }
+
+    return Date.now();
   }
 
   /*
@@ -51,16 +52,15 @@
    * @returns {Boolean}
    */
   function shouldBailOut(x) {
-    if (typeof x !== 'object' || x.behavior === undefined || x.behavior === 'auto') {
+    if (typeof x !== 'object' || x.behavior === undefined || x.behavior === 'auto' || x.behavior === 'instant') {
       // first arg not an object, or behavior is auto or undefined
       return true;
     } else if (x.behavior === 'smooth') {
       // first argument is an object and behavior is smooth
       return false;
-    } else {
-      // behavior not supported, throw error as Firefox implementation 37.0.2
-      throw new TypeError(x.behavior + ' is not a valid value for enumeration ScrollBehavior');
     }
+    // behavior not supported, throw error as Firefox implementation 37.0.2
+    throw new TypeError(x.behavior + ' is not a valid value for enumeration ScrollBehavior');
   }
 
   /*
@@ -103,13 +103,6 @@
         sy = w.scrollY || w.pageYOffset,
         startTime = now();
 
-    if (startX === undefined) {
-      startX = sx;
-      startY = sy;
-      endX = x;
-      endY = y;
-    }
-
     // cancel frame is there is an scroll event happening
     if (frame) {
       w.cancelAnimationFrame(frame);
@@ -132,8 +125,9 @@
       originalScrollTo(cx, cy);
 
       // return if end points have been reached
-      if (cx === endX && cy === endY) {
-        startX = startY = endX = endY = undefined;
+      if (cx === x && cy === y) {
+        sx = sy = startTime = null;
+        w.cancelAnimationFrame(frame);
         return;
       }
 
@@ -153,13 +147,6 @@
         x = endCoords.left,
         y = endCoords.top,
         startTime = now();
-
-    if (startX === undefined) {
-      startX = sx;
-      startY = sy;
-      endX = endCoords.left;
-      endY = endCoords.top;
-    }
 
     // cancel frame is there is an scroll event happening
     if (frame) {
@@ -183,8 +170,9 @@
       scrollElement(el, cx, cy);
 
       // return if end points have been reached
-      if (cx === endX && cy === endY) {
-        startX = startY = endX = endY = undefined;
+      if (cx === x && cy === y) {
+        sx = sy = startTime = null;
+        w.cancelAnimationFrame(frame);
         return;
       }
 
@@ -198,9 +186,9 @@
     if (shouldBailOut(arguments[0])) {
       // if first argument is an object with auto behavior send left and top coordenates
       return originalScrollTo.call(w, arguments[0].left || arguments[0], arguments[0].top || arguments[1]);
-    } else {
-      return smoothScroll.call(w, ~~arguments[0].left, ~~arguments[0].top);
     }
+
+    return smoothScroll.call(w, ~~arguments[0].left, ~~arguments[0].top);
   };
 
   // window.scrollBy
@@ -208,12 +196,12 @@
     if (shouldBailOut(arguments[0])) {
       // if first argument is an object with auto behavior send left and top coordenates
       return originalScrollBy.call(w, arguments[0].left || arguments[0], arguments[0].top || arguments[1]);
-    } else {
-      var sx = w.scrollX || w.pageXOffset,
-          sy = w.scrollY || w.pageYOffset;
-
-      return smoothScroll(~~arguments[0].left + sx, ~~arguments[0].top + sy);
     }
+
+    var sx = w.scrollX || w.pageXOffset,
+        sy = w.scrollY || w.pageYOffset;
+
+    return smoothScroll(~~arguments[0].left + sx, ~~arguments[0].top + sy);
   };
 
   // Element.scrollIntoView
@@ -227,8 +215,8 @@
         paddingLeft = parseInt(style.getPropertyValue('padding-left'), 10),
         paddingTop = parseInt(style.getPropertyValue('padding-top'), 10),
         elementRects = {
-          top: this.offsetTop - (paddingTop * 2),
-          left: this.offsetLeft - (paddingLeft * 2)
+          top: this.offsetTop - paddingTop * 2,
+          left: this.offsetLeft - paddingLeft * 2
         };
 
     return scrollSmoothElement(scrollableParent, elementRects);
