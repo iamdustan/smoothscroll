@@ -26,6 +26,11 @@ This has been tested successfully in the following browsers:
 * Chrome
 * Opera Next
 
+Size
+----
+
+**787 bytes** minified and gzipped
+
 
 Standards documentation
 -----------------------
