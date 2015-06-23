@@ -29,7 +29,7 @@ gulp.task('build:unbundled', [ 'lint' ], function() {
     .pipe(gulp.dest(paths.output));
 });
 
-gulp.task('build:bundled', function() {
+gulp.task('build:bundled', [ 'lint' ], function() {
   return gulp.src([ paths.raf, paths.src ])
     .pipe(concat(project.name + '.raf.js'))
     .pipe(uglify())
