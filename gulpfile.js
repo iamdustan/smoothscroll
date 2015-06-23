@@ -23,20 +23,22 @@ gulp.task('lint', function() {
     .pipe(eslint.failOnError());
 });
 
-gulp.task('uglify', [ 'lint' ], function() {
+gulp.task('build:unbundled', [ 'lint' ], function() {
   return gulp.src(paths.src)
+    .pipe(uglify())
+    .pipe(gulp.dest(paths.output));
+});
+
+gulp.task('build:bundled', function() {
+  return gulp.src([ paths.raf, paths.src ])
+    .pipe(concat(project.name + '.raf.js'))
     .pipe(uglify())
     .pipe(gulp.dest(paths.output));
 });
 
 // build: generates uglified version
 // and add raf version file
-gulp.task('build', [ 'uglify' ], function() {
-  return gulp.src([ paths.raf, paths.src ])
-    .pipe(concat(project.name + '.raf.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest(paths.output));
-});
+gulp.task('build', [ 'build:bundled', 'build:unbundled' ]);
 
 // assign default gulp task
 gulp.task('default', [ 'build' ]);
