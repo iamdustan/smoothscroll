@@ -1,15 +1,13 @@
-smoothscroll.js
-=================
+# smoothscroll.js
 
 Polyfill for
-* window.scroll({left, top, behavior});
-* window.scrollTo({left, top, behavior});
-* window.scrollBy({left, top, behavior});
+* window.scroll({ left, top, behavior });
+* window.scrollTo({ left, top, behavior });
+* window.scrollBy({ left, top, behavior });
 
 * element.scrollIntoView(ScrollOptions); (incomplete)
 
-Usage
------
+## Use
 
 `bower install --save smoothscroll`
 
@@ -23,10 +21,15 @@ Browser Support
 
 This has been tested successfully in the following browsers:
 
-* Safari 6+ (desktop, haven't tested iOS)
-* FirefoxNightly
+* Safari 6+, iOS 6+
+* Firefox
 * Chrome
 * Opera Next
+
+Size
+----
+
+**787 bytes** minified and gzipped
 
 
 Standards documentation
@@ -34,4 +37,3 @@ Standards documentation
 
 * http://dev.w3.org/csswg/cssom-view
 * http://lists.w3.org/Archives/Public/www-style/2013Mar/0314.html
-
