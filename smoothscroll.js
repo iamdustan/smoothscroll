@@ -19,7 +19,8 @@
       originalScrollBy = w.scrollBy,
       originalScrollIntoView = w.Element.prototype.scrollIntoView,
       // global frame variable to avoid collision
-      frame;
+      scrollToFrame,
+      scrollIntoFrame;
 
   /*
    * returns actual time
@@ -104,11 +105,11 @@
         startTime = now();
 
     // cancel frame is there is an scroll event happening
-    if (frame) {
-      w.cancelAnimationFrame(frame);
+    if (scrollToFrame) {
+      w.cancelAnimationFrame(scrollToFrame);
     }
 
-    frame = w.requestAnimationFrame(step);
+    scrollToFrame = w.requestAnimationFrame(step);
 
     // scroll looping over a frame
     function step() {
@@ -127,11 +128,11 @@
       // return if end points have been reached
       if (cx === x && cy === y) {
         sx = sy = startTime = null;
-        w.cancelAnimationFrame(frame);
+        w.cancelAnimationFrame(scrollToFrame);
         return;
       }
 
-      frame = w.requestAnimationFrame(step);
+      scrollToFrame = w.requestAnimationFrame(step);
     }
   }
 
@@ -149,11 +150,11 @@
         startTime = now();
 
     // cancel frame is there is an scroll event happening
-    if (frame) {
-      w.cancelAnimationFrame(frame);
+    if (scrollIntoFrame) {
+      w.cancelAnimationFrame(scrollIntoFrame);
     }
 
-    frame = w.requestAnimationFrame(step);
+    scrollIntoFrame = w.requestAnimationFrame(step);
 
     // scroll looping over a frame
     function step() {
@@ -172,11 +173,11 @@
       // return if end points have been reached
       if (cx === x && cy === y) {
         sx = sy = startTime = null;
-        w.cancelAnimationFrame(frame);
+        w.cancelAnimationFrame(scrollIntoFrame);
         return;
       }
 
-      frame = w.requestAnimationFrame(step);
+      scrollIntoFrame = w.requestAnimationFrame(step);
     }
   }
 
@@ -219,6 +220,7 @@
           left: this.offsetLeft - paddingLeft * 2
         };
 
+    smoothScroll(elementRects.left, elementRects.top);
     return scrollSmoothElement(scrollableParent, elementRects);
   };
 
