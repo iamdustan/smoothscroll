@@ -142,6 +142,11 @@
    * @params {Object} endCoords
    */
   function scrollSmoothElement(el, endCoords) {
+    if (el === doc.documentElement || el === doc.body) {
+      smoothScroll(endCoords.left, endCoords.top);
+      return;
+    }
+
     var sx = el.scrollLeft,
         sy = el.scrollTop,
         x = endCoords.left,
