@@ -211,20 +211,27 @@
 
   // Element.scrollIntoView
   Element.prototype.scrollIntoView = function() {
+    var elementRects, paddingLeft, paddingTop, ret, scrollableParent, style;
+
     if (shouldBailOut(arguments[0])) {
       return originalScrollIntoView.call(this, arguments[0] || true);
     }
 
-    var scrollableParent = findScrollableParent(this),
-        style = w.getComputedStyle(scrollableParent, null),
-        paddingLeft = parseInt(style.getPropertyValue('padding-left'), 10),
-        paddingTop = parseInt(style.getPropertyValue('padding-top'), 10),
-        elementRects = {
-          top: this.offsetTop - paddingTop * 2,
-          left: this.offsetLeft - paddingLeft * 2
-        };
+    scrollableParent = findScrollableParent(this);
 
-    return scrollSmoothElement(scrollableParent, elementRects);
+    if (scrollableParent) {
+      style = w.getComputedStyle(scrollableParent, null);
+      paddingLeft = parseInt(style.getPropertyValue('padding-left'), 10);
+      paddingTop = parseInt(style.getPropertyValue('padding-top'), 10);
+      elementRects = {
+        top: this.offsetTop - paddingTop * 2,
+        left: this.offsetLeft - paddingLeft * 2
+      };
+
+      ret = scrollSmoothElement(scrollableParent, elementRects);
+    }
+
+    return ret;
   };
 
 }(window, document));
