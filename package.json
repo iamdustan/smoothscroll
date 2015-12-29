@@ -1,6 +1,6 @@
 {
-  "name": "smoothscroll",
-  "version": "0.1.0",
+  "name": "smoothscroll-polyfill",
+  "version": "0.2.1",
   "authors": [
     {
       "name": "Dustan Kasten",
@@ -20,7 +20,7 @@
     "gulp-uglify": "^1.2.0"
   },
   "description": "Polyfill for smooth scroll behavior",
-  "main": "dist/smoothscroll.js",
+  "main": "smoothscroll.js",
   "scripts": {
     "test": "gulp lint"
   },
