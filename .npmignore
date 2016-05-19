@@ -1,0 +1,11 @@
+
+/node_modules
+/bower_components
+
+/dist
+/*.html
+
+/gulpfile.js
+/_travis.yml
+/bower.json
+/.eslintrc
