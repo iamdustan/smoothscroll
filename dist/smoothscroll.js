@@ -1,1 +1,285 @@
-!function(e,t,n){"use strict";function r(){return e.performance!==n&&e.performance.now!==n?e.performance.now():Date.now()}function o(e){return.5*(1-Math.cos(Math.PI*e))}function a(e){if("object"!=typeof e||e.behavior===n||"auto"===e.behavior||"instant"===e.behavior)return!0;if("smooth"===e.behavior)return!1;throw new TypeError(e.behavior+" is not a valid value for enumeration ScrollBehavior")}function l(e,t,n){e.scrollTop=n,e.scrollLeft=t}function i(e){return e.clientHeight<e.scrollHeight||e.clientWidth<e.scrollWidth?e:e.parentNode.parentNode?i(e.parentNode):void 0}function u(t,n){function a(){var s,p,g,d=r(),v=(d-u)/f;return v=v>1?1:v,s=o(v),p=l+(t-l)*s,g=i+(n-i)*s,m(p,g),p===t&&g===n?(l=i=u=null,void e.cancelAnimationFrame(c)):void(c=e.requestAnimationFrame(a))}var l=e.scrollX||e.pageXOffset,i=e.scrollY||e.pageYOffset,u=r();c&&e.cancelAnimationFrame(c),c=e.requestAnimationFrame(a)}function s(n,a){function i(){var t,a,u,v=r(),h=(v-d)/f;return h=h>1?1:h,t=o(h),a=s+(p-s)*t,u=m+(g-m)*t,l(n,a,u),a===p&&u===g?(s=m=d=null,void e.cancelAnimationFrame(c)):void(c=e.requestAnimationFrame(i))}if(n===t.documentElement||n===t.body)return void u(a.left,a.top);var s=n.scrollLeft,m=n.scrollTop,p=a.left,g=a.top,d=r();c&&e.cancelAnimationFrame(c),c=e.requestAnimationFrame(i)}if(!("scrollBehavior"in t.documentElement.style)){var c,f=768,m=e.scrollTo,p=e.scrollBy,g=e.Element.prototype.scrollIntoView;e.scroll=e.scrollTo=function(){return a(arguments[0])?m.call(e,arguments[0].left||arguments[0],arguments[0].top||arguments[1]):u.call(e,~~arguments[0].left,~~arguments[0].top)},e.scrollBy=function(){if(a(arguments[0]))return p.call(e,arguments[0].left||arguments[0],arguments[0].top||arguments[1]);var t=e.scrollX||e.pageXOffset,n=e.scrollY||e.pageYOffset;return u(~~arguments[0].left+t,~~arguments[0].top+n)},Element.prototype.scrollIntoView=function(){var t,n,r,o,l,u;return a(arguments[0])?g.call(this,arguments[0]||!0):(l=i(this),l&&(u=e.getComputedStyle(l,null),n=parseInt(u.getPropertyValue("padding-left"),10),r=parseInt(u.getPropertyValue("padding-top"),10),t={top:this.offsetTop-2*r,left:this.offsetLeft-2*n},o=s(l,t)),o)}}}(window,document);
+/*
+ * smoothscroll polyfill - v0.3.0
+ * https://iamdustan.github.io/smoothscroll
+ * 2016 (c) Dustan Kasten, Jeremias Menichelli - MIT License
+ */
+
+(function(WIN, DOC, undefined) {
+  'use strict';
+
+  /*
+   * aliases
+   * WIN: window global object
+   * DOC: document
+   * undefined: undefined
+   */
+
+  // polyfill
+  function polyfill() {
+    // return when scrollBehavior interface is supported
+    if ('scrollBehavior' in DOC.documentElement.style) {
+      return;
+    }
+
+    /*
+     * globals
+     */
+    var Element = WIN.HTMLElement || WIN.Element;
+    var SCROLL_TIME = 468;
+
+    /*
+     * object gathering original scroll methods
+     */
+    var original = {
+      scroll: WIN.scroll || WIN.scrollTo,
+      scrollBy: WIN.scrollBy,
+      scrollIntoView: Element.prototype.scrollIntoView
+    };
+
+    /**
+     * changes scroll position inside an element
+     * @method scrollElement
+     * @param {Number} x
+     * @param {Number} y
+     */
+    function scrollElement(x, y) {
+      this.scrollLeft = x;
+      this.scrollTop = y;
+    }
+
+    /**
+     * get actual time in milliseconds
+     * @method now
+     * @returns {Number}
+     */
+    function now() {
+      // use performance when supported or fallback to date object
+      if (WIN.performance !== undefined && WIN.performance.now !== undefined) {
+        return WIN.performance.now();
+      }
+
+      return Date.now();
+    }
+
+    /**
+     * returns result of applying ease math function to a number
+     * @method ease
+     * @param {Number} k
+     * @returns {Number}
+     */
+    function ease(k) {
+      return 0.5 * (1 - Math.cos(Math.PI * k));
+    }
+
+    /**
+     * indicates if a smooth behavior should be applied
+     * @method shouldBailOut
+     * @param {Number|Object} x
+     * @returns {Boolean}
+     */
+    function shouldBailOut(x) {
+      if (typeof x !== 'object'
+            || x.behavior === undefined
+            || x.behavior === 'auto'
+            || x.behavior === 'instant') {
+        // first arg not an object, or behavior is auto, instant or undefined
+        return true;
+      }
+
+      if (typeof x === 'object'
+            && x.behavior === 'smooth') {
+        // first argument is an object and behavior is smooth
+        return false;
+      }
+
+      // throw error when behavior is not supported
+      throw new TypeError('behavior not valid');
+    }
+
+    /**
+     * finds scrollable parent of an element
+     * @method findScrollableParent
+     * @param {Node} el
+     * @returns {Node} el
+     */
+    function findScrollableParent(el) {
+      do {
+        el = el.parentNode;
+      } while (el !== DOC.body
+              && !(el.clientHeight < el.scrollHeight
+              || el.clientWidth < el.scrollWidth));
+
+      return el;
+    }
+
+    /**
+     * self invoked function that, given a context, steps through scrolling
+     * @method step
+     * @param {Object} context
+     */
+    function step(context) {
+      // call method again on next available frame
+      context.frame = WIN.requestAnimationFrame(step.bind(WIN, context));
+
+      var time = now();
+      var value;
+      var currentX;
+      var currentY;
+      var elapsed = (time - context.startTime) / SCROLL_TIME;
+
+      // avoid elapsed times higher than one
+      elapsed = elapsed > 1 ? 1 : elapsed;
+
+      // apply easing to elapsed time
+      value = ease(elapsed);
+
+      currentX = context.startX + (context.x - context.startX) * value;
+      currentY = context.startY + (context.y - context.startY) * value;
+
+      context.method.call(context.scrollable, currentX, currentY);
+
+      // return when end points have been reached
+      if (currentX === context.x && currentY === context.y) {
+        WIN.cancelAnimationFrame(context.frame);
+        return;
+      }
+    }
+
+    /**
+     * scrolls window with a smooth behavior
+     * @method smoothScroll
+     * @param {Object|Node} el
+     * @param {Number} x
+     * @param {Number} y
+     */
+    function smoothScroll(el, x, y) {
+      var scrollable;
+      var startX;
+      var startY;
+      var method;
+      var startTime = now();
+      var frame;
+
+      // define scroll context
+      if (el === DOC.body) {
+        scrollable = WIN;
+        startX = WIN.scrollX || WIN.pageXOffset;
+        startY = WIN.scrollY || WIN.pageYOffset;
+        method = original.scroll;
+      } else {
+        scrollable = el;
+        startX = el.scrollLeft;
+        startY = el.scrollTop;
+        method = scrollElement;
+      }
+
+      // cancel frame when a scroll event's happening
+      if (frame) {
+        WIN.cancelAnimationFrame(frame);
+      }
+
+      // scroll looping over a frame
+      step({
+        scrollable: scrollable,
+        method: method,
+        startTime: startTime,
+        startX: startX,
+        startY: startY,
+        x: x,
+        y: y,
+        frame: frame
+      });
+    }
+
+    /*
+     * ORIGINAL METHODS OVERRIDES
+     */
+
+    // WIN.scroll and WIN.scrollTo
+    WIN.scroll = WIN.scrollTo = function() {
+      // avoid smooth behavior if not required
+      if (shouldBailOut(arguments[0])) {
+        original.scroll.call(
+          WIN,
+          arguments[0].left || arguments[0],
+          arguments[0].top || arguments[1]
+        );
+        return;
+      }
+
+      // LET THE SMOOTHNESS BEGIN!
+      smoothScroll.call(
+        WIN,
+        DOC.body,
+        ~~arguments[0].left,
+        ~~arguments[0].top
+      );
+    };
+
+    // WIN.scrollBy
+    WIN.scrollBy = function() {
+      // avoid smooth behavior if not required
+      if (shouldBailOut(arguments[0])) {
+        original.scrollBy.call(
+          WIN,
+          arguments[0].left || arguments[0],
+          arguments[0].top || arguments[1]
+        );
+        return;
+      }
+
+      // LET THE SMOOTHNESS BEGIN!
+      smoothScroll.call(
+        WIN,
+        DOC.body,
+        ~~arguments[0].left + (WIN.scrollX || WIN.pageXOffset),
+        ~~arguments[0].top + (WIN.scrollY || WIN.pageYOffset)
+      );
+    };
+
+    // Element.prototype.scrollIntoView
+    Element.prototype.scrollIntoView = function() {
+      // avoid smooth behavior if not required
+      if (shouldBailOut(arguments[0])) {
+        original.scrollIntoView.call(this, arguments[0] || true);
+        return;
+      }
+
+      // LET THE SMOOTHNESS BEGIN!
+      var scrollableParent = findScrollableParent(this);
+      var parentRects = scrollableParent.getBoundingClientRect();
+      var clientRects = this.getBoundingClientRect();
+
+      if (scrollableParent !== DOC.body) {
+        // reveal element inside parent
+        smoothScroll.call(
+          this,
+          scrollableParent,
+          scrollableParent.scrollLeft + clientRects.left - parentRects.left,
+          scrollableParent.scrollTop + clientRects.top - parentRects.top
+        );
+        // reveal parent in viewport
+        WIN.scrollBy({
+          left: parentRects.left,
+          top: parentRects.top,
+          behavior: 'smooth'
+        });
+      } else {
+        // reveal element in viewport
+        WIN.scrollBy({
+          left: clientRects.left,
+          top: clientRects.top,
+          behavior: 'smooth'
+        });
+      }
+    };
+  }
+
+  if (typeof exports === 'object') {
+    // commonjs
+    exports.smoothscroll = { polyfill: polyfill };
+  } else {
+    // global
+    polyfill();
+  }
+})(window, document);

@@ -12,8 +12,9 @@ var paths = {
 var banner = '/*' +
   '\n * ' + project.title + ' polyfill - v' + project.version +
   '\n * ' + project.homepage +
-  '\n * ' + project.copyright + ' (c) ' + project.author + ', ' + project.contributors[0] + ' - ' + project.license + ' License' +
-  '\n*/\n\n';
+  '\n * ' + project.copyright + ' (c) ' + project.author.name + ', ' + project.contributors[0].name +
+    ' - ' + project.license + ' License' +
+  '\n */\n\n';
 
 // lint task
 gulp.task('lint', function() {

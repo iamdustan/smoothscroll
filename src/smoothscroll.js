@@ -8,72 +8,70 @@
    * undefined: undefined
    */
 
-   // polyfill
-   function polyfill() {
-     // return when scrollBehavior interface is supported
-     if ('scrollBehavior' in DOC.documentElement.style) {
-       return;
-     }
+  // polyfill
+  function polyfill() {
+    // return when scrollBehavior interface is supported
+    if ('scrollBehavior' in DOC.documentElement.style) {
+      return;
+    }
 
-     /*
+    /*
      * globals
      */
-     var Element = WIN.HTMLElement || WIN.Element;
-     var SCROLL_TIME = 468;
-     var frame;
+    var Element = WIN.HTMLElement || WIN.Element;
+    var SCROLL_TIME = 468;
 
-     /*
+    /*
      * object gathering original scroll methods
      */
-     var original = {
+    var original = {
       scroll: WIN.scroll || WIN.scrollTo,
       scrollBy: WIN.scrollBy,
       scrollIntoView: Element.prototype.scrollIntoView
-     };
+    };
 
-     /**
+    /**
      * changes scroll position inside an element
      * @method scrollElement
-     * @param {Node} el
      * @param {Number} x
      * @param {Number} y
      */
-     function scrollElement(x, y) {
-      this.scrollTop = y;
+    function scrollElement(x, y) {
       this.scrollLeft = x;
-     }
+      this.scrollTop = y;
+    }
 
-     /**
+    /**
      * get actual time in milliseconds
      * @method now
      * @returns {Number}
      */
-     function now() {
+    function now() {
       // use performance when supported or fallback to date object
       if (WIN.performance !== undefined && WIN.performance.now !== undefined) {
         return WIN.performance.now();
       }
 
       return Date.now();
-     }
+    }
 
-     /**
+    /**
      * returns result of applying ease math function to a number
      * @method ease
      * @param {Number} k
      * @returns {Number}
      */
-     function ease(k) {
-      return .5 * (1 - Math.cos(Math.PI * k));
-     }
+    function ease(k) {
+      return 0.5 * (1 - Math.cos(Math.PI * k));
+    }
 
-     /**
+    /**
      * indicates if a smooth behavior should be applied
      * @method shouldBailOut
      * @param {Number|Object} x
      * @returns {Boolean}
      */
-     function shouldBailOut(x) {
+    function shouldBailOut(x) {
       if (typeof x !== 'object'
             || x.behavior === undefined
             || x.behavior === 'auto'
@@ -90,29 +88,30 @@
 
       // throw error when behavior is not supported
       throw new TypeError('behavior not valid');
-     }
+    }
 
-     /**
+    /**
      * finds scrollable parent of an element
      * @method findScrollableParent
      * @param {Node} el
+     * @returns {Node} el
      */
-     function findScrollableParent(el) {
+    function findScrollableParent(el) {
       do {
         el = el.parentNode;
       } while (el !== DOC.body
               && !(el.clientHeight < el.scrollHeight
-              || el.clientWidth < el.scrollWidth))
+              || el.clientWidth < el.scrollWidth));
 
       return el;
-     }
+    }
 
-     /**
+    /**
      * self invoked function that, given a context, steps through scrolling
      * @method step
      * @param {Object} context
      */
-     function step(context) {
+    function step(context) {
       // call method again on next available frame
       context.frame = WIN.requestAnimationFrame(step.bind(WIN, context));
 
@@ -138,16 +137,16 @@
         WIN.cancelAnimationFrame(context.frame);
         return;
       }
-     }
+    }
 
-     /**
+    /**
      * scrolls window with a smooth behavior
      * @method smoothScroll
      * @param {Object|Node} el
      * @param {Number} x
      * @param {Number} y
      */
-     function smoothScroll(el, x, y) {
+    function smoothScroll(el, x, y) {
       var scrollable;
       var startX;
       var startY;
@@ -184,14 +183,14 @@
         y: y,
         frame: frame
       });
-     }
+    }
 
-     /*
+    /*
      * ORIGINAL METHODS OVERRIDES
      */
 
-     // WIN.scroll and WIN.scrollTo
-     WIN.scroll = WIN.scrollTo = function() {
+    // WIN.scroll and WIN.scrollTo
+    WIN.scroll = WIN.scrollTo = function() {
       // avoid smooth behavior if not required
       if (shouldBailOut(arguments[0])) {
         original.scroll.call(
@@ -209,10 +208,10 @@
         ~~arguments[0].left,
         ~~arguments[0].top
       );
-     };
+    };
 
-     // WIN.scrollBy
-     WIN.scrollBy = function() {
+    // WIN.scrollBy
+    WIN.scrollBy = function() {
       // avoid smooth behavior if not required
       if (shouldBailOut(arguments[0])) {
         original.scrollBy.call(
@@ -230,10 +229,10 @@
         ~~arguments[0].left + (WIN.scrollX || WIN.pageXOffset),
         ~~arguments[0].top + (WIN.scrollY || WIN.pageYOffset)
       );
-     };
+    };
 
-     // Element.prototype.scrollIntoView
-     Element.prototype.scrollIntoView = function() {
+    // Element.prototype.scrollIntoView
+    Element.prototype.scrollIntoView = function() {
       // avoid smooth behavior if not required
       if (shouldBailOut(arguments[0])) {
         original.scrollIntoView.call(this, arguments[0] || true);
@@ -267,15 +266,14 @@
           behavior: 'smooth'
         });
       }
-     };
-   }
+    };
+  }
 
   if (typeof exports === 'object') {
     // commonjs
     exports.smoothscroll = { polyfill: polyfill };
-  }
-  else {
+  } else {
     // global
     polyfill();
   }
-}(window, document));
+})(window, document);
