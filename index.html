@@ -64,10 +64,12 @@
       margin: 0 auto;
       max-width: 800px;
       padding: 40px;
+      overflow: hidden;
       position: relative;
     }
 
     a {
+      color: #f44336;
       text-decoration: none;
     }
 
@@ -80,13 +82,13 @@
       color: #fefefe;
     }
 
-    .featured a {
-      color: inherit;
-      display: inline-block;
+    .featured {
+      background-color: #efefef;
     }
 
-    .featured a + a {
-      margin-left: 45px;
+    .featured__link {
+      display: inline-block;
+      margin-right: 45px;
     }
 
     h1 {
@@ -117,10 +119,6 @@
 
     pre code {
       font-size: 14px;
-    }
-
-    .sample + .sample {
-      margin-top: 60px;
     }
 
     .actions {
@@ -157,11 +155,13 @@
     }
 
     footer {
-      background-color: #efefef;
+      background-color: #404040;
+      color: #fefefe;
+      font-size: 18px;
     }
 
     footer a {
-      color: #f44336;
+      color: inherit;
     }
   </style>
 </head>
@@ -173,9 +173,9 @@
     </div>
   </header>
 
-  <main>
+  <main class="featured">
     <div class="container">
-      <p>As an extension of the <code>Window</code> interface, <code>Scroll Behavior</code> specification has been introduced to allow the developer wants to scroll to certain part of a site progressively.</p>
+      <p>As an extension of the <strong>Window</strong> interface, <strong>Scroll Behavior</strong> specification has been introduced to allow the developer wants to scroll to certain part of a site progressively.</p>
       <p>Check the repository on <a href="https://github.com/iamdustan/smoothscroll">GitHub</a> or download the polyfill as an <a href="https://npmjs.org/smoothscroll-polyfill">npm module</a>.</p>
     </div>
   </main>
@@ -253,10 +253,10 @@
 
   <section class="featured">
     <div class="container">
-      <a href="https://github.com/iamdustan/smoothscroll">Polyfill on <strong>GitHub</strong></a>
-      <a href="https://github.com/iamdustan/smoothscroll-polyfill">Polyfill on <strong>npm</strong></a>
-      <a href="https://drafts.csswg.org/cssom-view/#extensions-to-the-window-interface">Draft on <strong>W3C</strong></a>
-      <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior">Documentation on <strong>MDN</strong></a>
+      <a class="featured__link" href="https://github.com/iamdustan/smoothscroll">Polyfill on <strong>GitHub</strong></a>
+      <a class="featured__link" href="https://github.com/iamdustan/smoothscroll-polyfill">Polyfill on <strong>npm</strong></a>
+      <a class="featured__link" href="https://drafts.csswg.org/cssom-view/#extensions-to-the-window-interface">Draft on <strong>W3C</strong></a>
+      <a class="featured__link" href="https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior">Documentation on <strong>MDN</strong></a>
     </div>
   </section>
 
