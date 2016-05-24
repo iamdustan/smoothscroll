@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>smooth scroll polyfill</title>
+
+  <meta name="viewport" content="width=device-width">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- rAF polyfill -->
+  <script>
+  // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+  // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+
+  // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
+
+  // MIT license
+
+  (function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
+                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+  }());
+  </script>
+
+  <!-- smooth scroll behavior polyfill -->
+  <script src="smoothscroll.js"></script>
+
+  <!-- site styles -->
+  <style>
+    body {
+      background-color: #fefefe;
+      color: #212121;
+      font-family: 'Roboto Condensed', Arial, sans-serif;
+      font-size: 20px;
+
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container {
+      margin: 0 auto;
+      max-width: 800px;
+      padding: 40px;
+      position: relative;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      background-color: #f44336;
+      color: #fefefe;
+    }
+
+    .featured a {
+      color: inherit;
+      display: inline-block;
+    }
+
+    .featured a + a {
+      margin-left: 45px;
+    }
+
+    h1 {
+      font-size: 2.75em;
+      font-weight: 400;
+      letter-spacing: -.03em;
+      line-height: 1em;
+    }
+
+    p {
+      line-height: 1.5em;
+    }
+
+    small {
+      font-weight: 400;
+    }
+
+    code {
+      font-family: Menlo, monospace;
+      font-size: 15px;
+      vertical-align: middle;
+    }
+
+    pre {
+      overflow: auto;
+      width: 100%;
+    }
+
+    pre code {
+      font-size: 14px;
+    }
+
+    .sample + .sample {
+      margin-top: 60px;
+    }
+
+    .actions {
+      margin-top: 30px;
+    }
+
+    .btn {
+      background-color: #f44336;
+      border-width: 0;
+      border-radius: 4px;
+      color: #fefefe;
+      cursor: pointer;
+      font-weight: 700;
+      padding: 6px 12px;
+      text-transform: uppercase;
+      transition: all .35s ease;
+    }
+
+    .btn:active {
+      background-color: #d32f2f;
+    }
+
+    .scrollable-parent {
+      background-color: #efefef;
+      border-radius: 4px;
+      margin: 20px 0 0;
+      max-height: 200px;
+      overflow: scroll;
+      padding: 30px 50px;
+    }
+
+    .hello {
+      text-align: center;
+    }
+
+    footer {
+      background-color: #efefef;
+    }
+
+    footer a {
+      color: #f44336;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>smooth scroll polyfill</h1>
+
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <p>As an extension of the <code>Window</code> interface, <code>Scroll Behavior</code> specification has been introduced to allow the developer wants to scroll to certain part of a site progressively.</p>
+      <p>Check the repository on <a href="https://github.com/iamdustan/smoothscroll">GitHub</a> or download the polyfill as an <a href="https://npmjs.org/smoothscroll-polyfill">npm module</a>.</p>
+    </div>
+  </main>
+
+  <section class="sample sample-scrollToBottom">
+    <div class="container">
+      <h2>window.scroll <small>or</small> window.scrollTo</h2>
+<pre><code>window.scroll({ top: 2500, left: 0, behavior: 'smooth' });</code></pre>
+      <div class="actions">
+        <button class="btn js-scroll-to-bottom">scroll to bottom</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="sample sample-scrollBy">
+    <div class="container">
+      <h2>window.scrollBy</h2>
+<pre><code>window.scrollBy({ top: 100, left: 0, behavior: 'smooth' });</code></pre>
+      <div class="actions">
+        <button class="btn js-scroll-by">scroll by 100 pixels</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="sample sample-scrollBack">
+    <div class="container">
+      <h2>window.scrollBy</h2>
+<pre><code>window.scrollBy({ top: -100, left: 0, behavior: 'smooth' });</code></pre>
+      <div class="actions">
+        <button class="btn js-scroll-back">scroll back 100 pixels</button>
+      </div>
+    </div>
+  </section>
+
+  <section class=" sample sample--scrollIntoView">
+    <div class="container">
+      <h2>element.scrollIntoView</h2>
+<pre><code>document.querySelector('.hello').scrollIntoView({ behavior: 'smooth' });</code></pre>
+      <div class="actions">
+        <button class="btn js-scroll-into-hello">Scroll into view</button>
+      </div>
+      <article class="scrollable-parent">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+        <h3 class="hello"><em>hello!</em></h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sample sample-scrollToTop">
+    <div class="container">
+      <h2>Scroll to top</h2>
+<pre><code>window.scroll({ top: 0, left: 0, behavior: 'smooth' });</code></pre>
+      <p><strong>or</strong></p>
+<pre><code>document.querySelector('header').scrollIntoView({ behavior: 'smooth' });</code></pre>
+      <div class="actions">
+        <button class="btn js-scroll-to-top">scroll to top</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container"></div>
+  </section>
+
+  <section class="featured">
+    <div class="container">
+      <a href="https://github.com/iamdustan/smoothscroll">Polyfill on <strong>GitHub</strong></a>
+      <a href="https://github.com/iamdustan/smoothscroll-polyfill">Polyfill on <strong>npm</strong></a>
+      <a href="https://drafts.csswg.org/cssom-view/#extensions-to-the-window-interface">Draft on <strong>W3C</strong></a>
+      <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior">Documentation on <strong>MDN</strong></a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>Polyfill written by <a href="https://twitter.com/iamdustan">Dustan Kasten</a> and <a href="https://twitter.com/jeremenichelli">Jeremias Menichelli</a></p>
+      <p>All rights reserved &copy; <a href="https://iamdustan.github.io/smoothscroll">https://iamdustan.github.io/smoothscroll</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // add event listener on load
+    window.addEventListener('load', function() {
+
+      // scroll to bottom
+      document.querySelector('.js-scroll-to-bottom').addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({ top: document.body.clientHeight - window.innerHeight, left: 0, behavior: 'smooth' });
+      });
+
+      // scroll to top
+      document.querySelector('.js-scroll-to-top').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector('header').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      // scroll by
+      document.querySelector('.js-scroll-by').addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollBy({ top: 100, left: 0, behavior: 'smooth' });
+      });
+
+      // scroll back
+      document.querySelector('.js-scroll-back').addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollBy({ top: -100, left: 0, behavior: 'smooth' });
+      });
+
+      // scroll into view
+      document.querySelector('.js-scroll-into-hello').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector('.hello').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>
