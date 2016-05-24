@@ -1,0 +1,27 @@
+{
+  "name": "smoothscroll",
+  "description": "Polyfill for smooth scroll behavior",
+  "main": "dist/smoothscroll.js",
+  "authors": [
+    "Dustan Kasten",
+    "Jeremias Menichelli"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "smooth",
+    "scroll",
+    "CSSOM",
+    "polyfill"
+  ],
+  "homepage": "https://iamdustan.github.io/smoothscroll",
+  "ignore": [
+    "**/.*",
+    "src",
+    "node_modules",
+    "bower_components",
+    "index.html",
+    "gulpfile.js",
+    "test",
+    "tests"
+  ]
+}
