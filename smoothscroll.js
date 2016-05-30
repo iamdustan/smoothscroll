@@ -76,20 +76,35 @@
   }
 
   /*
+   * checks if element can scroll. 
+   * NOTE: 5 px buffer added because scrollHeight = clientHeight + padding.
+   * MDN: "It includes the element padding but not its margin."
+   * https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight
+   * Too much overhead to check for padding? => Change the "5" to whatever padding you're using.
+   * @method findScrollableParent
+   * @params {Node} el
+   */
+  function isScrollable(el){
+    return (el.clientHeight + 5 < el.scrollHeight ||
+    el.clientWidth + 5 < el.scrollWidth);
+  }
+
+  /*
    * finds scrollable parent of an element
    * @method findScrollableParent
    * @params {Node} el
    */
   function findScrollableParent(el) {
-    if (el.clientHeight < el.scrollHeight ||
-        el.clientWidth < el.scrollWidth) {
+    if( isScrollable(el) ){
       return el;
     }
-
-    // only continue scaling if parentNode is valid
-    if (el.parentNode.parentNode) {
-      return findScrollableParent(el.parentNode);
+    while( ! isScrollable(el) ){
+      if( ! el.parentNode ){
+	    break;
+	  }
+	  el = el.parentNode;
     }
+	return el;
   }
 
   /*
