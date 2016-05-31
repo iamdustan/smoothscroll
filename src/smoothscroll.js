@@ -271,7 +271,7 @@
 
   if (typeof exports === 'object') {
     // commonjs
-    exports.smoothscroll = { polyfill: polyfill };
+    exports = { polyfill: polyfill };
   } else {
     // global
     polyfill();
