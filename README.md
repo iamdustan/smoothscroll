@@ -2,12 +2,18 @@
 
 As an extension of the `Window` interface, `Scroll Behavior` specification has been introduced to allow the developer wants to scroll to certain part of a site progressively. By this date the standard has only being implemented in _Firefox_.
 
-Go to the demo site to see it working https://iamdustan.github.io/smoothscroll
+Go to the demo site to see it in action https://iamdustan.github.io/smoothscroll
 
 
 ## Install
 
-Download the distribution file from this repository or install it using **npm** as **smoothscroll-polyfill** or **bower** as **smoothscroll**.
+Download the distribution file from this repository and include it in your project.
+
+You can also find it in **npm** as **smoothscroll-polyfill** or **bower** as **smoothscroll**.
+
+```js
+require('smoothscroll-polyfill').polyfill();
+```
 
 _Requires requestAnimationFrame polyfill for browsers which don't support it!_
 
@@ -32,7 +38,7 @@ Successfully tested in:
 - Internet Explorer 10
 - Internet Explorer 9
 
-_If you have tested this and worked as expected in a different browser let us know so we can add it to the list, if not [https://github.com/iamdustan/smoothscroll/issues][let us know too!]_
+_If you have tested this and worked as expected in a different browser let us know so we can add it to the list, if not [let us know too!](https://github.com/iamdustan/smoothscroll/issues)_
 
 
 ## Standards documentation
