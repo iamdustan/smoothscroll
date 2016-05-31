@@ -271,7 +271,7 @@
 
   if (typeof exports === 'object') {
     // commonjs
-    exports = { polyfill: polyfill };
+    module.exports = { polyfill: polyfill };
   } else {
     // global
     polyfill();
