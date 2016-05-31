@@ -29,14 +29,13 @@ After any modification make sure it doesn't break in any of the supported browse
 
 Successfully tested in:
 
-- Safari (last version)
-- iOS Safari (last version)
+- Safari 6+
+- iOS Safari 6+
 - Chrome (last version)
 - _natively supported in Firefox_
+- Internet Explorer 9+
 - Microsoft Edge
-- Internet Explorer 11
-- Internet Explorer 10
-- Internet Explorer 9
+- Opera Next
 
 _If you have tested this and worked as expected in a different browser let us know so we can add it to the list, if not [let us know too!](https://github.com/iamdustan/smoothscroll/issues)_
 
