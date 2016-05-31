@@ -1,39 +1,46 @@
-# smoothscroll.js
+# Smooth Scroll behavior polyfill
 
-Polyfill for
-* window.scroll({ left, top, behavior });
-* window.scrollTo({ left, top, behavior });
-* window.scrollBy({ left, top, behavior });
+As an extension of the `Window` interface, `Scroll Behavior` specification has been introduced to allow the developer wants to scroll to certain part of a site progressively. By this date the standard has only being implemented in _Firefox_.
 
-* element.scrollIntoView(ScrollOptions); (incomplete)
-
-## Use
-
-`bower install --save smoothscroll`
-
-This depends upon `requestAnimationFrame`. As such you can use either
-dist/smoothscroll.js if you have a raf polyfill already included (or are
-supporting only raf-enabled browsers), or use dist/smoothscroll.raf.js
-to use a version bundled with a polyfill (batteries included version).
-
-Browser Support
----------------
-
-This has been tested successfully in the following browsers:
-
-* Safari 6+, iOS 6+
-* Firefox
-* Chrome
-* Opera Next
-
-Size
-----
-
-**787 bytes** minified and gzipped
+Go to the demo site to see it in action https://iamdustan.github.io/smoothscroll
 
 
-Standards documentation
------------------------
+## Install
 
-* http://dev.w3.org/csswg/cssom-view
-* http://lists.w3.org/Archives/Public/www-style/2013Mar/0314.html
+Download the distribution file from this repository and include it in your project.
+
+You can also find it in **npm** as **smoothscroll-polyfill** or **bower** as **smoothscroll**.
+
+```js
+require('smoothscroll-polyfill').polyfill();
+```
+
+_Requires requestAnimationFrame polyfill for browsers which don't support it!_
+
+
+## Contribute
+
+Fork the repository and run **npm install**.
+
+After any modification make sure it doesn't break in any of the supported browsers, check linting and build running **npm run build** and then open a pull request.
+
+
+## Browser Support
+
+Successfully tested in:
+
+- Safari 6+
+- iOS Safari 6+
+- Chrome (last version)
+- _natively supported in Firefox_
+- Internet Explorer 9+
+- Microsoft Edge
+- Opera Next
+
+_If you have tested this and worked as expected in a different browser let us know so we can add it to the list, if not [let us know too!](https://github.com/iamdustan/smoothscroll/issues)_
+
+
+## Standards documentation
+
+- http://dev.w3.org/csswg/cssom-view
+- http://lists.w3.org/Archives/Public/www-style/2013Mar/0314.html

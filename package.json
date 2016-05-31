@@ -1,28 +1,32 @@
 {
-  "name": "smoothscroll",
-  "version": "0.1.1",
-  "authors": [
-    {
-      "name": "Dustan Kasten",
-      "email": "dustan.kasten@gmail.com",
-      "url": "http://iamdustan.com"
-    },
+  "title": "smoothscroll",
+  "name": "smoothscroll-polyfill",
+  "version": "0.3.0",
+  "author": {
+    "name": "Dustan Kasten",
+    "email": "dustan.kasten@gmail.com",
+    "url": "https://iamdustan.com"
+  },
+  "contributors": [
     {
       "name": "Jeremias Menichelli",
       "email": "jmenichelli@gmail.com",
-      "url": "http://jeremenichelli.github.com"
+      "url": "https://jeremenichelli.github.io"
     }
   ],
   "devDependencies": {
-    "gulp": "^3.8.11",
-    "gulp-concat": "^2.5.2",
-    "gulp-eslint": "^0.14.0",
-    "gulp-uglify": "^1.2.0"
+    "gulp": "^3.9.1",
+    "gulp-concat-util": "^0.5.5",
+    "gulp-eslint": "^2.0.0",
+    "gulp-load-plugins": "^1.2.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.3"
   },
   "description": "Polyfill for smooth scroll behavior",
   "main": "dist/smoothscroll.js",
   "scripts": {
-    "test": "gulp lint"
+    "test": "gulp lint",
+    "build": "gulp"
   },
   "repository": {
     "type": "git",
@@ -34,9 +38,10 @@
     "CSSOM",
     "polyfill"
   ],
+  "copyright": 2016,
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/iamdustan/smoothscroll/issues"
   },
-  "homepage": "https://github.com/iamdustan/smoothscroll#readme"
+  "homepage": "https://iamdustan.github.io/smoothscroll"
 }
