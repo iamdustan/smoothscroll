@@ -39,7 +39,6 @@ Successfully tested in:
 
 If you have tested this and worked as expected in a different browser let us know so we can add it to the list, if not [open an issue](https://github.com/iamdustan/smoothscroll/issues) providing browser, browser version and a good description about it.
 
-
 ## Standards documentation
 
 - http://dev.w3.org/csswg/cssom-view

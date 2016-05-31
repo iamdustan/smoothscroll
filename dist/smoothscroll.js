@@ -1,5 +1,5 @@
 /*
- * smoothscroll polyfill - v0.3.0
+ * smoothscroll polyfill - v0.3.1
  * https://iamdustan.github.io/smoothscroll
  * 2016 (c) Dustan Kasten, Jeremias Menichelli - MIT License
  */
@@ -277,7 +277,7 @@
 
   if (typeof exports === 'object') {
     // commonjs
-    exports = { polyfill: polyfill };
+    module.exports = { polyfill: polyfill };
   } else {
     // global
     polyfill();
