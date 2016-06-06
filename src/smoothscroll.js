@@ -1,34 +1,40 @@
-(function(WIN, DOC, undefined) {
+(function(w, d, undefined) {
   'use strict';
 
   /*
    * aliases
-   * WIN: window global object
-   * DOC: document
+   * w: window global object
+   * d: document
    * undefined: undefined
    */
 
   // polyfill
   function polyfill() {
     // return when scrollBehavior interface is supported
-    if ('scrollBehavior' in DOC.documentElement.style) {
+    if ('scrollBehavior' in d.documentElement.style) {
       return;
     }
 
     /*
      * globals
      */
-    var Element = WIN.HTMLElement || WIN.Element;
+    var Element = w.HTMLElement || w.Element;
     var SCROLL_TIME = 468;
 
     /*
      * object gathering original scroll methods
      */
     var original = {
-      scroll: WIN.scroll || WIN.scrollTo,
-      scrollBy: WIN.scrollBy,
+      scroll: w.scroll || w.scrollTo,
+      scrollBy: w.scrollBy,
       scrollIntoView: Element.prototype.scrollIntoView
     };
+
+    /*
+     * define timing method
+     */
+    var now = w.performance && w.performance.now
+      ? w.performance.now.bind(w.performance) : Date.now;
 
     /**
      * changes scroll position inside an element
@@ -39,20 +45,6 @@
     function scrollElement(x, y) {
       this.scrollLeft = x;
       this.scrollTop = y;
-    }
-
-    /**
-     * get actual time in milliseconds
-     * @method now
-     * @returns {Number}
-     */
-    function now() {
-      // use performance when supported or fallback to date object
-      if (WIN.performance !== undefined && WIN.performance.now !== undefined) {
-        return WIN.performance.now();
-      }
-
-      return Date.now();
     }
 
     /**
@@ -99,7 +91,7 @@
     function findScrollableParent(el) {
       do {
         el = el.parentNode;
-      } while (el !== DOC.body
+      } while (el !== d.body
               && !(el.clientHeight < el.scrollHeight
               || el.clientWidth < el.scrollWidth));
 
@@ -113,7 +105,7 @@
      */
     function step(context) {
       // call method again on next available frame
-      context.frame = WIN.requestAnimationFrame(step.bind(WIN, context));
+      context.frame = w.requestAnimationFrame(step.bind(w, context));
 
       var time = now();
       var value;
@@ -134,7 +126,7 @@
 
       // return when end points have been reached
       if (currentX === context.x && currentY === context.y) {
-        WIN.cancelAnimationFrame(context.frame);
+        w.cancelAnimationFrame(context.frame);
         return;
       }
     }
@@ -155,10 +147,10 @@
       var frame;
 
       // define scroll context
-      if (el === DOC.body) {
-        scrollable = WIN;
-        startX = WIN.scrollX || WIN.pageXOffset;
-        startY = WIN.scrollY || WIN.pageYOffset;
+      if (el === d.body) {
+        scrollable = w;
+        startX = w.scrollX || w.pageXOffset;
+        startY = w.scrollY || w.pageYOffset;
         method = original.scroll;
       } else {
         scrollable = el;
@@ -169,7 +161,7 @@
 
       // cancel frame when a scroll event's happening
       if (frame) {
-        WIN.cancelAnimationFrame(frame);
+        w.cancelAnimationFrame(frame);
       }
 
       // scroll looping over a frame
@@ -189,12 +181,12 @@
      * ORIGINAL METHODS OVERRIDES
      */
 
-    // WIN.scroll and WIN.scrollTo
-    WIN.scroll = WIN.scrollTo = function() {
+    // w.scroll and w.scrollTo
+    w.scroll = w.scrollTo = function() {
       // avoid smooth behavior if not required
       if (shouldBailOut(arguments[0])) {
         original.scroll.call(
-          WIN,
+          w,
           arguments[0].left || arguments[0],
           arguments[0].top || arguments[1]
         );
@@ -203,19 +195,19 @@
 
       // LET THE SMOOTHNESS BEGIN!
       smoothScroll.call(
-        WIN,
-        DOC.body,
+        w,
+        d.body,
         ~~arguments[0].left,
         ~~arguments[0].top
       );
     };
 
-    // WIN.scrollBy
-    WIN.scrollBy = function() {
+    // w.scrollBy
+    w.scrollBy = function() {
       // avoid smooth behavior if not required
       if (shouldBailOut(arguments[0])) {
         original.scrollBy.call(
-          WIN,
+          w,
           arguments[0].left || arguments[0],
           arguments[0].top || arguments[1]
         );
@@ -224,10 +216,10 @@
 
       // LET THE SMOOTHNESS BEGIN!
       smoothScroll.call(
-        WIN,
-        DOC.body,
-        ~~arguments[0].left + (WIN.scrollX || WIN.pageXOffset),
-        ~~arguments[0].top + (WIN.scrollY || WIN.pageYOffset)
+        w,
+        d.body,
+        ~~arguments[0].left + (w.scrollX || w.pageXOffset),
+        ~~arguments[0].top + (w.scrollY || w.pageYOffset)
       );
     };
 
@@ -244,7 +236,7 @@
       var parentRects = scrollableParent.getBoundingClientRect();
       var clientRects = this.getBoundingClientRect();
 
-      if (scrollableParent !== DOC.body) {
+      if (scrollableParent !== d.body) {
         // reveal element inside parent
         smoothScroll.call(
           this,
@@ -253,14 +245,14 @@
           scrollableParent.scrollTop + clientRects.top - parentRects.top
         );
         // reveal parent in viewport
-        WIN.scrollBy({
+        w.scrollBy({
           left: parentRects.left,
           top: parentRects.top,
           behavior: 'smooth'
         });
       } else {
         // reveal element in viewport
-        WIN.scrollBy({
+        w.scrollBy({
           left: clientRects.left,
           top: clientRects.top,
           behavior: 'smooth'
