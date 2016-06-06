@@ -1,5 +1,5 @@
 /*
- * smoothscroll polyfill - v0.3.2
+ * smoothscroll polyfill - v0.3.3
  * https://iamdustan.github.io/smoothscroll
  * 2016 (c) Dustan Kasten, Jeremias Menichelli - MIT License
  */
