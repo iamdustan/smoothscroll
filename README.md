@@ -1,8 +1,8 @@
 # Smooth Scroll behavior polyfill
 
-As an extension of the `Window` interface, `Scroll Behavior` specification has been introduced to allow the developer wants to scroll to certain part of a site progressively. By this date the standard has only being implemented in _Firefox_.
+The `Scroll Behavior` specification has been introduced as an extension of the `Window` interface to allow for the developer to opt in to native smooth scrolling. To date this has only been implemented in _Firefox_.
 
-Go to the demo site to see it in action https://iamdustan.github.io/smoothscroll
+See it in action https://iamdustan.github.io/smoothscroll
 
 
 ## Install

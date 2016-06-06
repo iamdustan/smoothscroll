@@ -31,11 +31,6 @@ gulp.task('lint', function() {
 gulp.task('build', [ 'lint' ], function() {
   return gulp.src([ paths.src ])
     .pipe($.concatUtil.header(banner))
-    .pipe(gulp.dest(paths.output))
-    .pipe($.uglify())
-    .pipe($.rename({
-      suffix: '.min'
-    }))
     .pipe(gulp.dest(paths.output));
 });
 
