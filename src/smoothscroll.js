@@ -1,3 +1,9 @@
+/*
+ * smoothscroll polyfill - v0.3.2
+ * https://iamdustan.github.io/smoothscroll
+ * 2016 (c) Dustan Kasten, Jeremias Menichelli - MIT License
+ */
+
 (function(w, d, undefined) {
   'use strict';
 
@@ -98,6 +104,10 @@
       return el;
     }
 
+    var lastStartX,
+        lastStartY,
+        lastCurrentX,
+        lastCurrentY;
     /**
      * self invoked function that, given a context, steps through scrolling
      * @method step
@@ -122,10 +132,42 @@
       currentX = context.startX + (context.x - context.startX) * value;
       currentY = context.startY + (context.y - context.startY) * value;
 
+      //The user, or some other system, scrolled mid scroll.
+      if(typeof lastCurrentX != "undefined" && 
+        typeof lastCurrentY != "undefined" &&
+        ( document.body.scrollTop !== Math.floor(lastCurrentY) 
+            || document.body.scrollLeft !== Math.floor(lastCurrentX))){
+        lastStartX = undefined;
+        lastStartY = undefined;
+        lastCurrentX = undefined;
+        lastCurrentY = undefined;
+        w.cancelAnimationFrame(context.frame);
+        return;
+      }
+      
+      //The user, or some other system, scrolled before the scroll began.
+      if(typeof lastStartX != "undefined" && typeof lastStartY != "undefined" && (context.startX !== lastStartX || context.startY !== lastStartY)){
+        lastStartX = undefined;
+        lastStartY = undefined;
+        lastCurrentX = undefined;
+        lastCurrentY = undefined;
+        w.cancelAnimationFrame(context.frame);
+        return;
+      }
+
       context.method.call(context.scrollable, currentX, currentY);
+      
+      lastStartX = context.startX;
+      lastStartY = context.startY;
+      lastCurrentX = currentX;
+      lastCurrentY = currentY
 
       // return when end points have been reached
       if (currentX === context.x && currentY === context.y) {
+        lastStartX = undefined;
+        lastStartY = undefined;
+        lastCurrentX = undefined;
+        lastCurrentY = undefined;
         w.cancelAnimationFrame(context.frame);
         return;
       }
