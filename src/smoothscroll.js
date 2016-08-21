@@ -83,22 +83,6 @@
     }
 
     /**
-     * finds scrollable parent of an element
-     * @method findScrollableParent
-     * @param {Node} el
-     * @returns {Node} el
-     */
-    function findScrollableParent(el) {
-      do {
-        el = el.parentNode;
-      } while (el !== d.body
-              && !(el.clientHeight < el.scrollHeight
-              || el.clientWidth < el.scrollWidth));
-
-      return el;
-    }
-
-    /**
      * self invoked function that, given a context, steps through scrolling
      * @method step
      * @param {Object} context
@@ -232,32 +216,14 @@
       }
 
       // LET THE SMOOTHNESS BEGIN!
-      var scrollableParent = findScrollableParent(this);
-      var parentRects = scrollableParent.getBoundingClientRect();
       var clientRects = this.getBoundingClientRect();
 
-      if (scrollableParent !== d.body) {
-        // reveal element inside parent
-        smoothScroll.call(
-          this,
-          scrollableParent,
-          scrollableParent.scrollLeft + clientRects.left - parentRects.left,
-          scrollableParent.scrollTop + clientRects.top - parentRects.top
-        );
-        // reveal parent in viewport
-        w.scrollBy({
-          left: parentRects.left,
-          top: parentRects.top,
-          behavior: 'smooth'
-        });
-      } else {
-        // reveal element in viewport
-        w.scrollBy({
-          left: clientRects.left,
-          top: clientRects.top,
-          behavior: 'smooth'
-        });
-      }
+      // reveal element in viewport
+      w.scrollBy({
+        left: clientRects.left,
+        top: clientRects.top,
+        behavior: 'smooth'
+      });
     };
   }
 
