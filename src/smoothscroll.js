@@ -61,11 +61,11 @@
 
     /**
      * indicates if a smooth behavior should be applied
-     * @method shouldBailOut
+     * @method scrollIsInstant
      * @param {Number|Object} x
      * @returns {Boolean}
      */
-    function shouldBailOut(x) {
+    function scrollIsInstant(x) {
       if (typeof x !== 'object'
             || x.behavior === undefined
             || x.behavior === 'auto'
@@ -186,7 +186,7 @@
     // w.scroll and w.scrollTo
     w.scroll = w.scrollTo = function() {
       // avoid smooth behavior if not required
-      if (shouldBailOut(arguments[0])) {
+      if (scrollIsInstant(arguments[0])) {
         original.scroll.call(
           w,
           arguments[0].left || arguments[0],
@@ -207,7 +207,7 @@
     // w.scrollBy
     w.scrollBy = function() {
       // avoid smooth behavior if not required
-      if (shouldBailOut(arguments[0])) {
+      if (scrollIsInstant(arguments[0])) {
         original.scrollBy.call(
           w,
           arguments[0].left || arguments[0],
@@ -228,7 +228,7 @@
     // Element.prototype.scrollIntoView
     Element.prototype.scrollIntoView = function() {
       // avoid smooth behavior if not required
-      if (shouldBailOut(arguments[0])) {
+      if (scrollIsInstant(arguments[0])) {
         original.scrollIntoView.call(this, arguments[0] || true);
         return;
       }
