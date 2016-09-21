@@ -1,5 +1,5 @@
 /*
- * smoothscroll polyfill - v0.3.3
+ * smoothscroll polyfill - v0.4.0
  * https://iamdustan.github.io/smoothscroll
  * 2016 (c) Dustan Kasten, Jeremias Menichelli - MIT License
  */
@@ -233,6 +233,29 @@
       });
     }
 
+    function scrollWithinParentElem(el, opts) {
+        var scrollableParent = findScrollableParent(el);
+        if (scrollableParent === d.body) {
+            return;
+        }
+
+        var clientRects = el.getBoundingClientRect();
+        var parentRects = scrollableParent.getBoundingClientRect();
+        var clientAdj = clientRects.top;
+        if (opts.block === 'end') {
+            var scrollbarHeight = scrollableParent.offsetHeight - scrollableParent.clientHeight
+            clientAdj = clientRects.bottom - parentRects.height + scrollbarHeight;
+        }
+
+        // reveal element inside parent
+        smoothScroll.call(
+          this,
+          scrollableParent,
+          scrollableParent.scrollLeft + clientRects.left - parentRects.left,
+          scrollableParent.scrollTop + clientAdj - parentRects.top
+        );
+    }
+
     /*
      * ORIGINAL METHODS OVERRIDES
      */
@@ -290,29 +313,9 @@
       }
 
       // LET THE SMOOTHNESS BEGIN!
-      var scrollableParent = findScrollableParent(this);
-      var parentRects = scrollableParent.getBoundingClientRect();
       var clientRects = this.getBoundingClientRect();
 
-      if (scrollableParent !== d.body) {
-        var clientAdj = clientRects.top;
-        if (opts.block === 'end') {
-            var scrollbarHeight = scrollableParent.offsetHeight - scrollableParent.clientHeight
-            clientAdj = clientRects.bottom - parentRects.height + scrollbarHeight;
-        }
-
-        // reveal element inside parent
-        smoothScroll.call(
-          this,
-          scrollableParent,
-          scrollableParent.scrollLeft + clientRects.left - parentRects.left,
-          scrollableParent.scrollTop + clientAdj - parentRects.top
-        );
-
-        // scroll parent into view
-        return scrollableParent.scrollIntoView(arguments[0]);
-      }
-
+      scrollWithinParentElem(this, opts);
       w.scrollBy({
           left: clientRects.left,
           top: opts.block !== 'end' ? clientRects.top : clientRects.bottom - w.innerHeight,
