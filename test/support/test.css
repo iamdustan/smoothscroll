@@ -1,0 +1,41 @@
+
+body {
+  background-color: #fefefe;
+  color: #212121;
+  font-family: 'Roboto Condensed', Arial, sans-serif;
+  font-size: 20px;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.top-padder {
+    width: 100%;
+    height: 400px;
+}
+
+.scrollable-parent {
+  background-color: #efefef;
+  border-radius: 4px;
+  margin: 20px 0 0;
+  max-height: 200px;
+  overflow: scroll;
+  padding: 30px 50px;
+}
+.hello {
+  text-align: center;
+}
+
+.test-result {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: red;
+}
+
+.test-result.success {
+    color: green;
+}
