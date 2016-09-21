@@ -15,10 +15,12 @@
    */
 
   // polyfill
-  function polyfill() {
+  function polyfill(overrideBrowserImplementation) {
     // return when scrollBehavior interface is supported
     if ('scrollBehavior' in d.documentElement.style) {
-      return;
+      if (!overrideBrowserImplementation) {
+        return;
+      }
     }
 
     /*
@@ -64,12 +66,60 @@
     }
 
     /**
+     * Normalizes valid scrollIntoView arguments into an arguments object
+     * @method normalizeArgs
+     * @param {Boolean|Object=} x
+     * @returns {Object}
+     */
+    function normalizeArgs(x) {
+      if (typeof x === 'undefined') {
+        return {
+          block: 'start',
+          behavior: 'auto'
+        };
+      }
+
+      if (typeof x === 'boolean') {
+        return {
+          block: (x ? 'start' : 'end'),
+          behavior: 'auto'
+        };
+      }
+
+      if (typeof x === 'object') {
+        if (
+          (x.behavior !== undefined) &&
+          (x.behavior !== 'auto') &&
+          (x.behavior !== 'instant') &&
+          (x.behavior !== 'smooth')
+        ) {
+          throw new TypeError('behavior not valid');
+        }
+
+        if (
+          (x.block !== undefined) &&
+          (x.block !== 'start') &&
+          (x.block !== 'end')
+        ) {
+          throw new TypeError('block not valid');
+        }
+
+        return {
+          block: x.block === 'end' ? 'end' : 'start',
+          behavior: x.behavior === 'smooth' ? 'smooth' : 'auto'
+        }
+      }
+
+      throw new TypeError('scrollIntoView accepts undefined, boolean or object as its first argument');
+    }
+
+    /**
      * indicates if a smooth behavior should be applied
-     * @method shouldBailOut
+     * @method scrollIsInstant
      * @param {Number|Object} x
      * @returns {Boolean}
      */
-    function shouldBailOut(x) {
+    function scrollIsInstant(x) {
       if (typeof x !== 'object'
             || x.behavior === undefined
             || x.behavior === 'auto'
@@ -190,7 +240,7 @@
     // w.scroll and w.scrollTo
     w.scroll = w.scrollTo = function() {
       // avoid smooth behavior if not required
-      if (shouldBailOut(arguments[0])) {
+      if (scrollIsInstant(arguments[0])) {
         original.scroll.call(
           w,
           arguments[0].left || arguments[0],
@@ -211,7 +261,7 @@
     // w.scrollBy
     w.scrollBy = function() {
       // avoid smooth behavior if not required
-      if (shouldBailOut(arguments[0])) {
+      if (scrollIsInstant(arguments[0])) {
         original.scrollBy.call(
           w,
           arguments[0].left || arguments[0],
@@ -231,8 +281,10 @@
 
     // Element.prototype.scrollIntoView
     Element.prototype.scrollIntoView = function() {
+      var opts = normalizeArgs(arguments[0]);
+
       // avoid smooth behavior if not required
-      if (shouldBailOut(arguments[0])) {
+      if (scrollIsInstant(arguments[0]) && opts.block == "top") {
         original.scrollIntoView.call(this, arguments[0] || true);
         return;
       }
@@ -243,27 +295,29 @@
       var clientRects = this.getBoundingClientRect();
 
       if (scrollableParent !== d.body) {
+        var clientAdj = clientRects.top;
+        if (opts.block === 'end') {
+            var scrollbarHeight = scrollableParent.offsetHeight - scrollableParent.clientHeight
+            clientAdj = clientRects.bottom - parentRects.height + scrollbarHeight;
+        }
+
         // reveal element inside parent
         smoothScroll.call(
           this,
           scrollableParent,
           scrollableParent.scrollLeft + clientRects.left - parentRects.left,
-          scrollableParent.scrollTop + clientRects.top - parentRects.top
+          scrollableParent.scrollTop + clientAdj - parentRects.top
         );
-        // reveal parent in viewport
-        w.scrollBy({
-          left: parentRects.left,
-          top: parentRects.top,
-          behavior: 'smooth'
-        });
-      } else {
-        // reveal element in viewport
-        w.scrollBy({
-          left: clientRects.left,
-          top: clientRects.top,
-          behavior: 'smooth'
-        });
+
+        // scroll parent into view
+        return scrollableParent.scrollIntoView(arguments[0]);
       }
+
+      w.scrollBy({
+          left: clientRects.left,
+          top: opts.block !== 'end' ? clientRects.top : clientRects.bottom - w.innerHeight,
+          behavior: opts.behavior
+      });
     };
   }
 
@@ -272,6 +326,6 @@
     module.exports = { polyfill: polyfill };
   } else {
     // global
-    polyfill();
+    polyfill(window.__smoothscrollForcePolyfill);
   }
 })(window, document);
