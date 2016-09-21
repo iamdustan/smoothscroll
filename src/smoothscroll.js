@@ -9,10 +9,12 @@
    */
 
   // polyfill
-  function polyfill() {
+  function polyfill(overrideBrowserImplementation) {
     // return when scrollBehavior interface is supported
     if ('scrollBehavior' in d.documentElement.style) {
-      return;
+      if (!overrideBrowserImplementation) {
+        return;
+      }
     }
 
     /*
@@ -266,6 +268,6 @@
     module.exports = { polyfill: polyfill };
   } else {
     // global
-    polyfill();
+    polyfill(window.__smoothscrollForcePolyfill);
   }
 })(window, document);
