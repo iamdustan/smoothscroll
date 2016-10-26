@@ -71,10 +71,12 @@
      */
     function shouldBailOut(x) {
       if (typeof x !== 'object'
+            || x === null
             || x.behavior === undefined
             || x.behavior === 'auto'
             || x.behavior === 'instant') {
-        // first arg not an object, or behavior is auto, instant or undefined
+        // first arg not an object/null
+        // or behavior is auto, instant or undefined
         return true;
       }
 
