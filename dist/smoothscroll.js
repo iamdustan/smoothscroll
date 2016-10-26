@@ -97,11 +97,23 @@
      * @returns {Node} el
      */
     function findScrollableParent(el) {
+      var isBody;
+      var hasScrollableSpace;
+      var hasVisibleOverflow;
+
       do {
         el = el.parentNode;
-      } while (el !== d.body
-              && !(el.clientHeight < el.scrollHeight
-              || el.clientWidth < el.scrollWidth));
+
+        // set condition variables
+        isBody = el === d.body;
+        hasScrollableSpace =
+          el.clientHeight < el.scrollHeight ||
+          el.clientWidth < el.scrollWidth;
+        hasVisibleOverflow =
+          w.getComputedStyle(el, null).overflow === 'visible';
+      } while (!isBody && !(hasScrollableSpace && !hasVisibleOverflow));
+
+      isBody = hasScrollableSpace = hasVisibleOverflow = null;
 
       return el;
     }
