@@ -237,6 +237,23 @@
       );
     };
 
+    // Element.prototype.scrollBy
+    Element.prototype.scrollBy = function() {
+      // avoid smooth behavior if not required
+      if (shouldBailOut(arguments[0])) {
+        original.scrollIntoView.call(this, arguments[0] || true);
+        return;
+      }
+
+      // LET THE SMOOTHNESS BEGIN!
+      smoothScroll.call(
+        this,
+        this,
+        this.scrollLeft + arguments[0].left,
+        this.scrollTop + arguments[0].top
+      );
+    };
+
     // Element.prototype.scrollIntoView
     Element.prototype.scrollIntoView = function() {
       // avoid smooth behavior if not required
