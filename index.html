@@ -235,6 +235,16 @@
     </div>
   </section>
 
+  <section class="sample sample-scrollBy2">
+    <div class="container">
+      <h2>element.scrollBy</h2>
+      <pre><code>element.scrollBy({ top: 100, left: 0, behavior: 'smooth' });</code></pre>
+      <div class="actions">
+        <button class="btn js-scroll-by2">scroll by 100 pixels</button>
+      </div>
+    </div>
+  </section>
+
   <section class="sample sample-scrollToTop">
     <div class="container">
       <h2>Scroll to top</h2>
@@ -299,6 +309,12 @@
       document.querySelector('.js-scroll-into-hello').addEventListener('click', function(e) {
         e.preventDefault();
         document.querySelector('.hello').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      // element scroll by
+      document.querySelector('.js-scroll-by2').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector('.scrollable-parent').scrollBy({ top: 100, left: 0, behavior: 'smooth' });
       });
     });
   </script>
