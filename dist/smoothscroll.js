@@ -33,6 +33,7 @@
     var original = {
       scroll: w.scroll || w.scrollTo,
       scrollBy: w.scrollBy,
+      elScroll: Element.prototype.scroll || scrollElement,
       scrollIntoView: Element.prototype.scrollIntoView
     };
 
@@ -243,21 +244,41 @@
       );
     };
 
-    // Element.prototype.scrollBy
-    Element.prototype.scrollBy = function() {
+    // Element.prototype.scroll and Element.prototype.scrollTo
+    Element.prototype.scroll = Element.prototype.scrollTo = function() {
       // avoid smooth behavior if not required
       if (shouldBailOut(arguments[0])) {
-        original.scrollIntoView.call(this, arguments[0] || true);
+        original.elScroll.call(
+            this,
+            arguments[0].left || arguments[0],
+            arguments[0].top || arguments[1]
+        );
         return;
       }
 
       // LET THE SMOOTHNESS BEGIN!
       smoothScroll.call(
-        this,
-        this,
-        this.scrollLeft + arguments[0].left,
-        this.scrollTop + arguments[0].top
+          this,
+          this,
+          arguments[0].left,
+          arguments[0].top
       );
+    };
+
+    // Element.prototype.scrollBy
+    Element.prototype.scrollBy = function() {
+      var arg0 = arguments[0];
+
+      if (typeof arg0 === 'object') {
+        arg0.left += this.scrollLeft;
+        arg0.top += this.scrollTop;
+        this.scroll(arg0);
+      } else {
+        this.scroll(
+          this.scrollLeft + arg0,
+          this.scrollTop + arguments[1]
+        );
+      }
     };
 
     // Element.prototype.scrollIntoView
