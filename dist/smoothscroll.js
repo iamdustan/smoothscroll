@@ -270,9 +270,11 @@
       var arg0 = arguments[0];
 
       if (typeof arg0 === 'object') {
-        arg0.left += this.scrollLeft;
-        arg0.top += this.scrollTop;
-        this.scroll(arg0);
+        this.scroll({
+          left: arg0.left + this.scrollLeft,
+          top: arg0.top + this.scrollTop,
+          behavior: arg0.behavior
+        });
       } else {
         this.scroll(
           this.scrollLeft + arg0,
