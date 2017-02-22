@@ -261,19 +261,18 @@
 
     // Element.prototype.scrollBy
     Element.prototype.scrollBy = function() {
-      // avoid smooth behavior if not required
-      if (shouldBailOut(arguments[0])) {
-        original.scrollIntoView.call(this, arguments[0] || true);
-        return;
-      }
+      var arg0 = arguments[0];
 
-      // LET THE SMOOTHNESS BEGIN!
-      smoothScroll.call(
-        this,
-        this,
-        this.scrollLeft + arguments[0].left,
-        this.scrollTop + arguments[0].top
-      );
+      if (typeof arg0 === 'object') {
+        arg0.left += this.scrollLeft;
+        arg0.top += this.scrollTop;
+        this.scroll(arg0);
+      } else {
+        this.scroll(
+          this.scrollLeft + arg0,
+          this.scrollTop + arguments[1]
+        );
+      }
     };
 
     // Element.prototype.scrollIntoView
