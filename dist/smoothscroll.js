@@ -1,5 +1,5 @@
 /*
- * smoothscroll polyfill - v0.3.4
+ * smoothscroll polyfill - v0.3.5
  * https://iamdustan.github.io/smoothscroll
  * 2016 (c) Dustan Kasten, Jeremias Menichelli - MIT License
  */
@@ -125,9 +125,6 @@
      * @param {Object} context
      */
     function step(context) {
-      // call method again on next available frame
-      context.frame = w.requestAnimationFrame(step.bind(w, context));
-
       var time = now();
       var value;
       var currentX;
@@ -145,10 +142,9 @@
 
       context.method.call(context.scrollable, currentX, currentY);
 
-      // return when end points have been reached
-      if (currentX === context.x && currentY === context.y) {
-        w.cancelAnimationFrame(context.frame);
-        return;
+      // scroll more if we have not reached our destination
+      if (currentX !== context.x || currentY !== context.y) {
+        w.requestAnimationFrame(step.bind(w, context));
       }
     }
 
@@ -165,7 +161,6 @@
       var startY;
       var method;
       var startTime = now();
-      var frame;
 
       // define scroll context
       if (el === d.body) {
@@ -180,11 +175,6 @@
         method = scrollElement;
       }
 
-      // cancel frame when a scroll event's happening
-      if (frame) {
-        w.cancelAnimationFrame(frame);
-      }
-
       // scroll looping over a frame
       step({
         scrollable: scrollable,
@@ -193,8 +183,7 @@
         startX: startX,
         startY: startY,
         x: x,
-        y: y,
-        frame: frame
+        y: y
       });
     }
 
