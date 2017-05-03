@@ -26,9 +26,9 @@ That's all.
 
 ## Contribute
 
-Fork the repository and run `$ npm install`.
+Fork the repository and run `$ npm install`.
 
-After any modification make sure it doesn't break in any of the supported browsers, check linting and build running `$ npm run build` and then open a pull request.
+After any modification make sure it doesn't break in any of the supported browsers, check linting and build running `$ npm run build` and then open a pull request.
 
 
 ## Browser Support
