@@ -191,8 +191,8 @@
       if (shouldBailOut(arguments[0])) {
         original.scroll.call(
           w,
-          arguments[0].left || arguments[0],
-          arguments[0].top || arguments[1]
+          arguments[0].left == undefined ? arguments[0] : arguments[0].left,
+          arguments[0].top == undefined ? arguments[1] : arguments[0].top
         );
         return;
       }
@@ -201,8 +201,8 @@
       smoothScroll.call(
         w,
         d.body,
-        ~~arguments[0].left,
-        ~~arguments[0].top
+        arguments[0].left == undefined ? (w.scrollX || w.pageXOffset) : arguments[0].left,
+        arguments[0].top == undefined ? (w.scrollY || w.pageYOffset) : arguments[0].top
       );
     };
 
@@ -212,8 +212,8 @@
       if (shouldBailOut(arguments[0])) {
         original.scrollBy.call(
           w,
-          arguments[0].left || arguments[0],
-          arguments[0].top || arguments[1]
+          arguments[0].left == undefined ? arguments[0] : arguments[0].left,
+          arguments[0].top == undefined ? arguments[1] : arguments[0].top
         );
         return;
       }
@@ -233,8 +233,8 @@
       if (shouldBailOut(arguments[0])) {
         original.elScroll.call(
             this,
-            arguments[0].left || arguments[0],
-            arguments[0].top || arguments[1]
+            arguments[0].left == undefined ? arguments[0] : arguments[0].left,
+            arguments[0].top == undefined ? arguments[1] : arguments[0].top
         );
         return;
       }
@@ -243,8 +243,8 @@
       smoothScroll.call(
           this,
           this,
-          arguments[0].left,
-          arguments[0].top
+          arguments[0].left == undefined ? this.scrollLeft : arguments[0].left,
+          arguments[0].top == undefined ? this.scrollTop : arguments[0].top
       );
     };
 
@@ -254,8 +254,8 @@
 
       if (typeof arg0 === 'object') {
         this.scroll({
-          left: arg0.left + this.scrollLeft,
-          top: arg0.top + this.scrollTop,
+          left: arg0.left == undefined ? undefined : arg0.left + this.scrollLeft,
+          top: arg0.top == undefined ? undefined : arg0.top + this.scrollTop,
           behavior: arg0.behavior
         });
       } else {
