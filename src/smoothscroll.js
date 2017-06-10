@@ -15,6 +15,11 @@
       return;
     }
 
+    override();
+  }
+
+  // override
+  function override() {
     /*
      * globals
      */
@@ -306,7 +311,10 @@
 
   if (typeof exports === 'object') {
     // commonjs
-    module.exports = { polyfill: polyfill };
+    module.exports = {
+      polyfill: polyfill,
+      override: override
+    };
   } else {
     // global
     polyfill();
