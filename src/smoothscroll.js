@@ -15,11 +15,23 @@
       return;
     }
 
+    /**
+     * indicates if a the current browser is made by Microsoft
+     * @method isMicrosoftBrowser
+     * @param {string} userAgent
+     * @returns {Boolean}
+     */
+    function isMicrosoftBrowser(userAgent) {
+      var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
+      return new RegExp(userAgentPatterns.join('|')).test(userAgent);
+    }
+
     /*
      * globals
      */
     var Element = w.HTMLElement || w.Element;
     var SCROLL_TIME = 468;
+    var ROUNDING_TOLERANCE = isMicrosoftBrowser(w.navigator.userAgent) ? 1 : 0;
 
     /*
      * object gathering original scroll methods
@@ -86,28 +98,12 @@
     }
 
     /**
-     * indicates if a the current browser is made by Microsoft
-     * @method isMicrosoftBrowser
-     * @param {string} userAgent
-     * @returns {Boolean}
-     */
-    function isMicrosoftBrowser(userAgent) {
-      var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
-      return new RegExp(userAgentPatterns.join('|')).test(userAgent);
-    }
-
-    /**
      * finds scrollable parent of an element
      * @method findScrollableParent
      * @param {Node} el
      * @returns {Node} el
      */
     function findScrollableParent(el) {
-      /*
-        Microsoft browsers can round a computed height that contains a
-        fraction of a pixel up for clientHeight, and down for scrollHeight.
-      */
-      var roundingTolerance = isMicrosoftBrowser(w.navigator.userAgent) ? 1 : 0;
       var isBody;
       var hasScrollableSpace;
       var hasVisibleOverflow;
@@ -118,8 +114,8 @@
         // set condition variables
         isBody = el === d.body;
         hasScrollableSpace =
-          el.clientHeight + roundingTolerance < el.scrollHeight ||
-          el.clientWidth + roundingTolerance < el.scrollWidth;
+          el.clientHeight + ROUNDING_TOLERANCE < el.scrollHeight ||
+          el.clientWidth + ROUNDING_TOLERANCE < el.scrollWidth;
         hasVisibleOverflow =
           w.getComputedStyle(el, null).overflow === 'visible';
       } while (!isBody && !(hasScrollableSpace && !hasVisibleOverflow));
