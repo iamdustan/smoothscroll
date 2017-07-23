@@ -93,22 +93,35 @@
      */
     function findScrollableParent(el) {
       var isBody;
-      var hasScrollableSpace;
-      var hasVisibleOverflow;
+      var hasVerticalScrollableSpace;
+      var hasHorizontalScrollableSpace;
+      var hasVerticalVisibleOverflow;
+      var hasHorizontalVisibleOverflow;
+      var isVerticallyScrollable;
+      var isHorizontallyScrollable;
 
       do {
         el = el.parentNode;
 
         // set condition variables
         isBody = el === d.body;
-        hasScrollableSpace =
-          el.clientHeight < el.scrollHeight ||
-          el.clientWidth < el.scrollWidth;
-        hasVisibleOverflow =
-          w.getComputedStyle(el, null).overflow === 'visible';
-      } while (!isBody && !(hasScrollableSpace && !hasVisibleOverflow));
 
-      isBody = hasScrollableSpace = hasVisibleOverflow = null;
+        hasVerticalScrollableSpace = el.clientHeight < el.scrollHeight;
+        hasHorizontalScrollableSpace = el.clientWidth < el.scrollWidth;
+        hasVerticalVisibleOverflow =
+          w.getComputedStyle(el, null).overflowY === 'visible';
+        hasHorizontalVisibleOverflow =
+          w.getComputedStyle(el, null).overflowX === 'visible';
+        isVerticallyScrollable =
+          hasVerticalScrollableSpace && !hasVerticalVisibleOverflow;
+        isHorizontallyScrollable =
+          hasHorizontalScrollableSpace && !hasHorizontalVisibleOverflow;
+      } while (!isBody &&
+        !(isVerticallyScrollable || isHorizontallyScrollable));
+
+      isBody = hasVerticalScrollableSpace = hasHorizontalScrollableSpace =
+        hasVerticalVisibleOverflow = hasHorizontalVisibleOverflow =
+        isVerticallyScrollable = isHorizontallyScrollable = null;
 
       return el;
     }
@@ -273,7 +286,7 @@
     Element.prototype.scrollIntoView = function() {
       // avoid smooth behavior if not required
       if (shouldBailOut(arguments[0])) {
-        original.scrollIntoView.call(this, arguments[0] === undefined ? true : arguments[0]);
+        original.scrollIntoView.call(this, arguments[0] || true);
         return;
       }
 
