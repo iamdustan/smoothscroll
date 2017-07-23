@@ -1,5 +1,5 @@
 /*
- * smoothscroll polyfill - v0.3.5
+ * smoothscroll polyfill - v0.3.6
  * https://iamdustan.github.io/smoothscroll
  * 2016 (c) Dustan Kasten, Jeremias Menichelli - MIT License
  */
@@ -99,22 +99,33 @@
      */
     function findScrollableParent(el) {
       var isBody;
-      var hasScrollableSpace;
-      var hasVisibleOverflow;
+      var hasVerticalScrollableSpace;
+      var hasHorizontalScrollableSpace;
+      var hasVerticalVisibleOverflow;
+      var hasHorizontalVisibleOverflow;
+      var isVerticallyScrollable;
+      var isHorizontallyScrollable;
 
       do {
         el = el.parentNode;
-
         // set condition variables
         isBody = el === d.body;
-        hasScrollableSpace =
-          el.clientHeight < el.scrollHeight ||
-          el.clientWidth < el.scrollWidth;
-        hasVisibleOverflow =
-          w.getComputedStyle(el, null).overflow === 'visible';
-      } while (!isBody && !(hasScrollableSpace && !hasVisibleOverflow));
+        hasVerticalScrollableSpace = el.clientHeight < el.scrollHeight;
+        hasHorizontalScrollableSpace = el.clientWidth < el.scrollWidth;
+        hasVerticalVisibleOverflow =
+          w.getComputedStyle(el, null).overflowY === 'visible';
+        hasHorizontalVisibleOverflow =
+          w.getComputedStyle(el, null).overflowX === 'visible';
+        isVerticallyScrollable =
+          hasVerticalScrollableSpace && !hasVerticalVisibleOverflow;
+        isHorizontallyScrollable =
+          hasHorizontalScrollableSpace && !hasHorizontalVisibleOverflow;
+      } while (!isBody &&
+        !(isVerticallyScrollable || isHorizontallyScrollable));
 
-      isBody = hasScrollableSpace = hasVisibleOverflow = null;
+      isBody = hasVerticalScrollableSpace = hasHorizontalScrollableSpace =
+        hasVerticalVisibleOverflow = hasHorizontalVisibleOverflow =
+        isVerticallyScrollable = isHorizontallyScrollable = null;
 
       return el;
     }
