@@ -2,6 +2,7 @@
   "name": "smoothscroll",
   "description": "Polyfill for smooth scroll behavior",
   "main": "dist/smoothscroll.js",
+  "version": "0.3.6",
   "authors": [
     "Dustan Kasten",
     "Jeremias Menichelli"
