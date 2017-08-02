@@ -279,7 +279,10 @@
     Element.prototype.scrollIntoView = function() {
       // avoid smooth behavior if not required
       if (shouldBailOut(arguments[0])) {
-        original.scrollIntoView.call(this, arguments[0] || true);
+        original.scrollIntoView.call(
+          this,
+          arguments[0] === undefined ? true : arguments[0]
+        );
         return;
       }
 
