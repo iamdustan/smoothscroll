@@ -95,6 +95,8 @@
       var isBody;
       var hasScrollableSpace;
       var hasVisibleOverflow;
+      var isFixed;
+      var style;
 
       do {
         el = el.parentNode;
@@ -104,11 +106,13 @@
         hasScrollableSpace =
           el.clientHeight < el.scrollHeight ||
           el.clientWidth < el.scrollWidth;
-        hasVisibleOverflow =
-          w.getComputedStyle(el, null).overflow === 'visible';
-      } while (!isBody && !(hasScrollableSpace && !hasVisibleOverflow));
+        style =  w.getComputedStyle(el, null);
+        hasVisibleOverflow = style.overflow === 'visible';
+        isFixed = style.position === 'fixed';
+        
+      } while (!isFixed && !isBody && !(hasScrollableSpace && !hasVisibleOverflow));
 
-      isBody = hasScrollableSpace = hasVisibleOverflow = null;
+      isFixed = style = isBody = hasScrollableSpace = hasVisibleOverflow = null;
 
       return el;
     }
