@@ -287,7 +287,8 @@
           scrollableParent.scrollLeft + clientRects.left - parentRects.left,
           scrollableParent.scrollTop + clientRects.top - parentRects.top
         );
-        if (w.getComputedStyle(scrollableParent).position != 'fixed') {
+        // avoid scrolling a fixed positioned parent
+        if (w.getComputedStyle(scrollableParent).position !== 'fixed') {
           // reveal parent in viewport
           w.scrollBy({
             left: parentRects.left,
