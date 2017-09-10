@@ -86,6 +86,52 @@
     }
 
     /**
+     * indicates if an element has scrollable space in the provided axis
+     * @method hasScrollableSpace
+     * @param {Node} el
+     * @param {String} axis
+     * @returns {Boolean}
+     */
+    function hasScrollableSpace(el, axis) {
+      if (axis === 'Y') {
+        return el.clientHeight < el.scrollHeight;
+      }
+
+      if (axis === 'X') {
+        return el.clientWidth < el.scrollWidth;
+      }
+
+      throw new Error('axis invalid. Expected either `X` or `Y`.');
+    }
+
+    /**
+     * indicates if an element has a scrollable overflow property in the axis
+     * @method canOverflow
+     * @param {Node} el
+     * @param {String} axis
+     * @returns {Boolean}
+     */
+    function canOverflow(el, axis) {
+      var overflowValue = w.getComputedStyle(el, null)['overflow' + axis];
+
+      return overflowValue === 'auto' || overflowValue === 'scroll';
+    }
+
+    /**
+     * indicates if an element can be scrolled in either axis
+     * @method isScrollable
+     * @param {Node} el
+     * @param {String} axis
+     * @returns {Boolean}
+     */
+    function isScrollable(el) {
+      var isScrollableY = hasScrollableSpace(el, 'Y') && canOverflow(el, 'Y');
+      var isScrollableX = hasScrollableSpace(el, 'X') && canOverflow(el, 'X');
+
+      return isScrollableY || isScrollableX;
+    }
+
+    /**
      * finds scrollable parent of an element
      * @method findScrollableParent
      * @param {Node} el
@@ -93,22 +139,15 @@
      */
     function findScrollableParent(el) {
       var isBody;
-      var hasScrollableSpace;
-      var hasVisibleOverflow;
 
       do {
         el = el.parentNode;
 
         // set condition variables
         isBody = el === d.body;
-        hasScrollableSpace =
-          el.clientHeight < el.scrollHeight ||
-          el.clientWidth < el.scrollWidth;
-        hasVisibleOverflow =
-          w.getComputedStyle(el, null).overflow === 'visible';
-      } while (!isBody && !(hasScrollableSpace && !hasVisibleOverflow));
+      } while (!isBody && !isScrollable(el));
 
-      isBody = hasScrollableSpace = hasVisibleOverflow = null;
+      isBody = null;
 
       return el;
     }
