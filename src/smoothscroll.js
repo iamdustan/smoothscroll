@@ -241,7 +241,10 @@
           w,
           arguments[0].left !== undefined
             ? arguments[0].left
-            : arguments[0],
+            : typeof arguments[0] !== 'object'
+              ? arguments[0]
+              : (w.scrollX || w.pageXOffset),
+          // use top prop, second argument if present or fallback to scrollY
           arguments[0].top !== undefined
             ? arguments[0].top
             : arguments[1] !== undefined
@@ -307,9 +310,13 @@
 
         original.elementScroll.call(
           this,
+          // use left prop, fist number argument or fallback to scrollLeft
           arguments[0].left !== undefined
             ? ~~arguments[0].left
-            : ~~arguments[0],
+            : typeof arguments[0] !== 'object'
+              ? ~~arguments[0]
+              : this.scrollLeft,
+          // use top prop, second argument or fallback to scrollTop
           arguments[0].top !== undefined
             ? ~~arguments[0].top
             : arguments[1] !== undefined
