@@ -344,12 +344,15 @@
           scrollableParent.scrollLeft + clientRects.left - parentRects.left,
           scrollableParent.scrollTop + clientRects.top - parentRects.top
         );
-        // reveal parent in viewport
-        w.scrollBy({
-          left: parentRects.left,
-          top: parentRects.top,
-          behavior: 'smooth'
-        });
+        // avoid scrolling a fixed positioned parent
+        if (w.getComputedStyle(scrollableParent).position !== 'fixed') {
+          // reveal parent in viewport
+          w.scrollBy({
+            left: parentRects.left,
+            top: parentRects.top,
+            behavior: 'smooth'
+          });
+        }
       } else {
         // reveal element in viewport
         w.scrollBy({
