@@ -287,14 +287,15 @@
       }
 
       // LET THE SMOOTHNESS BEGIN!
-      var scrollableParent = findScrollableParent(this);
+      var el = this;
+      var scrollableParent = findScrollableParent(el);
       var parentRects = scrollableParent.getBoundingClientRect();
-      var clientRects = this.getBoundingClientRect();
+      var clientRects = el.getBoundingClientRect();
 
-      if (scrollableParent !== d.body) {
+      while (scrollableParent !== d.body) {
         // reveal element inside parent
         smoothScroll.call(
-          this,
+          el,
           scrollableParent,
           scrollableParent.scrollLeft + clientRects.left - parentRects.left,
           scrollableParent.scrollTop + clientRects.top - parentRects.top
@@ -305,13 +306,21 @@
           top: parentRects.top,
           behavior: 'smooth'
         });
-      } else {
-        // reveal element in viewport
-        w.scrollBy({
-          left: clientRects.left,
-          top: clientRects.top,
-          behavior: 'smooth'
-        });
+
+        el = scrollableParent;
+        scrollableParent = findScrollableParent(el);
+        parentRects = scrollableParent.getBoundingClientRect();
+        clientRects = el.getBoundingClientRect();
+
+      }
+      // reveal element in viewport
+      w.scrollBy({
+        left: clientRects.left,
+        top: clientRects.top,
+        behavior: 'smooth'
+      });
+    };
+  }
       }
     };
   }
