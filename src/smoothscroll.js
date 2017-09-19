@@ -15,11 +15,23 @@
       return;
     }
 
+    /**
+     * indicates if a the current browser is made by Microsoft
+     * @method isMicrosoftBrowser
+     * @param {string} userAgent
+     * @returns {Boolean}
+     */
+    function isMicrosoftBrowser(userAgent) {
+      var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
+      return new RegExp(userAgentPatterns.join('|')).test(userAgent);
+    }
+
     /*
      * globals
      */
     var Element = w.HTMLElement || w.Element;
     var SCROLL_TIME = 468;
+    var ROUNDING_TOLERANCE = isMicrosoftBrowser(w.navigator.userAgent) ? 1 : 0;
 
     /*
      * object gathering original scroll methods
@@ -94,11 +106,11 @@
      */
     function hasScrollableSpace(el, axis) {
       if (axis === 'Y') {
-        return el.clientHeight < el.scrollHeight;
+        return el.clientHeight + ROUNDING_TOLERANCE < el.scrollHeight;
       }
 
       if (axis === 'X') {
-        return el.clientWidth < el.scrollWidth;
+        return el.clientWidth + ROUNDING_TOLERANCE < el.scrollWidth;
       }
 
       throw new Error('axis invalid. Expected either `X` or `Y`.');

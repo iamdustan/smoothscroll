@@ -4,6 +4,7 @@ bower_components
 
 // npm
 npm_debug.log
+npm-debug.log
 
 // OS X
 .DS_Store
