@@ -279,27 +279,29 @@
     };
 
     // Element.prototype.scroll and Element.prototype.scrollTo
-    Element.prototype.scroll = Element.prototype.scrollTo = function() {
-      // avoid smooth behavior if not required
-      if (shouldBailOut(arguments[0])) {
-        original.elScroll.call(
+    Element.prototype.scroll = Element.prototype.scrollTo = function() {    
+      if (arguments[0]) {
+        // avoid smooth behavior if not required
+        if (shouldBailOut(arguments[0])) {
+          original.elScroll.call(
+              this,
+              arguments[0].left || arguments[0],
+              arguments[0].top || arguments[1]
+          );
+          return;
+        }
+
+        var left = arguments[0].left;
+        var top = arguments[0].top;
+
+        // LET THE SMOOTHNESS BEGIN!
+        smoothScroll.call(
             this,
-            arguments[0].left || arguments[0],
-            arguments[0].top || arguments[1]
+            this,
+            typeof left === 'number' ? left : this.scrollLeft,
+            typeof top === 'number' ? top : this.scrollTop
         );
-        return;
       }
-
-      var left = arguments[0].left;
-      var top = arguments[0].top;
-
-      // LET THE SMOOTHNESS BEGIN!
-      smoothScroll.call(
-          this,
-          this,
-          typeof left === 'number' ? left : this.scrollLeft,
-          typeof top === 'number' ? top : this.scrollTop
-      );
     };
 
     // Element.prototype.scrollBy
