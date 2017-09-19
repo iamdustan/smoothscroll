@@ -15,11 +15,23 @@
       return;
     }
 
+    /**
+     * indicates if a the current browser is made by Microsoft
+     * @method isMicrosoftBrowser
+     * @param {string} userAgent
+     * @returns {Boolean}
+     */
+    function isMicrosoftBrowser(userAgent) {
+      var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
+      return new RegExp(userAgentPatterns.join('|')).test(userAgent);
+    }
+
     /*
      * globals
      */
     var Element = w.HTMLElement || w.Element;
     var SCROLL_TIME = 468;
+    var ROUNDING_TOLERANCE = isMicrosoftBrowser(w.navigator.userAgent) ? 1 : 0;
 
     /*
      * object gathering original scroll methods
@@ -102,8 +114,8 @@
         // set condition variables
         isBody = el === d.body;
         hasScrollableSpace =
-          el.clientHeight < el.scrollHeight ||
-          el.clientWidth < el.scrollWidth;
+          el.clientHeight + ROUNDING_TOLERANCE < el.scrollHeight ||
+          el.clientWidth + ROUNDING_TOLERANCE < el.scrollWidth;
         hasVisibleOverflow =
           w.getComputedStyle(el, null).overflow === 'visible';
       } while (!isBody && !(hasScrollableSpace && !hasVisibleOverflow));
