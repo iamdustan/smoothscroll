@@ -284,8 +284,16 @@
       if (shouldBailOut(arguments[0])) {
         original.scrollBy.call(
           w,
-          arguments[0].left !== undefined ? arguments[0].left : arguments[0],
-          arguments[0].top !== undefined ? arguments[0].top : arguments[1]
+          arguments[0].left !== undefined
+            ? arguments[0].left
+            : typeof arguments[0] !== 'object'
+              ? arguments[0]
+              : 0,
+          arguments[0].top !== undefined
+            ? arguments[0].top
+            : arguments[1] !== undefined
+             ? arguments[1]
+             : 0
         );
 
         return;
@@ -316,7 +324,7 @@
 
         original.elementScroll.call(
           this,
-          // use left prop, fist number argument or fallback to scrollLeft
+          // use left prop, first number argument or fallback to scrollLeft
           arguments[0].left !== undefined
             ? ~~arguments[0].left
             : typeof arguments[0] !== 'object'
