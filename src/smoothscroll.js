@@ -314,7 +314,7 @@ function polyfill() {
 
       original.elementScroll.call(
         this,
-        // use left prop, fist number argument or fallback to scrollLeft
+        // use left prop, first number argument or fallback to scrollLeft
         arguments[0].left !== undefined
           ? ~~arguments[0].left
           : typeof arguments[0] !== 'object'
