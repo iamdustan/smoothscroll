@@ -18,6 +18,22 @@ require('smoothscroll-polyfill').polyfill();
 _Requires requestAnimationFrame polyfill for browsers which don't support it!_
 
 
+### Force polyfill implementation
+
+If you prefer the polyfill to always override the current native methods (sometimes needed because of parcial implementations or inconsistencies between browsers), place this global variable before requiring the module or including the polyfill file.
+
+```js
+window.__forceSmoothScrollPolyfill__ = true;
+```
+
+### Modify scrolling speed
+
+It's also possible to alter the speed the scrolling happens, take in count this can't be change after the code has run and it's not recommended.
+
+```js
+window.__smoothScrollPolyfillSpeed__ = 512;
+```
+
 ## Contribute
 
 Fork the repository and run **npm install**.
