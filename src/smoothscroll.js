@@ -39,7 +39,7 @@
     /**
      * indicates if a the current browser is made by Microsoft
      * @method isMicrosoftBrowser
-     * @param {string} userAgent
+     * @param {String} userAgent
      * @returns {Boolean}
      */
     function isMicrosoftBrowser(userAgent) {
@@ -49,32 +49,33 @@
     }
 
     /**
-    * changes scroll position inside an element
-    * @method scrollElement
-    * @param {Number} x
-    * @param {Number} y
-    */
+     * changes scroll position inside an element
+     * @method scrollElement
+     * @param {Number} x
+     * @param {Number} y
+     * @returns {undefined}
+     */
     function scrollElement(x, y) {
       this.scrollLeft = x;
       this.scrollTop = y;
     }
 
     /**
-    * returns result of applying ease math function to a number
-    * @method ease
-    * @param {Number} k
-    * @returns {Number}
-    */
+     * returns result of applying ease math function to a number
+     * @method ease
+     * @param {Number} k
+     * @returns {Number}
+     */
     function ease(k) {
       return 0.5 * (1 - Math.cos(Math.PI * k));
     }
 
     /**
-    * indicates if a smooth behavior should be applied
-    * @method shouldBailOut
-    * @param {Number|Object} x
-    * @returns {Boolean}
-    */
+     * indicates if a smooth behavior should be applied
+     * @method shouldBailOut
+     * @param {Number|Object} firstArg
+     * @returns {Boolean}
+     */
     function shouldBailOut(firstArg) {
       if (firstArg === null
         || typeof firstArg !== 'object'
@@ -163,6 +164,7 @@
      * self invoked function that, given a context, steps through scrolling
      * @method step
      * @param {Object} context
+     * @returns {undefined}
      */
     function step(context) {
       var time = now();
@@ -194,6 +196,7 @@
      * @param {Object|Node} el
      * @param {Number} x
      * @param {Number} y
+     * @returns {undefined}
      */
     function smoothScroll(el, x, y) {
       var scrollable;
@@ -264,7 +267,7 @@
           : (w.scrollX || w.pageXOffset),
         arguments[0].top !== undefined
           ? ~~arguments[0].top
-          : (w.scrollY || w.pageYOffset),
+          : (w.scrollY || w.pageYOffset)
       );
     };
 
@@ -282,6 +285,7 @@
           arguments[0].left !== undefined ? arguments[0].left : arguments[0],
           arguments[0].top !== undefined ? arguments[0].top : arguments[1]
         );
+
         return;
       }
 

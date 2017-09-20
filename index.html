@@ -141,7 +141,9 @@
       background-color: #d32f2f;
     }
 
-    .scrollable-parent {
+    .scrollable-parent,
+    .scrollable-element-to-top,
+    .scrollable-element-by {
       background-color: #efefef;
       border-radius: 4px;
       margin: 20px 0 0;
@@ -238,10 +240,19 @@
   <section class="sample sample-elementScrollToTop">
     <div class="container">
       <h2>element.scroll <small>or</small> element.scrollTo</h2>
-      <pre><code>element.scrollTo({ top: 0, left: 0, behavior: 'smooth' });</code></pre>
+      <pre><code>element.scroll({ top: 0, left: 0, behavior: 'smooth' });</code></pre>
       <div class="actions">
-        <button class="btn js-elementScrollToTop">scroll element to top</button>
+        <button class="btn js-element-scroll-to-top">scroll element to top</button>
       </div>
+      <article class="scrollable-element-to-top">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+        <h3 class="hello"><em>bye!</em></h3>
+      </article>
     </div>
   </section>
 
@@ -250,8 +261,23 @@
       <h2>element.scrollBy</h2>
       <pre><code>element.scrollBy({ top: 100, left: 0, behavior: 'smooth' });</code></pre>
       <div class="actions">
-        <button class="btn js-scroll-by2">scroll element by 100 pixels</button>
+        <button class="btn js-element-scroll-by">scroll element by 100 pixels</button>
       </div>
+      <article class="scrollable-element-by">
+        <h3 class="hello"><em>bye!</em></h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+        adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+      </article>
     </div>
   </section>
 
@@ -322,15 +348,17 @@
       });
 
       // element scroll to
-      document.querySelector('.js-elementScrollToTop').addEventListener('click', function(e) {
+      document.querySelector('.scrollable-element-to-top').scrollTop = 10000;
+
+      document.querySelector('.js-element-scroll-to-top').addEventListener('click', function(e) {
         e.preventDefault();
-        document.querySelector('.scrollable-parent').scroll({ top: 0, left: 0, behavior: 'smooth' });
+        document.querySelector('.scrollable-element-to-top').scroll({ top: 0, left: 0, behavior: 'smooth' });
       });
 
       // element scroll by
-      document.querySelector('.js-scroll-by2').addEventListener('click', function(e) {
+      document.querySelector('.js-element-scroll-by').addEventListener('click', function(e) {
         e.preventDefault();
-        document.querySelector('.scrollable-parent').scrollBy({ top: 100, left: 0, behavior: 'smooth' });
+        document.querySelector('.scrollable-element-by').scrollBy({ top: 100, left: 0, behavior: 'smooth' });
       });
     });
   </script>
