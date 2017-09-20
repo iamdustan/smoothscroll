@@ -266,7 +266,7 @@
         ],
         "strict": [
             "error",
-            "function"
+            "global"
         ],
         "switch-colon-spacing": "error",
         "symbol-description": "error",

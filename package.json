@@ -14,11 +14,20 @@
       "url": "https://jeremenichelli.github.io"
     }
   ],
-  "devDependencies": {},
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^4.7.1",
+    "rollup": "^0.50.0",
+    "uglify-js": "^3.1.1"
+  },
   "description": "Polyfill for smooth scroll behavior",
   "main": "dist/smoothscroll.js",
   "scripts": {
-    "test": "eslint src/**/*.js"
+    "test": "eslint src/**/*.js",
+    "prebuild": "npm test",
+    "build": "rollup -c rollup.config.js",
+    "preminify": "npm run build",
+    "minify": "uglifyjs dist/smoothscroll.js -c -m -o dist/smoothscroll.min.js --verbose"
   },
   "repository": {
     "type": "git",
@@ -34,8 +43,5 @@
   "bugs": {
     "url": "https://github.com/iamdustan/smoothscroll/issues"
   },
-  "homepage": "https://iamdustan.github.io/smoothscroll",
-  "dependencies": {
-    "eslint": "^4.7.1"
-  }
+  "homepage": "https://iamdustan.github.io/smoothscroll"
 }
