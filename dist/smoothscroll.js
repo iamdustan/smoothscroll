@@ -1,4 +1,4 @@
-/* smoothscroll v0.3.6 - 2017 Dustan Kasten, Jeremias Menichelli - MIT License */
+/* smoothscroll v0.3.6 - 2017 - Dustan Kasten, Jeremias Menichelli - MIT License */
 (function () {
   'use strict';
 
