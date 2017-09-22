@@ -26,13 +26,6 @@ If you prefer the polyfill to always override the current native methods (someti
 window.__forceSmoothScrollPolyfill__ = true;
 ```
 
-### Modify scrolling speed
-
-It's also possible to alter the speed the scrolling happens, take in count this can't be change after the code has run and it's not recommended.
-
-```js
-window.__smoothScrollPolyfillSpeed__ = 512;
-```
 
 ## Contribute
 

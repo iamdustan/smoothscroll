@@ -30,10 +30,14 @@ function polyfill() {
 
   // globals
   var Element = w.HTMLElement || w.Element;
+  var SCROLL_TIME = 468;
+
+  /*
+   * IE has rounding bug rounding down clientHeight and clientWidth and
+   * rounding up scrollHeight and scrollWidth causing false positives
+   * on hasScrollableSpace
+   */
   var ROUNDING_TOLERANCE = isMicrosoftBrowser(w.navigator.userAgent) ? 1 : 0;
-  var SCROLL_TIME = typeof w.__smoothScrollPolyfillSpeed__ === 'number'
-    ? w.__smoothScrollPolyfillSpeed__
-    : 468;
 
   // object gathering original scroll methods
   var original = {
@@ -93,7 +97,11 @@ function polyfill() {
     }
 
     // throw error when behavior is not supported
-    throw new TypeError('behavior not valid');
+    throw new TypeError(
+      'behavior member of ScrollOptions '
+      + firstArg.behavior
+      + ' is not a valid value for enumeration ScrollBehavior.'
+    );
   }
 
   /**

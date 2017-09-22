@@ -62,7 +62,7 @@
             "error",
             "declaration"
         ],
-        "function-paren-newline": "error",
+        "function-paren-newline": "off",
         "generator-star-spacing": "error",
         "getter-return": "error",
         "global-require": "error",
