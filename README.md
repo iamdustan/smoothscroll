@@ -1,6 +1,6 @@
 # Smooth Scroll behavior polyfill
 
-The `Scroll Behavior` specification has been introduced as an extension of the `Window` interface to allow for the developer to opt in to native smooth scrolling. To date this has only been implemented in _Firefox_.
+The [Scroll Behavior specification](https://developer.mozilla.org/en/docs/Web/CSS/scroll-behavior) has been introduced as an extension of the `Window` interface to allow for the developer to opt in to native smooth scrolling. To date this has only been implemented in _Firefox_.
 
 See it in action https://iamdustan.github.io/smoothscroll
 
@@ -16,6 +16,15 @@ require('smoothscroll-polyfill').polyfill();
 ```
 
 _Requires requestAnimationFrame polyfill for browsers which don't support it!_
+
+
+### Force polyfill implementation
+
+If you prefer the polyfill to always override the current native methods (sometimes needed because of partial implementations or inconsistencies between browsers), place this global variable before requiring the module or including the polyfill file.
+
+```js
+window.__forceSmoothScrollPolyfill__ = true;
+```
 
 
 ## Contribute

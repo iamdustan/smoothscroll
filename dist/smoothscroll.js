@@ -1,56 +1,70 @@
-/*
- * smoothscroll polyfill - v0.4.0
- * https://iamdustan.github.io/smoothscroll
- * 2016 (c) Dustan Kasten, Jeremias Menichelli - MIT License
- */
-
-(function(w, d, undefined) {
+/* smoothscroll v0.4.0 - 2017 - Dustan Kasten, Jeremias Menichelli - MIT License */
+(function () {
   'use strict';
 
   /*
    * aliases
    * w: window global object
    * d: document
-   * undefined: undefined
    */
+  var w = window;
+  var d = document;
 
-  // polyfill
-  function polyfill(overrideBrowserImplementation) {
-    // return when scrollBehavior interface is supported
-    if ('scrollBehavior' in d.documentElement.style) {
-      if (!overrideBrowserImplementation) {
-        return;
-      }
+  /**
+   * indicates if a the current browser is made by Microsoft
+   * @method isMicrosoftBrowser
+   * @param {String} userAgent
+   * @returns {Boolean}
+   */
+  function isMicrosoftBrowser(userAgent) {
+    var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
+
+    return new RegExp(userAgentPatterns.join('|')).test(userAgent);
+  }
+
+  var ALLOWED_BEHAVIOR_VALUES = [undefined, 'auto', 'instant', 'smooth'];
+  var ALLOWED_BLOCK_VALUES = [undefined, 'start', 'end'];
+
+   // polyfill
+  function polyfill() {
+    // return if scroll behavior is supported and polyfill is not forced
+    if ('scrollBehavior' in d.documentElement.style
+      && w.__forceSmoothScrollPolyfill__ !== true) {
+      return;
     }
 
-    /*
-     * globals
-     */
+    // globals
     var Element = w.HTMLElement || w.Element;
     var SCROLL_TIME = 468;
 
     /*
-     * object gathering original scroll methods
+     * IE has rounding bug rounding down clientHeight and clientWidth and
+     * rounding up scrollHeight and scrollWidth causing false positives
+     * on hasScrollableSpace
      */
+    var ROUNDING_TOLERANCE = isMicrosoftBrowser(w.navigator.userAgent) ? 1 : 0;
+
+    // object gathering original scroll methods
     var original = {
       scroll: w.scroll || w.scrollTo,
       scrollBy: w.scrollBy,
+      elementScroll: Element.prototype.scroll || scrollElement,
       scrollIntoView: Element.prototype.scrollIntoView
     };
 
-    /*
-     * define timing method
-     */
+    // define timing method
     var now = w.performance && w.performance.now
-      ? w.performance.now.bind(w.performance) : Date.now;
+      ? w.performance.now.bind(w.performance)
+      : Date.now;
 
     /**
      * changes scroll position inside an element
      * @method scrollElement
      * @param {Number} x
      * @param {Number} y
+     * @returns {undefined}
      */
-    function scrollElement(x, y) {
+    function scrollElement (x, y) {
       this.scrollLeft = x;
       this.scrollTop = y;
     }
@@ -61,7 +75,7 @@
      * @param {Number} k
      * @returns {Number}
      */
-    function ease(k) {
+    function ease (k) {
       return 0.5 * (1 - Math.cos(Math.PI * k));
     }
 
@@ -71,7 +85,7 @@
      * @param {Boolean|Object=} x
      * @returns {Object}
      */
-    function normalizeArgs(x) {
+    function normalizeArgs (x) {
       if (typeof x === 'undefined') {
         return {
           block: 'start',
@@ -87,27 +101,18 @@
       }
 
       if (typeof x === 'object') {
-        if (
-          (x.behavior !== undefined) &&
-          (x.behavior !== 'auto') &&
-          (x.behavior !== 'instant') &&
-          (x.behavior !== 'smooth')
-        ) {
+        if (ALLOWED_BEHAVIOR_VALUES.indexOf(x.behavior) === -1) {
           throw new TypeError('behavior not valid');
         }
 
-        if (
-          (x.block !== undefined) &&
-          (x.block !== 'start') &&
-          (x.block !== 'end')
-        ) {
+        if (ALLOWED_BLOCK_VALUES.indexOf(x.block) === -1) {
           throw new TypeError('block not valid');
         }
 
         return {
           block: x.block === 'end' ? 'end' : 'start',
           behavior: x.behavior === 'smooth' ? 'smooth' : 'auto'
-        }
+        };
       }
 
       throw new TypeError('scrollIntoView accepts undefined, boolean or object as its first argument');
@@ -115,27 +120,75 @@
 
     /**
      * indicates if a smooth behavior should be applied
-     * @method scrollIsInstant
-     * @param {Number|Object} x
+     * @method shouldBailOut
+     * @param {Number|Object} firstArg
      * @returns {Boolean}
      */
-    function scrollIsInstant(x) {
-      if (typeof x !== 'object'
-            || x.behavior === undefined
-            || x.behavior === 'auto'
-            || x.behavior === 'instant') {
-        // first arg not an object, or behavior is auto, instant or undefined
+    function shouldBailOut (firstArg) {
+      if (firstArg === null
+        || typeof firstArg !== 'object'
+        || firstArg.behavior === undefined
+        || firstArg.behavior === 'auto'
+        || firstArg.behavior === 'instant') {
+        // first argument is not an object/null
+        // or behavior is auto, instant or undefined
         return true;
       }
 
-      if (typeof x === 'object'
-            && x.behavior === 'smooth') {
+      if (typeof firstArg === 'object' && firstArg.behavior === 'smooth') {
         // first argument is an object and behavior is smooth
         return false;
       }
 
       // throw error when behavior is not supported
-      throw new TypeError('behavior not valid');
+      throw new TypeError(
+        'behavior member of ScrollOptions '
+        + firstArg.behavior
+        + ' is not a valid value for enumeration ScrollBehavior.'
+      );
+    }
+
+    /**
+     * indicates if an element has scrollable space in the provided axis
+     * @method hasScrollableSpace
+     * @param {Node} el
+     * @param {String} axis
+     * @returns {Boolean}
+     */
+    function hasScrollableSpace (el, axis) {
+      if (axis === 'Y') {
+        return (el.clientHeight + ROUNDING_TOLERANCE) < el.scrollHeight;
+      }
+
+      if (axis === 'X') {
+        return (el.clientWidth + ROUNDING_TOLERANCE) < el.scrollWidth;
+      }
+    }
+
+    /**
+     * indicates if an element has a scrollable overflow property in the axis
+     * @method canOverflow
+     * @param {Node} el
+     * @param {String} axis
+     * @returns {Boolean}
+     */
+    function canOverflow (el, axis) {
+      var overflowValue = w.getComputedStyle(el, null)['overflow' + axis];
+
+      return overflowValue === 'auto' || overflowValue === 'scroll';
+    }
+
+    /**
+     * indicates if an element can be scrolled in either axis
+     * @method isScrollable
+     * @param {Node} el
+     * @returns {Boolean}
+     */
+    function isScrollable (el) {
+      var isScrollableY = hasScrollableSpace(el, 'Y') && canOverflow(el, 'Y');
+      var isScrollableX = hasScrollableSpace(el, 'X') && canOverflow(el, 'X');
+
+      return isScrollableY || isScrollableX;
     }
 
     /**
@@ -144,12 +197,16 @@
      * @param {Node} el
      * @returns {Node} el
      */
-    function findScrollableParent(el) {
+    function findScrollableParent (el) {
+      var isBody;
+
       do {
         el = el.parentNode;
-      } while (el !== d.body
-              && !(el.clientHeight < el.scrollHeight
-              || el.clientWidth < el.scrollWidth));
+
+        isBody = el === d.body;
+      } while (isBody === false && isScrollable(el) === false);
+
+      isBody = null;
 
       return el;
     }
@@ -158,11 +215,9 @@
      * self invoked function that, given a context, steps through scrolling
      * @method step
      * @param {Object} context
+     * @returns {undefined}
      */
-    function step(context) {
-      // call method again on next available frame
-      context.frame = w.requestAnimationFrame(step.bind(w, context));
-
+    function step (context) {
       var time = now();
       var value;
       var currentX;
@@ -180,27 +235,26 @@
 
       context.method.call(context.scrollable, currentX, currentY);
 
-      // return when end points have been reached
-      if (currentX === context.x && currentY === context.y) {
-        w.cancelAnimationFrame(context.frame);
-        return;
+      // scroll more if we have not reached our destination
+      if (currentX !== context.x || currentY !== context.y) {
+        w.requestAnimationFrame(step.bind(w, context));
       }
     }
 
     /**
-     * scrolls window with a smooth behavior
+     * scrolls window or element with a smooth behavior
      * @method smoothScroll
      * @param {Object|Node} el
      * @param {Number} x
      * @param {Number} y
+     * @returns {undefined}
      */
-    function smoothScroll(el, x, y) {
+    function smoothScroll (el, x, y) {
       var scrollable;
       var startX;
       var startY;
       var method;
       var startTime = now();
-      var frame;
 
       // define scroll context
       if (el === d.body) {
@@ -215,11 +269,6 @@
         method = scrollElement;
       }
 
-      // cancel frame when a scroll event's happening
-      if (frame) {
-        w.cancelAnimationFrame(frame);
-      }
-
       // scroll looping over a frame
       step({
         scrollable: scrollable,
@@ -228,47 +277,71 @@
         startX: startX,
         startY: startY,
         x: x,
-        y: y,
-        frame: frame
+        y: y
       });
     }
 
-    function scrollWithinParentElem(el, opts) {
-        var scrollableParent = findScrollableParent(el);
-        if (scrollableParent === d.body) {
-            return;
-        }
+    function scrollWithinParentElem (el, opts) {
+      var scrollableParent = findScrollableParent(el);
 
-        var clientRects = el.getBoundingClientRect();
-        var parentRects = scrollableParent.getBoundingClientRect();
-        var clientAdj = clientRects.top;
-        if (opts.block === 'end') {
-            var scrollbarHeight = scrollableParent.offsetHeight - scrollableParent.clientHeight
-            clientAdj = clientRects.bottom - parentRects.height + scrollbarHeight;
-        }
+      if (scrollableParent === d.body) {
+        return;
+      }
 
-        // reveal element inside parent
-        smoothScroll.call(
-          this,
-          scrollableParent,
-          scrollableParent.scrollLeft + clientRects.left - parentRects.left,
-          scrollableParent.scrollTop + clientAdj - parentRects.top
-        );
+      var clientRects = el.getBoundingClientRect();
+      var parentRects = scrollableParent.getBoundingClientRect();
+      var clientAdj = clientRects.top;
+
+      if (opts.block === 'end') {
+        var scrollbarHeight = scrollableParent.offsetHeight
+          - scrollableParent.clientHeight;
+
+        clientAdj = clientRects.bottom - parentRects.height + scrollbarHeight;
+      }
+
+      // reveal element inside parent
+      smoothScroll.call(
+        this,
+        scrollableParent,
+        scrollableParent.scrollLeft + clientRects.left - parentRects.left,
+        scrollableParent.scrollTop + clientAdj - parentRects.top
+      );
+
+      // reveal parent in viewport unless is fixed
+      if (w.getComputedStyle(scrollableParent).position !== 'fixed') {
+        w.scrollBy({
+          left: parentRects.left,
+          top: parentRects.top,
+          behavior: 'smooth'
+        });
+      }
     }
 
-    /*
-     * ORIGINAL METHODS OVERRIDES
-     */
-
+    // ORIGINAL METHODS OVERRIDES
     // w.scroll and w.scrollTo
-    w.scroll = w.scrollTo = function() {
+    w.scroll = w.scrollTo = function () {
+      // avoid action when no arguments are passed
+      if (arguments[0] === undefined) {
+        return;
+      }
+
       // avoid smooth behavior if not required
-      if (scrollIsInstant(arguments[0])) {
+      if (shouldBailOut(arguments[0]) === true) {
         original.scroll.call(
           w,
-          arguments[0].left || arguments[0],
-          arguments[0].top || arguments[1]
+          arguments[0].left !== undefined
+            ? arguments[0].left
+            : typeof arguments[0] !== 'object'
+            ? arguments[0]
+            : (w.scrollX || w.pageXOffset),
+          // use top prop, second argument if present or fallback to scrollY
+          arguments[0].top !== undefined
+            ? arguments[0].top
+            : arguments[1] !== undefined
+            ? arguments[1]
+            : (w.scrollY || w.pageYOffset)
         );
+
         return;
       }
 
@@ -276,20 +349,39 @@
       smoothScroll.call(
         w,
         d.body,
-        ~~arguments[0].left,
-        ~~arguments[0].top
+        arguments[0].left !== undefined
+          ? ~~arguments[0].left
+          : (w.scrollX || w.pageXOffset),
+        arguments[0].top !== undefined
+          ? ~~arguments[0].top
+          : (w.scrollY || w.pageYOffset)
       );
     };
 
+
     // w.scrollBy
-    w.scrollBy = function() {
+    w.scrollBy = function () {
+      // avoid action when no arguments are passed
+      if (arguments[0] === undefined) {
+        return;
+      }
+
       // avoid smooth behavior if not required
-      if (scrollIsInstant(arguments[0])) {
+      if (shouldBailOut(arguments[0])) {
         original.scrollBy.call(
           w,
-          arguments[0].left || arguments[0],
-          arguments[0].top || arguments[1]
+          arguments[0].left !== undefined
+            ? arguments[0].left
+            : typeof arguments[0] !== 'object'
+            ? arguments[0]
+            : 0,
+          arguments[0].top !== undefined
+            ? arguments[0].top
+            : arguments[1] !== undefined
+            ? arguments[1]
+            : 0
         );
+
         return;
       }
 
@@ -302,13 +394,94 @@
       );
     };
 
+    // Element.prototype.scroll and Element.prototype.scrollTo
+    Element.prototype.scroll = Element.prototype.scrollTo = function () {
+      // avoid action when no arguments are passed
+      if (arguments[0] === undefined) {
+        return;
+      }
+
+      // avoid smooth behavior if not required
+      if (shouldBailOut(arguments[0]) === true) {
+        // if one number is passed, throw error to match Firefox implementation
+        if (typeof arguments[0] === 'number' && arguments[1] === undefined) {
+          throw new SyntaxError('Value couldn\'t be converted');
+        }
+
+        original.elementScroll.call(
+          this,
+          // use left prop, first number argument or fallback to scrollLeft
+          arguments[0].left !== undefined
+            ? ~~arguments[0].left
+            : typeof arguments[0] !== 'object'
+            ? ~~arguments[0]
+            : this.scrollLeft,
+          // use top prop, second argument or fallback to scrollTop
+          arguments[0].top !== undefined
+            ? ~~arguments[0].top
+            : arguments[1] !== undefined
+            ? ~~arguments[1]
+            : this.scrollTop
+        );
+
+        return;
+      }
+
+      var left = arguments[0].left;
+      var top = arguments[0].top;
+
+      // LET THE SMOOTHNESS BEGIN!
+      smoothScroll.call(
+        this,
+        this,
+        typeof left === 'undefined' ? this.scrollLeft : ~~left,
+        typeof top === 'undefined' ? this.scrollTop : ~~top
+      );
+    };
+
+    // Element.prototype.scrollBy
+    Element.prototype.scrollBy = function () {
+      // avoid action when no arguments are passed
+      if (arguments[0] === undefined) {
+        return;
+      }
+
+      // avoid smooth behavior if not required
+      if (shouldBailOut(arguments[0]) === true) {
+        original.elementScroll.call(
+          this,
+          arguments[0].left !== undefined
+            ? ~~arguments[0].left + this.scrollLeft
+            : ~~arguments[0] + this.scrollLeft,
+          arguments[0].top !== undefined
+            ? ~~arguments[0].top + this.scrollTop
+            : ~~arguments[1] + this.scrollTop
+        );
+
+        return;
+      }
+
+      this.scroll({
+        left: ~~arguments[0].left + this.scrollLeft,
+        top: ~~arguments[0].top + this.scrollTop,
+        behavior: arguments[0].behavior
+      });
+    };
+
+
     // Element.prototype.scrollIntoView
-    Element.prototype.scrollIntoView = function() {
+    Element.prototype.scrollIntoView = function () {
       var opts = normalizeArgs(arguments[0]);
 
       // avoid smooth behavior if not required
-      if (scrollIsInstant(arguments[0]) && opts.block == "top") {
-        original.scrollIntoView.call(this, arguments[0] || true);
+      if (shouldBailOut(arguments[0]) === true && opts.block === 'top') {
+        original.scrollIntoView.call(
+          this,
+          arguments[0] === undefined
+            ? true
+            : arguments[0]
+        );
+
         return;
       }
 
@@ -317,18 +490,20 @@
 
       scrollWithinParentElem(this, opts);
       w.scrollBy({
-          left: clientRects.left,
-          top: opts.block !== 'end' ? clientRects.top : clientRects.bottom - w.innerHeight,
-          behavior: opts.behavior
+        left: clientRects.left,
+        top: opts.block !== 'end' ? clientRects.top : clientRects.bottom - w.innerHeight,
+        behavior: opts.behavior
       });
     };
   }
+
 
   if (typeof exports === 'object') {
     // commonjs
     module.exports = { polyfill: polyfill };
   } else {
     // global
-    polyfill(window.__smoothscrollForcePolyfill);
+    polyfill();
   }
-})(window, document);
+
+}());

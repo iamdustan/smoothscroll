@@ -14,17 +14,20 @@
       "url": "https://jeremenichelli.github.io"
     }
   ],
+  "dependencies": {},
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-concat-util": "^0.5.5",
-    "gulp-eslint": "^2.0.0",
-    "gulp-load-plugins": "^1.2.4"
+    "eslint": "^4.7.1",
+    "rollup": "^0.50.0",
+    "uglify-js": "^3.1.1"
   },
   "description": "Polyfill for smooth scroll behavior",
   "main": "dist/smoothscroll.js",
   "scripts": {
-    "test": "gulp lint",
-    "build": "gulp"
+    "test": "eslint src/**/*.js",
+    "prebuild": "npm test",
+    "build": "rollup -c rollup.config.js",
+    "preminify": "npm run build",
+    "minify": "uglifyjs dist/smoothscroll.js -c -m -o dist/smoothscroll.min.js --verbose"
   },
   "repository": {
     "type": "git",
@@ -36,7 +39,6 @@
     "CSSOM",
     "polyfill"
   ],
-  "copyright": 2016,
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/iamdustan/smoothscroll/issues"
