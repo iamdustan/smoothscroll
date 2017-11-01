@@ -84,7 +84,6 @@ function polyfill() {
     return maxDiff > SCROLL_THRESHOLD ? LARGE_SCROLL_TIME : SHORT_SCROLL_TIME;
   }
 
-
   /**
    * returns result of applying ease math function to a number
    * @method ease
