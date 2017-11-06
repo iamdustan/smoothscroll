@@ -1,5 +1,32 @@
 'use strict';
 
+(function () {
+
+  if (typeof window.CustomEvent === 'function') {
+    return false;
+  }
+
+  function CustomEvent (event, params) {
+    var evt = document.createEvent('CustomEvent');
+
+    params = params || {
+      bubbles: false,
+      cancelable: false,
+      detail: undefined
+    };
+
+    evt.initCustomEvent(
+      event, params.bubbles, params.cancelable, params.detail
+    );
+
+    return evt;
+  }
+
+  CustomEvent.prototype = window.Event.prototype;
+
+  window.CustomEvent = CustomEvent;
+})();
+
 /*
  * aliases
  * w: window global object
@@ -30,7 +57,7 @@ function polyfill() {
 
   // globals
   var Element = w.HTMLElement || w.Element;
-  var SCROLL_TIME = 468;
+  var SCROLL_TIME = w.__smoothScrollPolyfillScrollTime__ || 468;
 
   /*
    * IE has rounding bug rounding down clientHeight and clientWidth and
@@ -180,6 +207,7 @@ function polyfill() {
     var currentX;
     var currentY;
     var elapsed = (time - context.startTime) / SCROLL_TIME;
+    var isInterrupted = context.isInterrupted();
 
     // avoid elapsed times higher than one
     elapsed = elapsed > 1 ? 1 : elapsed;
@@ -193,8 +221,13 @@ function polyfill() {
     context.method.call(context.scrollable, currentX, currentY);
 
     // scroll more if we have not reached our destination
-    if (currentX !== context.x || currentY !== context.y) {
+    if ((currentX !== context.x || currentY !== context.y) && isInterrupted) {
       w.requestAnimationFrame(step.bind(w, context));
+    } else {
+      var eventData = { detail: { type: isInterrupted ? 'interrupted' : 'normal' } };
+
+      context.scrollendCallback();
+      context.scrollable.dispatchEvent(new CustomEvent('scrollend', eventData));
     }
   }
 
@@ -212,6 +245,7 @@ function polyfill() {
     var startY;
     var method;
     var startTime = now();
+    var isInterrupted = false;
 
     // define scroll context
     if (el === d.body) {
@@ -226,6 +260,16 @@ function polyfill() {
       method = scrollElement;
     }
 
+    function stopscrollHandler() {
+      isInterrupted = true;
+    }
+
+    function scrollendCallback() {
+      scrollElement.removeEventListener('stopscroll', stopscrollHandler);
+    }
+
+    scrollElement.addEventListener('stopscroll', stopscrollHandler);
+
     // scroll looping over a frame
     step({
       scrollable: scrollable,
@@ -234,7 +278,11 @@ function polyfill() {
       startX: startX,
       startY: startY,
       x: x,
-      y: y
+      y: y,
+      isInterrupted: function() {
+        return isInterrupted;
+      },
+      scrollendCallback: scrollendCallback
     });
   }
 
