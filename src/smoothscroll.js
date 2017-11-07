@@ -221,7 +221,7 @@ function polyfill() {
     context.method.call(context.scrollable, currentX, currentY);
 
     // scroll more if we have not reached our destination
-    if ((currentX !== context.x || currentY !== context.y) && isInterrupted) {
+    if ((currentX !== context.x || currentY !== context.y) && !isInterrupted) {
       w.requestAnimationFrame(step.bind(w, context));
     } else {
       var eventData = { detail: { type: isInterrupted ? 'interrupted' : 'normal' } };
@@ -265,10 +265,10 @@ function polyfill() {
     }
 
     function scrollendCallback() {
-      scrollElement.removeEventListener('stopscroll', stopscrollHandler);
+      el.removeEventListener('stopscroll', stopscrollHandler);
     }
 
-    scrollElement.addEventListener('stopscroll', stopscrollHandler);
+    el.addEventListener('stopscroll', stopscrollHandler);
 
     // scroll looping over a frame
     step({
