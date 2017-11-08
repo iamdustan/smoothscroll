@@ -26,6 +26,41 @@ If you prefer the polyfill to always override the current native methods (someti
 window.__forceSmoothScrollPolyfill__ = true;
 ```
 
+### Change smooth scroll duration
+
+If you prefer to change scrolling duration time instead of using default time, place this global variable before requiring the module or including the polyfill file.
+
+```js
+window.__smoothScrollPolyfillScrollTime__ = 3000; // ms
+```
+
+### Stopping smooth scrolling
+
+If you want to stop scrolling, send to element 'stopscroll' custom event.
+
+```js
+window.scroll({ top: 2500, left: 0, behavior: 'smooth' });
+
+setTimeout(function(){
+  window.dispatchEvent(new CustomEvent('stopscroll'));
+}, 200);
+```
+
+### Events
+
+#### scrollend
+
+When scroll ends, then element dispatches event `scrollend`.
+
+```js
+window.addEventListener('scrollend', function(e) {
+  console.log('Scrolling is end', e);
+});
+
+window.scroll({ top: 25000, left:0, behavior: 'smooth' });
+```
+
+If `scrollend` is dispatched after a manual stop (see “Stopping smooth scrolling”), then `e.detail.type` (argument variable) will be ‘interrupted’, otherwise ‘normal’.
 
 ## Contribute
 
