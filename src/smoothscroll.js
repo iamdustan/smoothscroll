@@ -30,7 +30,9 @@ function polyfill() {
 
   // globals
   var Element = w.HTMLElement || w.Element;
-  var SCROLL_TIME = 468;
+  var SCROLL_THRESHOLD = 800;
+  var SHORT_SCROLL_TIME = 375;
+  var LARGE_SCROLL_TIME = 750;
 
   /*
    * IE has rounding bug rounding down clientHeight and clientWidth and
@@ -62,6 +64,24 @@ function polyfill() {
   function scrollElement(x, y) {
     this.scrollLeft = x;
     this.scrollTop = y;
+  }
+
+  /**
+   * given a set of distances calculates scrolling speed
+   * @method getScrollTime
+   * @param {Number} startX
+   * @param {Number} endX
+   * @param {Number} startY
+   * @param {Number} endY
+   * @returns {Number}
+   */
+  function getScrollTime(startX, endX, startY, endY) {
+    var xDiff = Math.abs(endX - startX);
+    var yDiff = Math.abs(endY - startY);
+    var maxDiff = Math.max(xDiff, yDiff);
+
+    // for long distances, apply bigger time for user experience
+    return maxDiff > SCROLL_THRESHOLD ? LARGE_SCROLL_TIME : SHORT_SCROLL_TIME;
   }
 
   /**
@@ -179,7 +199,7 @@ function polyfill() {
     var value;
     var currentX;
     var currentY;
-    var elapsed = (time - context.startTime) / SCROLL_TIME;
+    var elapsed = (time - context.startTime) / context.scrollTime;
 
     // avoid elapsed times higher than one
     elapsed = elapsed > 1 ? 1 : elapsed;
@@ -226,10 +246,13 @@ function polyfill() {
       method = scrollElement;
     }
 
+    var scrollTime = getScrollTime(startX, x, startY, y);
+
     // scroll looping over a frame
     step({
       scrollable: scrollable,
       method: method,
+      scrollTime: scrollTime,
       startTime: startTime,
       startX: startX,
       startY: startY,

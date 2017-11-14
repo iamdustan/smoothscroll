@@ -101,7 +101,10 @@
         ],
         "max-lines": "off",
         "max-nested-callbacks": "error",
-        "max-params": "error",
+        "max-params": [
+          "error",
+          4
+        ],
         "max-statements": "off",
         "max-statements-per-line": "error",
         "multiline-ternary": [
@@ -253,7 +256,10 @@
         "sort-keys": "off",
         "sort-vars": "error",
         "space-before-blocks": "error",
-        "space-before-function-paren": "off",
+        "space-before-function-paren": [
+          "error",
+          "never"
+        ],
         "space-in-parens": [
             "error",
             "never"
