@@ -4,19 +4,25 @@ The [Scroll Behavior specification](https://developer.mozilla.org/en/docs/Web/CS
 
 See it in action https://iamdustan.github.io/smoothscroll
 
+_Requires requestAnimationFrame polyfill for browsers which don't support it!_
 
 ## Install
 
 Download the distribution file from this repository and include it in your project.
 
-You can also find it in **npm** as **smoothscroll-polyfill** or **bower** as **smoothscroll**.
+You can also find it in **npm** as `smoothscroll-polyfill` or **bower** as `smoothscroll`.
+
+```console
+$ npm install smoothscroll-polyfill --save
+```
+
+## Usage
 
 ```js
 require('smoothscroll-polyfill').polyfill();
 ```
 
-_Requires requestAnimationFrame polyfill for browsers which don't support it!_
-
+That's all.
 
 ### Force polyfill implementation
 
@@ -29,9 +35,9 @@ window.__forceSmoothScrollPolyfill__ = true;
 
 ## Contribute
 
-Fork the repository and run **npm install**.
+Fork the repository and run `$ npm install`.
 
-After any modification make sure it doesn't break in any of the supported browsers, check linting and build running **npm run build** and then open a pull request.
+After any modification make sure it doesn't break in any of the supported browsers, check linting and build running `$ npm run build` and then open a pull request.
 
 
 ## Browser Support
