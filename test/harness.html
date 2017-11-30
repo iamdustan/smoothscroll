@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>smoothscroll tests - basic</title>
+
+  <meta name="viewport" content="width=device-width">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css">
+  <link rel="stylesheet" href="support/test.css">
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+  <div class="top-padder"></div>
+
+  <article class="scrollable-parent">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+    adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+    adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+    adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+    <h3 class="hello"><em>hello!</em></h3>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+    adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+    adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui iure obcaecati, repudiandae aspernatur cumque recusandae
+    adipisci consequuntur maiores, quo in nulla ratione facere distinctio beatae, quae consequatur ab labore dolorum.</p>
+  </article>
+  <div class="test-result"></div>
+
+  <!-- rAF polyfill -->
+  <script src="support/raf.js"></script>
+  <!-- Test support functions -->
+  <script src="support/test-core.js"></script>
+
+  <script>
+    window.__smoothscrollForcePolyfill = true
+    // add event listener on load
+    window.addEventListener('load', function() {
+      var config = parseQuery(window.location.search)
+
+      if (config.skipPolyfill !== 'true') {
+        var poly = document.createElement('script')
+        poly.src = "../src/smoothscroll.js"
+        document.body.appendChild(poly)
+      }
+
+      if (config.noScrollableParent == 'true') {
+        $('.scrollable-parent').classList.remove('scrollable-parent')
+      }
+
+      var testcase = document.createElement('script')
+      testcase.src = "cases/" + config.case + ".js"
+      document.body.appendChild(testcase)
+    });
+  </script>
+</body>
+</html>

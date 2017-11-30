@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>smooth scroll polyfill tests</title>
+
+  <meta name="viewport" content="width=device-width">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css">
+<body>
+    <style>
+        body {
+            display: flex;
+            justify-content: flex-start;
+            width: 10000px;
+        }
+        .testcase {
+            width: 350px;
+        }
+        h1 {
+            word-wrap: break-word;
+        }
+    </style>
+    <script>
+        function testCase(opts) {
+            var url = "harness.html?"
+            var description = ""
+            for (var k in opts) {
+                url = url + k + '=' + opts[k] + '&'
+                description += "<dt>"+k+"</dt><dd>"+opts[k]+"</dd>"
+            }
+            document.write(
+                '<div class="testcase">' +
+                '  <iframe' +
+                '    src="'+url+'"' +
+                '    height="600"' +
+                '    width="300"' +
+                '    scrollbars="no"' +
+                '  /></iframe>' +
+                '  <dl>' + description + '</dl>' +
+                '</div>'
+            )
+        }
+    </script>
+
+    <script>
+        var cases = ["smoothScrollIntoViewEnd", "smoothScrollIntoViewStart"];
+        for (var i = 0; i < cases.length; i++) {
+            testCase({
+                "case": cases[i],
+                "skipPolyfill": false,
+                "noScrollableParent": false
+            })
+            testCase({
+                "case": cases[i],
+                "skipPolyfill": true,
+                "noScrollableParent": false
+            })
+            testCase({
+                "case": cases[i],
+                "skipPolyfill": false,
+                "noScrollableParent": true
+            })
+            testCase({
+                "case": cases[i],
+                "skipPolyfill": true,
+                "noScrollableParent": true
+            })
+        }
+
+    </script>
+
+</body>
+</html>
