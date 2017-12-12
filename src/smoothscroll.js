@@ -5,8 +5,14 @@
  * w: window global object
  * d: document
  */
-var w = window;
-var d = document;
+var w;
+var d;
+
+// avoids "ReferenceError: window is not defined" when running in node
+if (typeof window !== 'undefined') {
+  w = window;
+  d = document;
+}
 
 /**
  * indicates if a the current browser is made by Microsoft
@@ -438,6 +444,15 @@ function polyfill() {
 if (typeof exports === 'object') {
   // commonjs
   module.exports = { polyfill: polyfill };
+
+  // avoids "ReferenceError: window is not defined" when running in node
+  if (typeof window === 'undefined') {
+    module.exports = {
+      polyfill: function() {
+        // do nothing.
+      }
+    };
+  }
 } else {
   // global
   polyfill();
