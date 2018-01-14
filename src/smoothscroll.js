@@ -1,31 +1,31 @@
 'use strict';
 
-/*
- * aliases
- * w: window global object
- * d: document
- */
-var w = window;
-var d = document;
-
-/**
- * indicates if a the current browser is made by Microsoft
- * @method isMicrosoftBrowser
- * @param {String} userAgent
- * @returns {Boolean}
- */
-function isMicrosoftBrowser(userAgent) {
-  var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
-
-  return new RegExp(userAgentPatterns.join('|')).test(userAgent);
-}
-
- // polyfill
 function polyfill() {
+
+  /*
+   * aliases
+   * w: window global object
+   * d: document
+   */
+  var w = window;
+  var d = document;
+
   // return if scroll behavior is supported and polyfill is not forced
   if ('scrollBehavior' in d.documentElement.style
-    && w.__forceSmoothScrollPolyfill__ !== true) {
+      && w.__forceSmoothScrollPolyfill__ !== true) {
     return;
+  }
+
+  /**
+   * indicates if a the current browser is made by Microsoft
+   * @method isMicrosoftBrowser
+   * @param {String} userAgent
+   * @returns {Boolean}
+   */
+  function isMicrosoftBrowser(userAgent) {
+    var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
+
+    return new RegExp(userAgentPatterns.join('|')).test(userAgent);
   }
 
   // globals
@@ -435,7 +435,8 @@ function polyfill() {
   };
 }
 
-if (typeof exports === 'object') {
+if (typeof exports === 'object'
+    && typeof module !== 'undefined') {
   // commonjs
   module.exports = { polyfill: polyfill };
 } else {
