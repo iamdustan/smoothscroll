@@ -1,6 +1,7 @@
 {
   "title": "smoothscroll",
   "name": "smoothscroll-polyfill",
+  "description": "Polyfill for smooth scroll behavior",
   "version": "0.4.0",
   "author": {
     "name": "Dustan Kasten",
@@ -17,17 +18,34 @@
   "dependencies": {},
   "devDependencies": {
     "eslint": "^4.7.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^6.0.1",
+    "prettier": "^1.10.2",
     "rollup": "^0.50.0",
     "uglify-js": "^3.1.1"
   },
-  "description": "Polyfill for smooth scroll behavior",
   "main": "dist/smoothscroll.js",
   "scripts": {
-    "test": "eslint src/**/*.js",
+    "lint": "eslint src/**/*.js",
+    "pretest": "npm run lint",
+    "test": "echo 'Sorry, no tests yet, just linting' && exit 0",
+    "precommit": "lint-staged",
     "prebuild": "npm test",
     "build": "rollup -c rollup.config.js",
     "preminify": "npm run build",
-    "minify": "uglifyjs dist/smoothscroll.js -c -m -o dist/smoothscroll.min.js --verbose"
+    "minify": "uglifyjs dist/smoothscroll.js -c -m -o dist/smoothscroll.min.js --verbose",
+    "format": "prettier --write src/**/*.js"
+  },
+  "lint-staged": {
+    "linters": {
+      "src/**/*.js": [
+        "prettier --list-different",
+        "git add"
+      ]
+    }
+  },
+  "prettier": {
+    "singleQuote": true
   },
   "repository": {
     "type": "git",
@@ -43,5 +61,5 @@
   "bugs": {
     "url": "https://github.com/iamdustan/smoothscroll/issues"
   },
-  "homepage": "https://iamdustan.github.io/smoothscroll"
+  "homepage": "https://iamdustan.com/smoothscroll"
 }
