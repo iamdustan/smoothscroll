@@ -2,29 +2,44 @@
 
 The [Scroll Behavior specification](https://developer.mozilla.org/en/docs/Web/CSS/scroll-behavior) has been introduced as an extension of the `Window` interface to allow for the developer to opt in to native smooth scrolling. To date this has only been implemented in _Firefox_.
 
-See it in action https://iamdustan.github.io/smoothscroll
+See it in action here: https://iamdustan.github.io/smoothscroll
 
 
-## Install
+## Installation and use
 
-Download the distribution file from this repository and include it in your project.
+Download the production ready file [here](https://unpkg.com/smoothscroll-polyfill/dist/smoothscroll.min.js) and include it in your project, or install it as a package.
 
-You can also find it in **npm** as **smoothscroll-polyfill** or **bower** as **smoothscroll**.
+```sh
+# npm
+npm install smoothscroll-polyfill --save
 
-```js
-require('smoothscroll-polyfill').polyfill();
+# yarn
+yarn add smoothscroll-polyfill
 ```
 
-_Requires requestAnimationFrame polyfill for browsers which don't support it!_
+When including the polyfill in a script tag, it will run immediately after loaded. If you are importing it as a dependency, make sure to call the `polyfill` method.
+
+```js
+import smoothscroll from 'smoothscroll-polyfill';
+
+// kick off the polyfill!
+smoothscroll.polyfill();
+```
+
+In both cases, the script will detect if the spec is natively supported and take action only when necessary.
+
+_The code requires requestAnimationFrame polyfill for browsers which don't support it._
 
 
 ### Force polyfill implementation
 
-If you prefer the polyfill to always override the current native methods (sometimes needed because of partial implementations or inconsistencies between browsers), place this global variable before requiring the module or including the polyfill file.
+If you prefer to always override the native scrolling methods, place this global variable before requiring the module or including the polyfill file.
 
 ```js
 window.__forceSmoothScrollPolyfill__ = true;
 ```
+
+_We strongly recommend not to do this unless your project strongly needs it._
 
 
 ## Contribute
@@ -39,14 +54,14 @@ After any modification make sure it doesn't break in any of the supported browse
 Successfully tested in:
 
 - Safari 6+
-- iOS Safari 6+
-- Chrome (last version)
+- _natively supported in Chrome_
 - _natively supported in Firefox_
 - Internet Explorer 9+
-- Microsoft Edge
+- Microsoft Edge 12+
 - Opera Next
 
 If you have tested this and worked as expected in a different browser let us know so we can add it to the list, if not [open an issue](https://github.com/iamdustan/smoothscroll/issues) providing browser, browser version and a good description about it.
+
 
 ## Standards documentation
 
