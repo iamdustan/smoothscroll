@@ -10,6 +10,3 @@ rollup.config.js
 
 # site
 index.html
-
-# bower
-bower.json
