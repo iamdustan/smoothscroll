@@ -1,27 +1,11 @@
 'use strict';
 
-/*
- * aliases
- * w: window global object
- * d: document
- */
-var w = window;
-var d = document;
-
-/**
- * indicates if a the current browser is made by Microsoft
- * @method isMicrosoftBrowser
- * @param {String} userAgent
- * @returns {Boolean}
- */
-function isMicrosoftBrowser(userAgent) {
-  var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
-
-  return new RegExp(userAgentPatterns.join('|')).test(userAgent);
-}
-
 // polyfill
 function polyfill() {
+  // aliases
+  var w = window;
+  var d = document;
+
   // return if scroll behavior is supported and polyfill is not forced
   if (
     'scrollBehavior' in d.documentElement.style &&
@@ -33,6 +17,18 @@ function polyfill() {
   // globals
   var Element = w.HTMLElement || w.Element;
   var SCROLL_TIME = 468;
+
+  /**
+   * indicates if a the current browser is made by Microsoft
+   * @method isMicrosoftBrowser
+   * @param {String} userAgent
+   * @returns {Boolean}
+   */
+  function isMicrosoftBrowser(userAgent) {
+    var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
+
+    return new RegExp(userAgentPatterns.join('|')).test(userAgent);
+  }
 
   /*
    * IE has rounding bug rounding down clientHeight and clientWidth and
@@ -430,7 +426,7 @@ function polyfill() {
   };
 }
 
-if (typeof exports === 'object') {
+if (typeof exports === 'object' && typeof module !== 'undefined') {
   // commonjs
   module.exports = { polyfill: polyfill };
 } else {
