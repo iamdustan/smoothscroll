@@ -326,7 +326,7 @@ function polyfill() {
     if (shouldBailOut(arguments[0]) === true) {
       // if one number is passed, throw error to match Firefox implementation
       if (typeof arguments[0] === 'number' && arguments[1] === undefined) {
-        throw new SyntaxError("Value couldn't be converted");
+        throw new SyntaxError('Value could not be converted');
       }
 
       original.elementScroll.call(
