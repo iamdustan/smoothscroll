@@ -34,12 +34,13 @@
     "build": "rollup -c rollup.config.js",
     "preminify": "npm run build",
     "minify": "uglifyjs dist/smoothscroll.js -c -m -o dist/smoothscroll.min.js --verbose",
+    "listdiff": "prettier --list-different src/**/*.js",
     "format": "prettier --write src/**/*.js"
   },
   "lint-staged": {
     "linters": {
       "src/**/*.js": [
-        "prettier --list-different",
+        "npm run listdiff",
         "git add"
       ]
     }
