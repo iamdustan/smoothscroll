@@ -46,7 +46,7 @@ _We strongly recommend not to do this unless your project strongly needs it._
 
 First, fork the repository and do `npm install` to get all the dependencies to work with. Create a feature branch, write your stuff and run `npm test` to check code style and prevent bugs.
 
-In this project we use [Prettier](https://prettier.io) to format the final published code, you can run `npm run format` before committing, if you don't do this a precommit hook will prevent you from pushing code that hasn't been formatted properly.
+In this project we use [Prettier](https://prettier.io) to format the final published code, you can run `npm run format` before committing. If you don't, a precommit hook will prevent you from pushing code that hasn't been formatted properly.
 
 Are you done? Awesome, submit a pull request explaining your changes.
 
@@ -63,8 +63,6 @@ Successfully working in:
 - Internet Explorer 9+
 - Microsoft Edge 12+
 - Opera Next
-
-If you have tested this and worked as expected in a different browser let us know so we can add it to the list, if not [open an issue](https://github.com/iamdustan/smoothscroll/issues) letting as know.
 
 
 ## Standards documentation
