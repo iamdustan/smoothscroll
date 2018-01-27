@@ -53,6 +53,18 @@ Are you done? Awesome, submit a pull request explaining your changes.
 _This is a polyfill, not library, so make sure the behavior you are introducing is in the spec._
 
 
+### Requirements
+
+- Node version required: 7.10.0
+
+_On tests files we are using ES2015, but the polyfill is written in ES5 for browser compatibility._
+
+
+### Watch tests
+
+If you want to watch tests as you write your code run `npm test -- --watch`.
+
+
 ## Browser Support
 
 Successfully working in:

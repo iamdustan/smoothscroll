@@ -18,6 +18,20 @@ function polyfill() {
   var Element = w.HTMLElement || w.Element;
   var SCROLL_TIME = 468;
 
+  // object gathering original scroll methods
+  var original = {
+    scroll: w.scroll || w.scrollTo,
+    scrollBy: w.scrollBy,
+    elementScroll: Element.prototype.scroll || scrollElement,
+    scrollIntoView: Element.prototype.scrollIntoView
+  };
+
+  // define timing method
+  var now =
+    w.performance && w.performance.now
+      ? w.performance.now.bind(w.performance)
+      : Date.now;
+
   /**
    * indicates if a the current browser is made by Microsoft
    * @method isMicrosoftBrowser
@@ -36,20 +50,6 @@ function polyfill() {
    * on hasScrollableSpace
    */
   var ROUNDING_TOLERANCE = isMicrosoftBrowser(w.navigator.userAgent) ? 1 : 0;
-
-  // object gathering original scroll methods
-  var original = {
-    scroll: w.scroll || w.scrollTo,
-    scrollBy: w.scrollBy,
-    elementScroll: Element.prototype.scroll || scrollElement,
-    scrollIntoView: Element.prototype.scrollIntoView
-  };
-
-  // define timing method
-  var now =
-    w.performance && w.performance.now
-      ? w.performance.now.bind(w.performance)
-      : Date.now;
 
   /**
    * changes scroll position inside an element

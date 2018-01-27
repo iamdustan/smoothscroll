@@ -17,29 +17,32 @@
   ],
   "dependencies": {},
   "devDependencies": {
+    "ava": "^0.25.0",
     "eslint": "^4.7.1",
     "husky": "^0.14.3",
     "lint-staged": "^6.0.1",
+    "lodash.clone": "^4.5.0",
+    "lodash.clonedeep": "^4.5.0",
     "prettier": "^1.10.2",
     "rollup": "^0.50.0",
     "uglify-js": "^3.1.1"
   },
   "main": "dist/smoothscroll.js",
   "scripts": {
-    "lint": "eslint src/**/*.js",
+    "lint": "eslint {src,test}/**/*.js",
     "pretest": "npm run lint",
-    "test": "echo 'Sorry, no tests yet, just linting' && exit 0",
+    "test": "ava test/smoothscroll.test.js --verbose",
     "precommit": "lint-staged",
     "prebuild": "npm test",
     "build": "rollup -c rollup.config.js",
     "preminify": "npm run build",
     "minify": "uglifyjs dist/smoothscroll.js -c -m -o dist/smoothscroll.min.js --verbose",
-    "listdiff": "prettier --list-different src/**/*.js",
-    "format": "prettier --write src/**/*.js"
+    "listdiff": "prettier --list-different {src,test}/**/*.js",
+    "format": "prettier --write {src,test}/**/*.js"
   },
   "lint-staged": {
     "linters": {
-      "src/**/*.js": [
+      "{src,test}/**/*.js": [
         "prettier --list-different",
         "git add"
       ]
