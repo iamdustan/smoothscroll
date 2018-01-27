@@ -21,7 +21,6 @@
     "eslint": "^4.7.1",
     "husky": "^0.14.3",
     "lint-staged": "^6.0.1",
-    "lodash.clone": "^4.5.0",
     "lodash.clonedeep": "^4.5.0",
     "prettier": "^1.10.2",
     "rollup": "^0.50.0",
