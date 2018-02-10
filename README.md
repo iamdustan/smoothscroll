@@ -2,7 +2,7 @@
 
 The [Scroll Behavior specification](https://developer.mozilla.org/en/docs/Web/CSS/scroll-behavior) has been introduced as an extension of the `Window` interface to allow for the developer to opt in to native smooth scrolling. To date this has only been implemented in _Firefox_.
 
-Check out all methods available here: https://iamdustan.github.io/smoothscroll
+Check out all the methods covered here: https://iamdustan.github.io/smoothscroll
 
 
 ## Installation and use
@@ -44,25 +44,22 @@ _We strongly recommend not to do this unless your project strongly needs it._
 
 ## Contribute
 
-First, fork the repository and do `npm install` to get all the dependencies to work with. Create a feature branch, write your stuff and run `npm test` to check code style and prevent bugs.
+The requirements to contribute are [yarn](https://yarnpkg.com) and the latest LTS [Node.js](https://nodejs.org/en/)] version.
 
-In this project we use [Prettier](https://prettier.io) to format the final published code, you can run `npm run format` before committing. If you don't, a precommit hook will prevent you from pushing code that hasn't been formatted properly.
+First, fork the repository and do `yarn install` in the root folder to get all the dependencies to work with. Create a feature branch, write your stuff and run `yarn test` to check code style and prevent bugs.
+
+In this project we use [Prettier](https://prettier.io) to format the final published code, you can run `yarn format` before committing. If you don't, a precommit hook will prevent you from pushing code that hasn't been formatted properly.
 
 Are you done? Awesome, submit a pull request explaining your changes.
 
 _This is a polyfill, not library, so make sure the behavior you are introducing is in the spec._
 
-
-### Requirements
-
-- Node version required: 7.10.0
-
-_On tests files we are using ES2015, but the polyfill is written in ES5 for browser compatibility._
+On tests files we are using ES2015, but the polyfill is written in ES5 for browser compatibility.
 
 
 ### Watch tests
 
-If you want to watch tests as you write your code run `npm test -- --watch`.
+If you want to watch tests as you write your code run `yarn test --watch`.
 
 
 ## Browser Support

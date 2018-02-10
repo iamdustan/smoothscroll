@@ -29,12 +29,12 @@
   "main": "dist/smoothscroll.js",
   "scripts": {
     "lint": "eslint {src,test}/**/*.js",
-    "pretest": "npm run lint",
+    "pretest": "yarn lint",
     "test": "ava test/smoothscroll.test.js --verbose",
     "precommit": "lint-staged",
     "prebuild": "npm test",
     "build": "rollup -c rollup.config.js",
-    "preminify": "npm run build",
+    "preminify": "yarn build",
     "minify": "uglifyjs dist/smoothscroll.js -c -m -o dist/smoothscroll.min.js --verbose",
     "listdiff": "prettier --list-different {src,test}/**/*.js",
     "format": "prettier --write {src,test}/**/*.js"
