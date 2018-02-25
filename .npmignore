@@ -1,0 +1,12 @@
+# unrelated folders
+src/
+test/
+
+# build and config files
+.eslintrc
+.gitignore
+.travis.yml
+rollup.config.js
+
+# site
+index.html

@@ -1,43 +1,22 @@
 'use strict';
 
-/*
- * aliases
- * w: window global object
- * d: document
- */
-var w = window;
-var d = document;
-
-/**
- * indicates if a the current browser is made by Microsoft
- * @method isMicrosoftBrowser
- * @param {String} userAgent
- * @returns {Boolean}
- */
-function isMicrosoftBrowser(userAgent) {
-  var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
-
-  return new RegExp(userAgentPatterns.join('|')).test(userAgent);
-}
-
- // polyfill
+// polyfill
 function polyfill() {
+  // aliases
+  var w = window;
+  var d = document;
+
   // return if scroll behavior is supported and polyfill is not forced
-  if ('scrollBehavior' in d.documentElement.style
-    && w.__forceSmoothScrollPolyfill__ !== true) {
+  if (
+    'scrollBehavior' in d.documentElement.style &&
+    w.__forceSmoothScrollPolyfill__ !== true
+  ) {
     return;
   }
 
   // globals
   var Element = w.HTMLElement || w.Element;
   var SCROLL_TIME = 468;
-
-  /*
-   * IE has rounding bug rounding down clientHeight and clientWidth and
-   * rounding up scrollHeight and scrollWidth causing false positives
-   * on hasScrollableSpace
-   */
-  var ROUNDING_TOLERANCE = isMicrosoftBrowser(w.navigator.userAgent) ? 1 : 0;
 
   // object gathering original scroll methods
   var original = {
@@ -48,9 +27,29 @@ function polyfill() {
   };
 
   // define timing method
-  var now = w.performance && w.performance.now
-    ? w.performance.now.bind(w.performance)
-    : Date.now;
+  var now =
+    w.performance && w.performance.now
+      ? w.performance.now.bind(w.performance)
+      : Date.now;
+
+  /**
+   * indicates if a the current browser is made by Microsoft
+   * @method isMicrosoftBrowser
+   * @param {String} userAgent
+   * @returns {Boolean}
+   */
+  function isMicrosoftBrowser(userAgent) {
+    var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
+
+    return new RegExp(userAgentPatterns.join('|')).test(userAgent);
+  }
+
+  /*
+   * IE has rounding bug rounding down clientHeight and clientWidth and
+   * rounding up scrollHeight and scrollWidth causing false positives
+   * on hasScrollableSpace
+   */
+  var ROUNDING_TOLERANCE = isMicrosoftBrowser(w.navigator.userAgent) ? 1 : 0;
 
   /**
    * changes scroll position inside an element
@@ -81,11 +80,13 @@ function polyfill() {
    * @returns {Boolean}
    */
   function shouldBailOut(firstArg) {
-    if (firstArg === null
-      || typeof firstArg !== 'object'
-      || firstArg.behavior === undefined
-      || firstArg.behavior === 'auto'
-      || firstArg.behavior === 'instant') {
+    if (
+      firstArg === null ||
+      typeof firstArg !== 'object' ||
+      firstArg.behavior === undefined ||
+      firstArg.behavior === 'auto' ||
+      firstArg.behavior === 'instant'
+    ) {
       // first argument is not an object/null
       // or behavior is auto, instant or undefined
       return true;
@@ -98,9 +99,9 @@ function polyfill() {
 
     // throw error when behavior is not supported
     throw new TypeError(
-      'behavior member of ScrollOptions '
-      + firstArg.behavior
-      + ' is not a valid value for enumeration ScrollBehavior.'
+      'behavior member of ScrollOptions ' +
+        firstArg.behavior +
+        ' is not a valid value for enumeration ScrollBehavior.'
     );
   }
 
@@ -113,11 +114,11 @@ function polyfill() {
    */
   function hasScrollableSpace(el, axis) {
     if (axis === 'Y') {
-      return (el.clientHeight + ROUNDING_TOLERANCE) < el.scrollHeight;
+      return el.clientHeight + ROUNDING_TOLERANCE < el.scrollHeight;
     }
 
     if (axis === 'X') {
-      return (el.clientWidth + ROUNDING_TOLERANCE) < el.scrollWidth;
+      return el.clientWidth + ROUNDING_TOLERANCE < el.scrollWidth;
     }
   }
 
@@ -254,13 +255,13 @@ function polyfill() {
           ? arguments[0].left
           : typeof arguments[0] !== 'object'
             ? arguments[0]
-            : (w.scrollX || w.pageXOffset),
+            : w.scrollX || w.pageXOffset,
         // use top prop, second argument if present or fallback to scrollY
         arguments[0].top !== undefined
           ? arguments[0].top
           : arguments[1] !== undefined
             ? arguments[1]
-            : (w.scrollY || w.pageYOffset)
+            : w.scrollY || w.pageYOffset
       );
 
       return;
@@ -272,10 +273,10 @@ function polyfill() {
       d.body,
       arguments[0].left !== undefined
         ? ~~arguments[0].left
-        : (w.scrollX || w.pageXOffset),
+        : w.scrollX || w.pageXOffset,
       arguments[0].top !== undefined
         ? ~~arguments[0].top
-        : (w.scrollY || w.pageYOffset)
+        : w.scrollY || w.pageYOffset
     );
   };
 
@@ -292,14 +293,10 @@ function polyfill() {
         w,
         arguments[0].left !== undefined
           ? arguments[0].left
-          : typeof arguments[0] !== 'object'
-            ? arguments[0]
-            : 0,
+          : typeof arguments[0] !== 'object' ? arguments[0] : 0,
         arguments[0].top !== undefined
           ? arguments[0].top
-          : arguments[1] !== undefined
-           ? arguments[1]
-           : 0
+          : arguments[1] !== undefined ? arguments[1] : 0
       );
 
       return;
@@ -325,7 +322,7 @@ function polyfill() {
     if (shouldBailOut(arguments[0]) === true) {
       // if one number is passed, throw error to match Firefox implementation
       if (typeof arguments[0] === 'number' && arguments[1] === undefined) {
-        throw new SyntaxError('Value couldn\'t be converted');
+        throw new SyntaxError('Value could not be converted');
       }
 
       original.elementScroll.call(
@@ -333,15 +330,11 @@ function polyfill() {
         // use left prop, first number argument or fallback to scrollLeft
         arguments[0].left !== undefined
           ? ~~arguments[0].left
-          : typeof arguments[0] !== 'object'
-            ? ~~arguments[0]
-            : this.scrollLeft,
+          : typeof arguments[0] !== 'object' ? ~~arguments[0] : this.scrollLeft,
         // use top prop, second argument or fallback to scrollTop
         arguments[0].top !== undefined
           ? ~~arguments[0].top
-          : arguments[1] !== undefined
-            ? ~~arguments[1]
-            : this.scrollTop
+          : arguments[1] !== undefined ? ~~arguments[1] : this.scrollTop
       );
 
       return;
@@ -394,9 +387,7 @@ function polyfill() {
     if (shouldBailOut(arguments[0]) === true) {
       original.scrollIntoView.call(
         this,
-        arguments[0] === undefined
-          ? true
-          : arguments[0]
+        arguments[0] === undefined ? true : arguments[0]
       );
 
       return;
@@ -435,7 +426,7 @@ function polyfill() {
   };
 }
 
-if (typeof exports === 'object') {
+if (typeof exports === 'object' && typeof module !== 'undefined') {
   // commonjs
   module.exports = { polyfill: polyfill };
 } else {

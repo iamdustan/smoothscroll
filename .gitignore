@@ -1,12 +1,15 @@
-// dev dependencies
+# dev dependencies
 node_modules
 bower_components
 
-// npm
+# npm
 npm_debug.log
 npm-debug.log
 
-// OS X
+# ignore dist folder
+dist
+
+# OS X
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -15,7 +18,7 @@ Icon
 .Spotlight-V100
 .Trashes
 
-// windows
+# windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
