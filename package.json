@@ -1,7 +1,7 @@
 {
   "title": "smoothscroll",
   "name": "smoothscroll-polyfill",
-  "description": "Polyfill for smooth scroll behavior",
+  "description": "Smooth Scroll behavior polyfill",
   "version": "0.4.0",
   "author": {
     "name": "Dustan Kasten",
@@ -12,7 +12,7 @@
     {
       "name": "Jeremias Menichelli",
       "email": "jmenichelli@gmail.com",
-      "url": "https://jeremenichelli.github.io"
+      "url": "https://jeremenichelli.io"
     }
   ],
   "dependencies": {},
@@ -29,8 +29,8 @@
   "main": "dist/smoothscroll.js",
   "scripts": {
     "lint": "eslint {src,test}/**/*.js",
-    "pretest": "yarn lint",
     "test": "ava test/smoothscroll.test.js --verbose",
+    "posttest": "yarn lint",
     "precommit": "lint-staged",
     "prebuild": "npm test",
     "build": "rollup -c rollup.config.js",
