@@ -3,7 +3,7 @@ src/
 test/
 
 # build and config files
-.eslintrc
+.eslintrc.json
 .gitignore
 .travis.yml
 rollup.config.js
