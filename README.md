@@ -44,7 +44,7 @@ _We strongly recommend not to do this unless your project strongly needs it._
 
 ## Contribute
 
-The requirements to contribute are [yarn](https://yarnpkg.com) and the latest LTS [Node.js](https://nodejs.org/en/)] version.
+The requirements to contribute are [yarn](https://yarnpkg.com) and the latest LTS [Node.js](https://nodejs.org/en/) version.
 
 First, fork the repository and do `yarn install` in the root folder to get all the dependencies to work with. Create a feature branch, write your stuff and run `yarn test` to check code style and prevent bugs.
 
