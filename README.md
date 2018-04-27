@@ -17,7 +17,9 @@ npm install smoothscroll-polyfill --save
 yarn add smoothscroll-polyfill
 ```
 
-When including the polyfill in a script tag, it will run immediately after loaded. If you are importing it as a dependency, make sure to call the `polyfill` method:
+When including the polyfill in a script tag, it will run immediately after loaded.
+
+If you are importing it as a dependency, make sure to call the `polyfill` method:
 
 ```js
 import smoothscroll from 'smoothscroll-polyfill';
