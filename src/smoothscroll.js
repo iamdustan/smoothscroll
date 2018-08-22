@@ -214,12 +214,24 @@ function polyfill() {
     var method;
     var startTime = now();
 
+    var realScrollPosition = parseInt(document.querySelector('body>*:first-of-type').getBoundingClientRect().top * -1, 10);
+
+    var setScrollTopProp = function(x, y){
+      console.log('using the hack …', this, x, y);
+      this.scrollTop = y;
+    }
+
     // define scroll context
     if (el === d.body) {
       scrollable = w;
       startX = w.scrollX || w.pageXOffset;
       startY = w.scrollY || w.pageYOffset;
       method = original.scroll;
+      if (startY === 0){
+        startY = realScrollPosition;
+        scrollable = document.body;
+        method = setScrollTopProp;
+      }
     } else {
       scrollable = el;
       startX = el.scrollLeft;
