@@ -155,19 +155,13 @@ function polyfill() {
    * @param {Node} el
    * @returns {Node} el
    */
-  function findScrollableParent(el) {
-    var isBody;
+    function findScrollableParent(el) {
+      while (el !== d.body && isScrollable(el) === false) {
+        el = el.parentNode;
+      };
 
-    do {
-      el = el.parentNode;
-
-      isBody = el === d.body;
-    } while (isBody === false && isScrollable(el) === false);
-
-    isBody = null;
-
-    return el;
-  }
+      return el;
+    }
 
   /**
    * self invoked function that, given a context, steps through scrolling
