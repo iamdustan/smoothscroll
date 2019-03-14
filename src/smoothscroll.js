@@ -158,7 +158,7 @@ function polyfill() {
   function findScrollableParent(el) {
     while (el !== d.body && isScrollable(el) === false) {
       el = el.parentNode;
-    };
+    }
 
     return el;
   }
