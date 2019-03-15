@@ -1,6 +1,6 @@
 # Smooth Scroll behavior polyfill
 
-The [Scroll Behavior specification](https://developer.mozilla.org/en/docs/Web/CSS/scroll-behavior) has been introduced as an extension of the `Window` interface to allow for the developer to opt in to native smooth scrolling. To date this has only been implemented in _Firefox_.
+The [Scroll Behavior specification](https://developer.mozilla.org/en/docs/Web/CSS/scroll-behavior) has been introduced as an extension of the `Window` interface to allow for the developer to opt in to native smooth scrolling. To date this has only been implemented in [_Chrome_, _Firefox_ and _Opera_](https://caniuse.com/#feat=css-scroll-behavior).
 
 Check out all the methods covered here: https://iamdustan.github.io/smoothscroll
 
