@@ -37,7 +37,8 @@
     "preminify": "yarn build",
     "minify": "uglifyjs dist/smoothscroll.js -c -m -o dist/smoothscroll.min.js --verbose",
     "listdiff": "prettier --list-different {src,test}/**/*.js",
-    "format": "prettier --write {src,test}/**/*.js"
+    "format": "prettier --write {src,test}/**/*.js",
+    "prepublish": "npm run minify"
   },
   "lint-staged": {
     "linters": {
