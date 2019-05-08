@@ -1,7 +1,14 @@
 'use strict';
 
+var DEFAULT_OPTS = {
+  scrollTime: 468
+};
+
 // polyfill
-function polyfill() {
+function polyfill(opts) {
+  // setting up default options
+  opts = opts || DEFAULT_OPTS;
+
   // aliases
   var w = window;
   var d = document;
@@ -16,7 +23,7 @@ function polyfill() {
 
   // globals
   var Element = w.HTMLElement || w.Element;
-  var SCROLL_TIME = 468;
+  var SCROLL_TIME = opts.scrollTime || DEFAULT_OPTS.scrollTime;
 
   // object gathering original scroll methods
   var original = {
