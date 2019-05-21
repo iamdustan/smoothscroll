@@ -27,6 +27,9 @@
     "uglify-js": "^3.1.1"
   },
   "main": "dist/smoothscroll.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "lint": "eslint {src,test}/**/*.js",
     "test": "ava test/smoothscroll.test.js --verbose",
