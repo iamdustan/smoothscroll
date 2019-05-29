@@ -1,11 +1,7 @@
 'use strict';
 
 // polyfill
-function polyfill() {
-  // aliases
-  var w = window;
-  var d = document;
-
+function polyfill(w = window, d = document) {
   // return if scroll behavior is supported and polyfill is not forced
   if (
     'scrollBehavior' in d.documentElement.style &&
