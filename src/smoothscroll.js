@@ -156,7 +156,7 @@ function polyfill() {
    * @returns {Node} el
    */
   function findScrollableParent(el) {
-    while (el !== d.body && isScrollable(el) === false) {
+    while (el != null && el !== d.body && isScrollable(el) === false) {
       el = el.parentNode || el.host;
     }
 
