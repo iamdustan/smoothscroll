@@ -389,6 +389,7 @@ function polyfill() {
 
     // LET THE SMOOTHNESS BEGIN!
     var scrollableParent = findScrollableParent(this);
+    if (scrollableParent == null) return;
     var parentRects = scrollableParent.getBoundingClientRect();
     var clientRects = this.getBoundingClientRect();
 
