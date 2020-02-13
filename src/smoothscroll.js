@@ -156,7 +156,7 @@ function polyfill() {
    * @returns {Node} el
    */
   function findScrollableParent(el) {
-    while (el !== d.body && isScrollable(el) === false) {
+    while (el !== d.documentElement && isScrollable(el) === false) {
       el = el.parentNode || el.host;
     }
 
@@ -209,7 +209,7 @@ function polyfill() {
     var startTime = now();
 
     // define scroll context
-    if (el === d.body) {
+    if (el === d.documentElement) {
       scrollable = w;
       startX = w.scrollX || w.pageXOffset;
       startY = w.scrollY || w.pageYOffset;
