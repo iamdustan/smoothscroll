@@ -245,13 +245,13 @@ function polyfill() {
     if (shouldBailOut(arguments[0]) === true) {
       original.scroll.call(
         w,
-        arguments[0].left !== undefined
+        arguments[0] !== null && arguments[0].left !== undefined
           ? arguments[0].left
-          : typeof arguments[0] !== 'object'
+          : arguments[0] === null || typeof arguments[0] !== 'object'
             ? arguments[0]
             : w.scrollX || w.pageXOffset,
         // use top prop, second argument if present or fallback to scrollY
-        arguments[0].top !== undefined
+        arguments[0] !== null && arguments[0].top !== undefined
           ? arguments[0].top
           : arguments[1] !== undefined
             ? arguments[1]
@@ -285,10 +285,10 @@ function polyfill() {
     if (shouldBailOut(arguments[0])) {
       original.scrollBy.call(
         w,
-        arguments[0].left !== undefined
+        arguments[0] !== null && arguments[0].left !== undefined
           ? arguments[0].left
           : typeof arguments[0] !== 'object' ? arguments[0] : 0,
-        arguments[0].top !== undefined
+        arguments[0] !== null && arguments[0].top !== undefined
           ? arguments[0].top
           : arguments[1] !== undefined ? arguments[1] : 0
       );
@@ -322,11 +322,11 @@ function polyfill() {
       original.elementScroll.call(
         this,
         // use left prop, first number argument or fallback to scrollLeft
-        arguments[0].left !== undefined
+        arguments[0] !== null && arguments[0].left !== undefined
           ? ~~arguments[0].left
           : typeof arguments[0] !== 'object' ? ~~arguments[0] : this.scrollLeft,
         // use top prop, second argument or fallback to scrollTop
-        arguments[0].top !== undefined
+        arguments[0] !== null && arguments[0].top !== undefined
           ? ~~arguments[0].top
           : arguments[1] !== undefined ? ~~arguments[1] : this.scrollTop
       );
@@ -357,10 +357,10 @@ function polyfill() {
     if (shouldBailOut(arguments[0]) === true) {
       original.elementScroll.call(
         this,
-        arguments[0].left !== undefined
+        arguments[0] !== null && arguments[0].left !== undefined
           ? ~~arguments[0].left + this.scrollLeft
           : ~~arguments[0] + this.scrollLeft,
-        arguments[0].top !== undefined
+        arguments[0] !== null && arguments[0].top !== undefined
           ? ~~arguments[0].top + this.scrollTop
           : ~~arguments[1] + this.scrollTop
       );
