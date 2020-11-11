@@ -40,8 +40,8 @@ function polyfill() {
   /**
    * indicates if a the current browser is made by Microsoft
    * @method isMicrosoftBrowser
-   * @param {String} userAgent
-   * @returns {Boolean}
+   * @param {string} userAgent
+   * @returns {boolean}
    */
   function isMicrosoftBrowser(userAgent) {
     var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
@@ -59,8 +59,8 @@ function polyfill() {
   /**
    * changes scroll position inside an element
    * @method scrollElement
-   * @param {Number} x
-   * @param {Number} y
+   * @param {number} x
+   * @param {number} y
    * @returns {undefined}
    */
   function scrollElement(x, y) {
@@ -71,8 +71,8 @@ function polyfill() {
   /**
    * returns result of applying ease math function to a number
    * @method ease
-   * @param {Number} k
-   * @returns {Number}
+   * @param {number} k
+   * @returns {number}
    */
   function ease(k) {
     return 0.5 * (1 - Math.cos(Math.PI * k));
@@ -81,8 +81,8 @@ function polyfill() {
   /**
    * indicates if a smooth behavior should be applied
    * @method shouldBailOut
-   * @param {Number|Object} firstArg
-   * @returns {Boolean}
+   * @param {number|Object} firstArg
+   * @returns {boolean}
    */
   function shouldBailOut(firstArg) {
     if (
@@ -115,7 +115,7 @@ function polyfill() {
    * @method hasScrollableSpace
    * @param {Node} el
    * @param {Axis} axis
-   * @returns {Boolean}
+   * @returns {boolean}
    */
   function hasScrollableSpace(el, axis) {
     switch (axis) {
@@ -131,7 +131,7 @@ function polyfill() {
    * @method canOverflow
    * @param {Node} el
    * @param {Axis} axis
-   * @returns {Boolean}
+   * @returns {boolean}
    */
   function canOverflow(el, axis) {
     var overflowValue = w.getComputedStyle(el, null)['overflow' + axis];
@@ -144,7 +144,7 @@ function polyfill() {
    * @method isScrollable
    * @param {Node} el
    * @param {Axis} axis
-   * @returns {Boolean}
+   * @returns {boolean}
    */
   function isScrollable(el) {
     var isScrollableY = hasScrollableSpace(el, 'Y') && canOverflow(el, 'Y');
@@ -201,8 +201,8 @@ function polyfill() {
    * scrolls window or element with a smooth behavior
    * @method smoothScroll
    * @param {Object|Node} el
-   * @param {Number} x
-   * @param {Number} y
+   * @param {number} x
+   * @param {number} y
    * @returns {undefined}
    */
   function smoothScroll(el, x, y) {
