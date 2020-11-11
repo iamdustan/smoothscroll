@@ -1,5 +1,10 @@
 'use strict';
 
+// types
+/**
+ * @typedef {'X'|'Y'} Axis
+ */
+
 // polyfill
 function polyfill() {
   // aliases
@@ -109,16 +114,15 @@ function polyfill() {
    * indicates if an element has scrollable space in the provided axis
    * @method hasScrollableSpace
    * @param {Node} el
-   * @param {String} axis
+   * @param {Axis} axis
    * @returns {Boolean}
    */
   function hasScrollableSpace(el, axis) {
-    if (axis === 'Y') {
-      return el.clientHeight + ROUNDING_TOLERANCE < el.scrollHeight;
-    }
-
-    if (axis === 'X') {
-      return el.clientWidth + ROUNDING_TOLERANCE < el.scrollWidth;
+    switch (axis) {
+      case 'X':
+        return el.clientHeight + ROUNDING_TOLERANCE < el.scrollHeight;
+      case 'Y':
+        return el.clientWidth + ROUNDING_TOLERANCE < el.scrollWidth;
     }
   }
 
@@ -126,7 +130,7 @@ function polyfill() {
    * indicates if an element has a scrollable overflow property in the axis
    * @method canOverflow
    * @param {Node} el
-   * @param {String} axis
+   * @param {Axis} axis
    * @returns {Boolean}
    */
   function canOverflow(el, axis) {
@@ -139,7 +143,7 @@ function polyfill() {
    * indicates if an element can be scrolled in either axis
    * @method isScrollable
    * @param {Node} el
-   * @param {String} axis
+   * @param {Axis} axis
    * @returns {Boolean}
    */
   function isScrollable(el) {
