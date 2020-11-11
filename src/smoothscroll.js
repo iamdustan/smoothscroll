@@ -61,7 +61,7 @@ function polyfill() {
    * @method scrollElement
    * @param {number} x
    * @param {number} y
-   * @returns {undefined}
+   * @returns {void}
    */
   function scrollElement(x, y) {
     this.scrollLeft = x;
@@ -81,7 +81,7 @@ function polyfill() {
   /**
    * indicates if a smooth behavior should be applied
    * @method shouldBailOut
-   * @param {number|Object} firstArg
+   * @param {number|object} firstArg
    * @returns {boolean}
    */
   function shouldBailOut(firstArg) {
@@ -170,8 +170,8 @@ function polyfill() {
   /**
    * self invoked function that, given a context, steps through scrolling
    * @method step
-   * @param {Object} context
-   * @returns {undefined}
+   * @param {object} context
+   * @returns {void}
    */
   function step(context) {
     var time = now();
@@ -200,10 +200,10 @@ function polyfill() {
   /**
    * scrolls window or element with a smooth behavior
    * @method smoothScroll
-   * @param {Object|Node} el
+   * @param {object|Node} el
    * @param {number} x
    * @param {number} y
-   * @returns {undefined}
+   * @returns {void}
    */
   function smoothScroll(el, x, y) {
     var scrollable;
