@@ -120,9 +120,9 @@ function polyfill() {
   function hasScrollableSpace(el, axis) {
     switch (axis) {
       case 'X':
-        return el.clientHeight + ROUNDING_TOLERANCE < el.scrollHeight;
-      case 'Y':
         return el.clientWidth + ROUNDING_TOLERANCE < el.scrollWidth;
+      case 'Y':
+        return el.clientHeight + ROUNDING_TOLERANCE < el.scrollHeight;
     }
   }
 
