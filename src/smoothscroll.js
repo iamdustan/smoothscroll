@@ -134,7 +134,9 @@ function polyfill() {
    * @returns {boolean}
    */
   function canOverflow(el, axis) {
-    var overflowValue = w.getComputedStyle(el, null)['overflow' + axis];
+    /** @type {'overflowY' | 'overflowX'} */
+    var overflowProperty = 'overflow' + axis;
+    var overflowValue = w.getComputedStyle(el, null)[overflowProperty];
 
     return overflowValue === 'auto' || overflowValue === 'scroll';
   }
