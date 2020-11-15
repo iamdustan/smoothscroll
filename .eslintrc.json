@@ -102,7 +102,7 @@
             "error",
             "unix"
         ],
-        "lines-around-comment": "error",
+        "lines-around-comment": ["error", { "allowBlockStart": true }],
         "lines-around-directive": "error",
         "max-depth": "error",
         "max-len": "error",

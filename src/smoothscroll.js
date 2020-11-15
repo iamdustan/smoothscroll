@@ -134,6 +134,7 @@ function polyfill() {
         return el.clientWidth + ROUNDING_TOLERANCE < el.scrollWidth;
       case 'Y':
         return el.clientHeight + ROUNDING_TOLERANCE < el.scrollHeight;
+      // no default
     }
   }
 
@@ -188,10 +189,13 @@ function polyfill() {
    */
   function step(context) {
     var time = now();
+
     /** @type {number} */
     var value;
+
     /** @type {number} */
     var currentX;
+
     /** @type {number} */
     var currentY;
     var elapsed = (time - context.startTime) / SCROLL_TIME;
