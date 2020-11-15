@@ -51,9 +51,6 @@
       ]
     }
   },
-  "prettier": {
-    "singleQuote": true
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/iamdustan/smoothscroll.git"
