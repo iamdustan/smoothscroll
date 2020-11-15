@@ -4,6 +4,16 @@
 /**
  * @typedef {'X'|'Y'} Axis
  */
+/**
+ * @typedef StepContext
+ * @property {Window | Element} scrollable: scrollable,
+ * @property {(x: number, y: number) => void} method: method,
+ * @property {number} startTime: startTime,
+ * @property {number} startX: startX,
+ * @property {number} startY: startY,
+ * @property {number} x: x,
+ * @property {number} y: y
+ */
 
 // polyfill
 function polyfill() {
@@ -32,6 +42,7 @@ function polyfill() {
   };
 
   // define timing method
+  /** @type {() => number} */
   var now =
     w.performance && w.performance.now
       ? w.performance.now.bind(w.performance)
@@ -172,13 +183,16 @@ function polyfill() {
   /**
    * self invoked function that, given a context, steps through scrolling
    * @method step
-   * @param {object} context
+   * @param {StepContext} context
    * @returns {void}
    */
   function step(context) {
     var time = now();
+    /** @type {number} */
     var value;
+    /** @type {number} */
     var currentX;
+    /** @type {number} */
     var currentY;
     var elapsed = (time - context.startTime) / SCROLL_TIME;
 
