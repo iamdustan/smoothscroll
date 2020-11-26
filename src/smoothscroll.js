@@ -16,7 +16,8 @@ function polyfill() {
 
   // globals
   var Element = w.HTMLElement || w.Element;
-  var SCROLL_TIME = 468;
+  var MIN_SCROLL_TIME = 200;
+  var MAX_SCROLL_TIME = 468;
 
   // object gathering original scroll methods
   var original = {
@@ -174,7 +175,7 @@ function polyfill() {
     var value;
     var currentX;
     var currentY;
-    var elapsed = (time - context.startTime) / SCROLL_TIME;
+    var elapsed = (time - context.startTime) / context.scrollTime;
 
     // avoid elapsed times higher than one
     elapsed = elapsed > 1 ? 1 : elapsed;
@@ -221,6 +222,12 @@ function polyfill() {
       method = scrollElement;
     }
 
+    const maxDistance = Math.max(Math.abs(x - startX), Math.abs(y - startY));
+    const scrollTime = Math.max(
+      MIN_SCROLL_TIME,
+      Math.min(MAX_SCROLL_TIME, maxDistance)
+    );
+
     // scroll looping over a frame
     step({
       scrollable: scrollable,
@@ -229,7 +236,8 @@ function polyfill() {
       startX: startX,
       startY: startY,
       x: x,
-      y: y
+      y: y,
+      scrollTime
     });
   }
 
@@ -248,14 +256,14 @@ function polyfill() {
         arguments[0].left !== undefined
           ? arguments[0].left
           : typeof arguments[0] !== 'object'
-            ? arguments[0]
-            : w.scrollX || w.pageXOffset,
+          ? arguments[0]
+          : w.scrollX || w.pageXOffset,
         // use top prop, second argument if present or fallback to scrollY
         arguments[0].top !== undefined
           ? arguments[0].top
           : arguments[1] !== undefined
-            ? arguments[1]
-            : w.scrollY || w.pageYOffset
+          ? arguments[1]
+          : w.scrollY || w.pageYOffset
       );
 
       return;
