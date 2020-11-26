@@ -16,7 +16,7 @@ function polyfill() {
 
   // globals
   var Element = w.HTMLElement || w.Element;
-  var SCROLL_TIME = 468;
+  var MILLISECONDS_PER_INCH = 10;
 
   // object gathering original scroll methods
   var original = {
@@ -164,6 +164,21 @@ function polyfill() {
   }
 
   /**
+     * Calculator for the total scroll time.
+     *
+     * @param {distance} Total distance (in px) that will be scrolled.
+     * @param {densityDpi} DisplayMetrics of the physical device.
+     * @return The total time (in ms) the scroll should take.
+     */
+  function calcScrollTime(distance, densityDpi) {
+    let msPerPx = MILLISECONDS_PER_INCH / densityDpi;
+    // Accelerate according to the scrolling distance,
+    // 1.6 times faster for every 80px for better performance.
+    let accelerate = Math.pow(1.6, Math.max(distance / 80, 1));
+    return msPerPx * distance * (1 / accelerate);
+  }
+
+  /**
    * self invoked function that, given a context, steps through scrolling
    * @method step
    * @param {Object} context
@@ -171,19 +186,26 @@ function polyfill() {
    */
   function step(context) {
     var time = now();
-    var value;
+    var dpi = w.devicePixelRatio;
+    var valueX;
+    var valueY;
     var currentX;
     var currentY;
-    var elapsed = (time - context.startTime) / SCROLL_TIME;
+    var timeX = calcScrollTime(Math.abs(context.x - context.startX), dpi);
+    var timeY = calcScrollTime(Math.abs(context.y - context.startY), dpi);
+    var elapsedX = (time - context.startTime) / timeX;
+    var elapsedY = (time - context.startTime) / timeY;
 
     // avoid elapsed times higher than one
-    elapsed = elapsed > 1 ? 1 : elapsed;
+    elapsedX = elapsedX > 1 ? 1 : elapsedX;
+    elapsedY = elapsedY > 1 ? 1 : elapsedY;
 
     // apply easing to elapsed time
-    value = ease(elapsed);
+    valueX = ease(elapsedX);
+    valueY = ease(elapsedY);
 
-    currentX = context.startX + (context.x - context.startX) * value;
-    currentY = context.startY + (context.y - context.startY) * value;
+    currentX = context.startX + (context.x - context.startX) * valueX;
+    currentY = context.startY + (context.y - context.startY) * valueY;
 
     context.method.call(context.scrollable, currentX, currentY);
 
