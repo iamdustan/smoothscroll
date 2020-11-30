@@ -222,10 +222,17 @@ function polyfill() {
       method = scrollElement;
     }
 
-    const maxDistance = Math.max(Math.abs(x - startX), Math.abs(y - startY));
-    const scrollTime = Math.max(
+    // Calculate the maximum distance to scroll in pixels
+    const distanceToScrollX = Math.abs(x - startX);
+    const distanceToScrollY = Math.abs(y - startY);
+    const maxDistanceToScroll = Math.max(distanceToScrollX, distanceToScrollY);
+    // Configure the speed animation in pixels/ms
+    const animationSpeed = 1;
+    // Calculate the time needed for the scroll animation
+    const scrollTime =
+    Math.max(
       MIN_SCROLL_TIME,
-      Math.min(MAX_SCROLL_TIME, maxDistance)
+      Math.min(MAX_SCROLL_TIME, maxDistanceToScroll * animationSpeed)
     );
 
     // scroll looping over a frame
@@ -256,14 +263,14 @@ function polyfill() {
         arguments[0].left !== undefined
           ? arguments[0].left
           : typeof arguments[0] !== 'object'
-          ? arguments[0]
-          : w.scrollX || w.pageXOffset,
+            ? arguments[0]
+            : w.scrollX || w.pageXOffset,
         // use top prop, second argument if present or fallback to scrollY
         arguments[0].top !== undefined
           ? arguments[0].top
           : arguments[1] !== undefined
-          ? arguments[1]
-          : w.scrollY || w.pageYOffset
+            ? arguments[1]
+            : w.scrollY || w.pageYOffset
       );
 
       return;
