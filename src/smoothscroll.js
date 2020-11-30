@@ -18,6 +18,8 @@ function polyfill() {
   var Element = w.HTMLElement || w.Element;
   var MIN_SCROLL_TIME = 200;
   var MAX_SCROLL_TIME = 468;
+  // Scroll animation speed in pixels / ms
+  var SCROLL_SPEED = 1;
 
   // object gathering original scroll methods
   var original = {
@@ -226,13 +228,11 @@ function polyfill() {
     const distanceToScrollX = Math.abs(x - startX);
     const distanceToScrollY = Math.abs(y - startY);
     const maxDistanceToScroll = Math.max(distanceToScrollX, distanceToScrollY);
-    // Configure the speed animation in pixels/ms
-    const animationSpeed = 1;
     // Calculate the time needed for the scroll animation
     const scrollTime =
     Math.max(
       MIN_SCROLL_TIME,
-      Math.min(MAX_SCROLL_TIME, maxDistanceToScroll * animationSpeed)
+      Math.min(MAX_SCROLL_TIME, maxDistanceToScroll * SCROLL_SPEED)
     );
 
     // scroll looping over a frame
