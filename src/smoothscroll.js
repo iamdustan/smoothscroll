@@ -92,6 +92,11 @@ function polyfill() {
       return true;
     }
 
+    if (firstArg.parentNode !== 'object' && !firstArg.host) {
+      // first argument is not attached to any DOM element
+      return true;
+    }
+
     if (typeof firstArg === 'object' && firstArg.behavior === 'smooth') {
       // first argument is an object and behavior is smooth
       return false;
