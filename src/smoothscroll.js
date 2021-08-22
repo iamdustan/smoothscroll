@@ -5,6 +5,7 @@ function polyfill() {
   // aliases
   var w = window;
   var d = document;
+  var aaa=111;
 
   // return if scroll behavior is supported and polyfill is not forced
   if (
